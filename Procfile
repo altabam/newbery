@@ -1,1 +1,1 @@
-web:gunicorn sgnew.wsgi
+web: gunicorn newbery.wsgi
