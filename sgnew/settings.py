@@ -132,4 +132,4 @@ ALLOWED_HOSTS = [
     "newbery-production.up.railway.app",
 ]
 
-CSRF_TRUSTED_ORIGIN = ["HTTP://*","https://newbery-production.up.railway.app"]
+CSRF_TRUSTED_ORIGINS = ["HTTP://*","https://newbery-production.up.railway.app"]
