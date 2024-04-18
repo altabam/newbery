@@ -4,7 +4,7 @@ from .base import *
 DEBUG = True
 
 ALLOWED_HOSTS = [ 
-    "https://newbery-production.up.railway.app"
+    "newbery-production.up.railway.app",
 ]
 
 
