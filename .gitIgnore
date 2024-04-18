@@ -4,3 +4,4 @@ db.sqlite3
 comandos.txt
 staticfiles
 .env
+settings/local.py
