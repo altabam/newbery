@@ -28,24 +28,32 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-&^k=0f)^3i=d(fpo+te5j43#em&l2a!bp8i93ej0+92)crer4&"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = []
 
 
 # Application definition
 
-INSTALLED_APPS = [
+DJANGO_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    
+   
+]
+
+THIRD_PARTY_APPS = [
     "whitenoise.runserver_nostatic",
+]
+
+LOCAL_APPS = [
     "home",
     "cobros",
 ]
+
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -82,9 +90,6 @@ WSGI_APPLICATION = "sgnew.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    "default": dj_database_url.config(default=os.getenv("DATABASE_URL"))
-}
 
 
 # Password validation
@@ -129,12 +134,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-ALLOWED_HOSTS = [
-    "localhost",
-    "newbery-production.up.railway.app",
-]
 
-CSRF_TRUSTED_ORIGINS = [
-    "http://*",
-    "https://newbery-production.up.railway.app",
-]
+
