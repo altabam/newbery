@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+{% load static %}
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>{% block title %} {% endblock %}</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <!-- CSS only -->
+    {% block style %}  
+    <link rel='stylesheet' href="{% static 'css/base.css' %}" type="text/css">
+{% endblock %}
+</head>
+
+<body>
+    <header class="cabecera" once="cabecera" id="cabecera">
+        <div class="itemCabecera">
+            <img src="{% static 'images/logo.jpg' %}" alt="Newbery" title="Logo Newbery" height="80px" width="80px" >
+                      
+    
+        </div>
+        <div class="itemCabecera">
+            <h1 class="tituloCabecera">Actividades de Newbery</h1>
+    
+        </div>
+        <div class="itemCabecera">
+                <a class="contacto-mail" href="mailto:info@newbery.com.ar">info @ newbery.com.ar</a>
+        </div>
+
+    </header>
+    <hr>
+    {% block nav %}
+    {% endblock %}
+
+    <section class="container">
+        {% block body %}
+        {% endblock %}
+
+    </section>
+    <footer>
+        <section>
+            <p> Copyright Newbery</p>
+        </section>
+    </footer>
+
+</body>
+
+</html>

@@ -1,8 +1,4 @@
 from django.contrib import admin
-from cobros.models import Personas, Socios,  Categorias, JugadoresCategoria
+from cobros.models import *
 
 # Register your models here.
-admin.site.register(Personas)
-admin.site.register(Socios)
-admin.site.register(Categorias)
-admin.site.register(JugadoresCategoria)

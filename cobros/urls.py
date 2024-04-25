@@ -1,6 +1,5 @@
 from django.urls import path
-from cobros import views
+from cobros.views import render_cobros
 urlpatterns = [
     path("",views.render_cobros, name="cobros"),
-    
 ]

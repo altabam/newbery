@@ -1,7 +1,29 @@
-{% load static %}
-<h1> Newbery</h1>
-<img  src = "{% static 'images/logo.jpg' %}"
-<ul>
-    <li><a href="/">Home</a></li>
-    <li><a href="/cobros">Cobros</a></li>
-</ul>
+{% extends "base_nav.html"%}
+{% block title %} Gestion Club Jorge Newbery {% endblock %}
+{% block body %}     
+{% load static %} 
+<section class="imgCabecera">
+<img src="{% static 'img/images/logo.jpg' %}  " height="50px" width="80px"></img> 
+
+
+</section>
+
+    <h2> Administracion y Gestion</h2>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
