@@ -31,6 +31,6 @@ class JugadoresCategoria(models.Model):
     categoria = models.ForeignKey(Categorias, on_delete=models.CASCADE)
 
 
-class Beca(models.Model):
+class Becas(models.Model):
     nombre = models.CharField(max_length=100)
     porcentaje = models.FloatField()

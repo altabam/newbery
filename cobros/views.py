@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from django.template import context, Template
 
 
 # Create your views here.

@@ -1,32 +1,3 @@
 <h1> Gestion de Cobros</h1>
-<table>
-    {% block body %} 
-    <thead>
-        <tr>
-                <th>#</th>
-                <th>Socio Nro.</th>
-                <th>Nombre Socio</th>
-                <th>Apellido Socio</th>
-                <th>Dni</th>
-                <th>Fecha Nac.</th>
-                <th colspan="3">Opciones</th>
-        </tr>
-    </thead>
-    <tbody>
 
-{% if listadoPersonas %}
-{% for listadoPersona in listadoPersonas %}
-                <tr>
-                    <td>{{forloop.counter}}</td>
-                    <td>{{listadoPersona.socio.numero}}</td>
-                    <td>{{listadoPersona.nombre}}</td>
-                    <td>{{listadoPersona.apellido}}</td>
-                    <td>{{listadoPersona.fecha_nacimiento}}</td>
-                    <td>{{listadoPersona.dni}}</td>
-                
-                </tr>
-{% endfor %}
-{% endif %}
-</table>
 
-{% endblock %}  
