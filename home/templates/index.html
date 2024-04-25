@@ -1,13 +1,29 @@
-{% load static %}
-<h1> Newbery</h1>
-<img  src = "{% static 'images/logo.jpg' %}"
-<ul>
-    <li><a href="/">Home</a></li>
-    <li><a href="/cobros/render_cobros">Cobros</a></li>
-    <li><a href="/configuracion/listadoPersonas">Listado de Socios</a></li>
-    <li><a href="/configuracion/listadoDisciplinas">Listado de Discplinas</a></li>
-    <li><a href="/configuracion/listadoCategorias">Listado de Categorias</a></li>
-    <li><a href="/configuracion/listadoBecas">Listado de Becas</a></li>
-    <li><a href="/configuracion/render_cobros">Listado de Jugadores x Categoria</a></li>
+{% extends "base_nav.html"%}
+{% block title %} Gestion Club Jorge Newbery {% endblock %}
+{% block body %}     
+{% load static %} 
+<section class="imgCabecera">
+<img src="{% static 'img/images/logo.jpg' %}  " height="50px" width="80px"></img> 
 
-</ul>
+
+</section>
+
+    <h2> Administracion y Gestion</h2>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

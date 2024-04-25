@@ -1,0 +1,101 @@
+* { 
+  box-sizing: border-box; 
+  padding: 0; 
+  margin: 0; 
+} 
+
+body {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+.cabecera{
+  margin: 0px;
+  color: rgb(145, 11, 127);
+  font-family:  sans-serif;
+  height: 186px;
+ 
+
+}
+
+.itemCabecera{
+  float: left;
+  width: 33%;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+.tituloCabecera{
+  width: 100%;
+  top:50%;
+
+}
+
+
+.contacto-mail{
+  border-radius: 25px;
+  padding: 10px;
+  background-color: rgb(116, 9, 107) ;
+  color: #fff;
+  position: absolute;
+  top: 5%;
+
+}
+.imgCab{
+  width: 20%;
+  height: 20%;
+}
+.imgCabecera {
+  width: 20%;
+  height: 20%;
+  background-color: blueviolet;
+  background-image: url('../img/imgCabecera.png') no-repeat;
+  
+}
+
+.barraMenu{
+    background-color: #333;
+    border: 1px solid #333;
+    color: #fff;
+    display: block;
+    margin: 0;
+    overflow: hidden;
+}
+
+.ulMenuPrincipal {
+  padding: 0em;
+  margin: 0em;
+  list-style: none;
+}
+.liMenuPrincipal {
+  margin: 0.1em;
+  padding: 0.5em 0.5em;
+  display: inline-block;
+  list-style-type: none;
+  transition: all 0.2s;
+  width: 8em;
+  text-align: center;
+
+}
+.linkMenu {
+  margin: 0.1em ;
+  border-radius: 30px;
+  padding: 0.5em 0.5em;
+  color: #aaa;
+  display: inline-block;
+  list-style-type: none;
+  text-decoration: none;
+  width: 8em;
+}
+
+.linkMenu:hover {
+  margin: 0.1em;
+  padding: 0.5em 0.5em;
+  background-color: beige;
+  text-decoration: underline;
+  font-weight: bolder;
+  width: 8em;
+}
