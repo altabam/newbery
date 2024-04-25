@@ -24,12 +24,12 @@ def listadoCategorias(request):
     return render(request, "categorias.html",  contexto)
 
 def listadoJugadoresCategoria(request):
-    listadoCategoria = Categorias.objects.all()
-    print(listadoCategoria)
+    listadoJugadoresCategoria = JugadoresCategoria.objects.all()
+    print(listadoJugadoresCategoria)
     contexto =[
-        { "listadoCategorias": listadoCategoria }
+        { "listadoJugadoresCategorias": listadoJugadoresCategoria }
     ]
-    return render(request, "categorias.html",  contexto)
+    return render(request, "categoriaJugadores.html",  contexto)
 
 def listadoBecas(request):
     listadoBeca = Becas.objects.all()
