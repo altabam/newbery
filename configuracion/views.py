@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from configuracion.models import Personas, Disciplinas, Categorias, JugadoresCategoria, Becas
+import csv
 
 # Create your views here.
 def listadoPersonas(request):
@@ -26,9 +27,7 @@ def listadoCategorias(request):
 def listadoJugadoresCategoria(request):
     listadoJugadoresCategoria = JugadoresCategoria.objects.all()
     print(listadoJugadoresCategoria)
-    contexto =[
-        { "listadoJugadoresCategorias": listadoJugadoresCategoria }
-    ]
+    contexto ={ "listadoJugadoresCategorias": listadoJugadoresCategoria }
     return render(request, "categoriaJugadores.html",  contexto)
 
 def listadoBecas(request):
@@ -37,3 +36,45 @@ def listadoBecas(request):
     contexto ={ "listadoBecas": listadoBeca, }
     
     return render(request, "becas.html",  contexto)
+
+def cargaInicial (request):
+    template_name = "configuracion/migrations/disciplinas.csv"
+    model = Disciplinas()
+    Disciplinas.objects.all().delete()
+    with open (template_name) as f:
+        j = 1
+        reader = csv.reader(f )
+        for row in reader:
+            model.id= j
+            model.nombre =row[0]
+            model.save(force_insert=True)
+            j= j+1
+
+    template_name = "configuracion/migrations/categorias.csv"
+    model = Categorias()
+    Categorias.objects.all().delete()
+    with open (template_name) as f:
+        j = 1
+        reader = csv.reader(f )
+        for row in reader:
+            model.id= j
+            model.nombre =row[0]
+            model.disciplina=Disciplinas.objects.get(id=row[1])
+            model.save(force_insert=True)
+            j= j+1
+    template_name = "configuracion/migrations/becas.csv"
+    model = Becas()
+    Becas.objects.all().delete()
+    with open (template_name) as f:
+        j = 1
+        reader = csv.reader(f )
+        for row in reader:
+            model.id= j
+            model.nombre =row[0]
+            model.porcentaje=id=row[1]
+            model.save(force_insert=True)
+            j= j+1
+
+
+    return render (request, "cargaInicial.html")
+
