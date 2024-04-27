@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from configuracion.models import Personas, Disciplinas, Categorias, JugadoresCategoria, Becas
+from configuracion.models import Personas, Disciplinas, Categorias, Jugadores, Becas
 import csv
 
 # Create your views here.
@@ -24,11 +24,11 @@ def listadoCategorias(request):
     
     return render(request, "categorias.html",  contexto)
 
-def listadoJugadoresCategoria(request):
-    listadoJugadoresCategoria = JugadoresCategoria.objects.all()
-    print(listadoJugadoresCategoria)
-    contexto ={ "listadoJugadoresCategorias": listadoJugadoresCategoria }
-    return render(request, "categoriaJugadores.html",  contexto)
+def listadoJugadores(request):
+    listadoJugadores = Jugadores.objects.all()
+    print(listadoJugadores)
+    contexto ={ "listadoJugadores": listadoJugadores }
+    return render(request, "jugadores.html",  contexto)
 
 def listadoBecas(request):
     listadoBeca = Becas.objects.all()

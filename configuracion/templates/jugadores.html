@@ -1,0 +1,34 @@
+<h1> Gestion de Jugadores </h1>
+<table>
+    
+    <thead>
+        <tr>
+                <th>#</th>
+                <th>Disciplina</th>
+                <th>Categoria</th>
+                <th>Apellido</th>
+                <th>Nombre</th>
+                <th>Dni</th>
+                <th>Fecha de Nacimiento</th>
+  
+                <th colspan="3">Opciones</th>
+        </tr>
+    </thead>
+    <tbody>
+
+{% if listadoJugadores %}
+{% for listadoJugadores in listadoJugadores %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{listadoJugadores.categoria.disciplina.nombre}}</td>
+                    <td>{{listadoJugadores.categoria.nombre}}</td>
+                    <td>{{listadoJugadores.apellido}}</td>
+                    <td>{{listadoJugadores.nombre}}</td>
+                    <td>{{listadoJugadores.fecha_nacimiento}}</td>
+                    <td>{{listadoJugadores.dni}}</td>
+                
+                </tr>
+{% endfor %}
+{% endif %}
+</table>
+
