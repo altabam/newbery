@@ -8,6 +8,8 @@ class Personas(models.Model):
     apellido = models.CharField(max_length=100)
     fecha_nacimiento = models.DateField()
     dni = models.IntegerField()
+    telefono  = models.CharField(max_length=15)
+    direccion = models.CharField(max_length=100)
     def __str__(self):
         return f"{self.nombre} {self.apellido}"
     

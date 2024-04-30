@@ -1,3 +1,46 @@
-<h1> Gestion de Cobros</h1>
+
+{% extends "./base.html"%}
+{% block title %} Gestion de Cobros {% endblock %}
+{% load static %}
+{% block style %} 
+    <link rel='stylesheet' href="{% static 'css/cobros.css' %}" type="text/css">
+    <script src="{% static 'js/cobros.js' %}"></script>
+ {% endblock %}
 
 
+ {% block body %} 
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <h2> Gestion de Cobros  </h2>
+        <div class="card">
+            <div class="card-body">
+                <form  method="POST">{% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="text" placeholder="Buscar Socio" id="busquedaSocio" />
+                    <button type="submit" class="btn btn-success btn-block text-white ">Buscar</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.1/jquery-ui.min.js"></script>
+<script type="text/javascript">
+    $('#busquedaSocio').keyup(function(e){
+    consulta = $("#busquedaSocio").val();
+    $.ajax({
+    data: {'apellido': consulta},
+    url: '/cobros/busquedaSocio',
+    type: 'get',
+    success : function(data) {
+            console.log("Encontrado"+ data[0].personas);
+    },
+    error : function(message) {
+            console.log(message);
+         }
+    });
+   });
+</script>
+
+{% endblock %}  

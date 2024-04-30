@@ -17,15 +17,15 @@
     <tbody>
 
 {% if listadoJugadores %}
-{% for listadoJugadores in listadoJugadores %}
+{% for listadoJugador in listadoJugadores %}
                 <tr>
                     <td>{{forloop.counter}}</td>
-                    <td>{{listadoJugadores.categoria.disciplina.nombre}}</td>
-                    <td>{{listadoJugadores.categoria.nombre}}</td>
-                    <td>{{listadoJugadores.apellido}}</td>
-                    <td>{{listadoJugadores.nombre}}</td>
-                    <td>{{listadoJugadores.fecha_nacimiento}}</td>
-                    <td>{{listadoJugadores.dni}}</td>
+                    <td>{{listadoJugador.categoria.disciplina.nombre}}</td>
+                    <td>{{listadoJugador.categoria.nombre}}</td>
+                    <td>{{listadoJugador.persona.apellido}}</td>
+                    <td>{{listadoJugador.persona.nombre}}</td>
+                    <td>{{listadoJugador.persona.dni}}</td>
+                    <td>{{listadoJugador.persona.fecha_nacimiento}}</td>
                 
                 </tr>
 {% endfor %}

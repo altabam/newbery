@@ -18,11 +18,12 @@
 {% for listadoPersona in listadoPersonas %}
                 <tr>
                     <td>{{forloop.counter}}</td>
-                    <td>{{listadoPersona.socio.numero}}</td>
                     <td>{{listadoPersona.nombre}}</td>
                     <td>{{listadoPersona.apellido}}</td>
                     <td>{{listadoPersona.fecha_nacimiento}}</td>
                     <td>{{listadoPersona.dni}}</td>
+                    <td>{{listadoPersona.telefono}}</td>
+                    <td>{{listadoPersona.direccion}}</td>
                 
                 </tr>
 {% endfor %}

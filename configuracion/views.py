@@ -1,13 +1,15 @@
 from django.shortcuts import render
-from configuracion.models import Personas, Disciplinas, Categorias, Jugadores, Becas
+from datetime import datetime
 import csv
+
+from configuracion.models import Personas, Disciplinas, Categorias, Jugadores, Becas, Socios
 
 # Create your views here.
 def listadoPersonas(request):
     
     listadoPersona = Personas.objects.all()
     print(listadoPersona)
-    contexto = { "listadoPersona": listadoPersona }
+    contexto = { "listadoPersonas": listadoPersona }
     return render(request, "personas.html",  contexto)
 
 def listadoDisciplinas(request):
@@ -25,9 +27,10 @@ def listadoCategorias(request):
     return render(request, "categorias.html",  contexto)
 
 def listadoJugadores(request):
-    listadoJugadores = Jugadores.objects.all()
-    print(listadoJugadores)
-    contexto ={ "listadoJugadores": listadoJugadores }
+    listadoJugador = Jugadores.objects.all()
+    print("paso")
+    print(listadoJugador)
+    contexto ={ "listadoJugadores": listadoJugador }
     return render(request, "jugadores.html",  contexto)
 
 def listadoBecas(request):
@@ -36,6 +39,14 @@ def listadoBecas(request):
     contexto ={ "listadoBecas": listadoBeca, }
     
     return render(request, "becas.html",  contexto)
+
+def listadoSocios(request):
+    listadoSocio = Socios.objects.all()
+    print(listadoSocio)
+    contexto ={ "listadoSocios": listadoSocio, }
+    
+    return render(request, "socios.html",  contexto)
+
 
 def cargaInicial (request):
     template_name = "configuracion/migrations/disciplinas.csv"
@@ -74,7 +85,49 @@ def cargaInicial (request):
             model.porcentaje=id=row[1]
             model.save(force_insert=True)
             j= j+1
+    template_name = "configuracion/migrations/personas.csv"
+    model = Personas()
+    Personas.objects.all().delete()
+    with open (template_name) as f:
+        j = 1
+        reader = csv.reader(f )
+        for row in reader:
+            model.id= j
+            model.nombre =row[0]
+            model.apellido=row[1]
+            model.fecha_nacimiento=datetime.strptime(row[2], '%d/%m/%Y').date()
+            model.dni=row[3]
+            model.telefono=row[4]
+            model.direccion=row[5]
+            model.save(force_insert=True)
+            j= j+1
 
+    template_name = "configuracion/migrations/jugadores.csv"
+    model = Jugadores()
+    Jugadores.objects.all().delete()
+    with open (template_name) as f:
+        j = 1
+        reader = csv.reader(f )
+        for row in reader:
+            model.id= j
+            print(row[1], Categorias.objects.get(id=row[1]))
+            model.persona=Personas.objects.get(id=row[0])
+            model.categoria=Categorias.objects.get(id=row[1])
+            model.save(force_insert=True)
+            j= j+1
+    
+    template_name = "configuracion/migrations/socios.csv"
+    model = Socios()
+    Socios.objects.all().delete()
+    with open (template_name) as f:
+        j = 1
+        reader = csv.reader(f )
+        for row in reader:
+            model.id= j
+            model.numero=row[0]
+            model.personas=Personas.objects.get(id=row[1])
+            model.save(force_insert=True)
+            j= j+1
 
     return render (request, "cargaInicial.html")
 
