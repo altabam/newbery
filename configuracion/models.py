@@ -2,21 +2,40 @@ from django.db import models
 
 # Create your models here.
 
-
+class PersonasManager(models.Manager):
+    def get_by_natural_key(self, nombre, apellido,dni):
+        return self.get(nombre=nombre, apellido=apellido, dni=dni)
+    
 class Personas(models.Model):
     nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)
-    fecha_nacimiento = models.DateField()
+    fecha_nacimiento = models.DateField(null=True)
     dni = models.IntegerField()
     telefono  = models.CharField(max_length=15)
     direccion = models.CharField(max_length=100)
+
+    objects = PersonasManager()
     def __str__(self):
         return f"{self.nombre} {self.apellido}"
+    
+    def natural_key(self):
+        return (self.nombre, self.apellido, self.dni)
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["nombre", "apellido","dni"],
+                name="unique_nombre_apellido_dni",
+            ),
+        ]
     
     
 class Socios(models.Model):
     numero = models.IntegerField()
     personas = models.ForeignKey(Personas, on_delete=models.CASCADE)
+    def __str__(self):
+        return f"{self.numero} {self.personas.apellido} {self.personas.nombre}"
+
 
 class Disciplinas(models.Model):
     nombre = models.CharField(max_length=100)

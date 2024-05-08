@@ -4,11 +4,12 @@
     <thead>
         <tr>
                 <th>#</th>
-                <th>Socio Nro.</th>
+                <th>Dni</th>
                 <th>Nombre Socio</th>
                 <th>Apellido Socio</th>
-                <th>Dni</th>
                 <th>Fecha Nac.</th>
+                <th>Telefono</th>
+                <th>Direccion</th>
                 <th colspan="3">Opciones</th>
         </tr>
     </thead>
@@ -18,10 +19,10 @@
 {% for listadoPersona in listadoPersonas %}
                 <tr>
                     <td>{{forloop.counter}}</td>
+                    <td>{{listadoPersona.dni}}</td>
                     <td>{{listadoPersona.nombre}}</td>
                     <td>{{listadoPersona.apellido}}</td>
                     <td>{{listadoPersona.fecha_nacimiento}}</td>
-                    <td>{{listadoPersona.dni}}</td>
                     <td>{{listadoPersona.telefono}}</td>
                     <td>{{listadoPersona.direccion}}</td>
                 

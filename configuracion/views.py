@@ -93,10 +93,13 @@ def cargaInicial (request):
         reader = csv.reader(f )
         for row in reader:
             model.id= j
-            model.nombre =row[0]
+            print("fecha_nac:"+str(row[0]))
+            model.dni=row[0]
             model.apellido=row[1]
-            model.fecha_nacimiento=datetime.strptime(row[2], '%d/%m/%Y').date()
-            model.dni=row[3]
+            model.nombre =row[2]
+            print("fecha_nac:"+str(len(row[3])))
+            if row[3] != "":
+              model.fecha_nacimiento=datetime.strptime(row[3], '%d/%m/%Y').date()
             model.telefono=row[4]
             model.direccion=row[5]
             model.save(force_insert=True)
