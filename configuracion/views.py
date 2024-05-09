@@ -134,3 +134,19 @@ def cargaInicial (request):
 
     return render (request, "cargaInicial.html")
 
+def cargaMasivaSocios(request):
+    template_name = "configuracion/migrations/socios.csv"
+    model = Socios()
+    with open (template_name) as f:
+        j = len(Socios.objects.all())
+        print(j)
+        reader = csv.reader(f )
+        for row in reader:
+           # model.nombre =row[0]
+           # model.save(force_insert=True)
+            j= j+1
+
+    return render (request, "cargaMasiva.html")
+
+def cargaMasiva(request):
+    return render (request, "cargaMasiva.html")
