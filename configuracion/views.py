@@ -191,6 +191,8 @@ def gestionarJugadoresCategoria(request):
     
 def borrarJugadoresCategoria(request, id):
     listadoCategorias = Categorias.objects.all();
+    jugadores = Jugadores.objects.filter(categoria = id)
+    jugadores.delete()
     contexto ={ "listadoCategorias": listadoCategorias,  } 
     return render (request, "gestionarJugadoresCategoria.html",contexto)
 
