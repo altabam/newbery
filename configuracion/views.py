@@ -128,7 +128,7 @@ def cargaInicial (request):
 
 def cargarPersona(row):
     model = Personas()
-    j = len(Personas.objects.all())
+    j = len(Personas.objects.all())+1
     print("nombre:"+ row[2])
     print("fecha_nac:"+ row[3])
     model.id = j
