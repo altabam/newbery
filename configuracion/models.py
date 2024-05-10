@@ -31,10 +31,15 @@ class Personas(models.Model):
     
     
 class Socios(models.Model):
+    SOCIO_RESPONSABLE = (
+        ("S", "SI"),
+        ("N", "NO"),
+    )
     numero = models.IntegerField()
-    personas = models.ForeignKey(Personas, on_delete=models.CASCADE)
+    persona = models.ForeignKey(Personas, on_delete=models.CASCADE)
+    responsable = models.CharField(max_length=1, choices=SOCIO_RESPONSABLE, blank=True, default='N')
     def __str__(self):
-        return f"{self.numero} {self.personas.apellido} {self.personas.nombre}"
+        return f"{self.numero} {self.persona.apellido} {self.persona.nombre}"
 
 
 class Disciplinas(models.Model):

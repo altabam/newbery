@@ -1,5 +1,5 @@
 from django.urls import path
-from configuracion.views import listadoPersonas, listadoDisciplinas, listadoCategorias, listadoBecas, listadoJugadores, listadoSocios, cargaInicial,cargaMasivaSocios,cargaMasiva
+from configuracion.views import listadoPersonas, listadoDisciplinas, listadoCategorias, listadoBecas, listadoJugadores, listadoSocios, cargaInicial,cargaMasivaSocios,cargaMasiva, borrarTodosSocios,borrarJugadoresCategoria, cargarJugadoresCategoria, gestionarJugadoresCategoria,cargarCategorias
 urlpatterns = [
     path("listadoPersonas",listadoPersonas, name="listadoPersonas"),
     path("listadoDisciplinas",listadoDisciplinas, name="listadoDisciplinas"),
@@ -10,6 +10,11 @@ urlpatterns = [
     path("cargaInicial",cargaInicial, name="cargaInicial"),
     path("cargaMasiva",cargaMasiva, name="cargaMasiva"),
     path("cargaMasivaSocios",cargaMasivaSocios, name="cargaMasivaSocios"),
+    path("borrarTodosSocios",borrarTodosSocios, name="borrarTodosSocios"),
+    path("borrarJugadoresCategoria/<int:id>",borrarJugadoresCategoria, name="borrarJugadoresCategoria"),
+    path("cargarJugadoresCategoria/<int:id>",cargarJugadoresCategoria, name="cargarJugadoresCategoria"),
+    path("gestionarJugadoresCategoria",gestionarJugadoresCategoria, name="gestionarJugadoresCategoria"),
+   path("cargarCategorias",cargarCategorias, name="cargarCategorias"),
 
         
 ]

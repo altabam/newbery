@@ -1,0 +1,15 @@
+<h1>Agregar Jugadores</h1>
+<ul>
+    {% for categoria in listadoCategorias%}
+    <li>{{forloop.counter}} <a href="/configuracion/cargarJugadoresCategoria/{{categoria.id}}" class="">Agregar Categoria {{categoria.nombre}}</a></li>
+    {% endfor %}
+</ul>
+
+<h1>Borrar Jugadores</h1>
+<ul>
+    {% for categoria in listadoCategorias%}
+    <li>{{forloop.counter}} <a href="/configuracion/borrarJugadoresCategoria/{{categoria.id}}" class="">Borrar Categoria {{categoria.nombre}}</a></li>
+    {% endfor %}
+</ul>
+
+<h3>{{mensaje}}</h3>
