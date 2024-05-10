@@ -131,6 +131,7 @@ def cargarPersona(row):
     j = len(Personas.objects.all())
     print("nombre:"+ row[2])
     print("fecha_nac:"+ row[3])
+    model.id = j
     model.dni=row[0]
     model.apellido=row[1]
     model.nombre =row[2]
@@ -202,8 +203,7 @@ def cargarJugadoresCategoria(request,id):
     template_name = "configuracion/migrations/categoria"+categoria.nombre+".csv"
     print(template_name)
     with open (template_name) as f:
-        j = len(Personas.objects.all())
-        print(j)
+              
         reader = csv.reader(f )
         for row in reader:
            print(row)
@@ -220,7 +220,7 @@ def cargarJugadoresCategoria(request,id):
               cargarJugador(persona,categoria)
 
            # model.save(force_insert=True)
-           j= j+1
+          
     
     listadoCategorias = Categorias.objects.all();
 
