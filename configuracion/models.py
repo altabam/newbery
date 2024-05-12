@@ -38,6 +38,8 @@ class Socios(models.Model):
     numero = models.IntegerField()
     persona = models.ForeignKey(Personas, on_delete=models.CASCADE)
     responsable = models.CharField(max_length=1, choices=SOCIO_RESPONSABLE, blank=True, default='N')
+    fecha_alta = models.DateField(null=True)
+    fecha_baja= models.DateField(null=True)
     def __str__(self):
         return f"{self.numero} {self.persona.apellido} {self.persona.nombre}"
 
@@ -59,3 +61,8 @@ class Jugadores(models.Model):
 class Becas(models.Model):
     nombre = models.CharField(max_length=100)
     porcentaje = models.FloatField()
+
+class Cuotas(models.Model):
+    concepto = models.CharField(max_length=100)
+    valor = models.DecimalField( max_digits=9, decimal_places=2) 
+    cant_hermanos = models.IntegerField()

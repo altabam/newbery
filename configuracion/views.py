@@ -2,7 +2,7 @@ from django.shortcuts import render
 from datetime import datetime
 import csv
 from django.db.models import Count
-from configuracion.models import Personas, Disciplinas, Categorias, Jugadores, Becas, Socios
+from configuracion.models import Personas, Disciplinas, Categorias, Jugadores, Becas, Socios, Cuotas
 
 # Create your views here.
 def listadoPersonas(request):
@@ -56,32 +56,8 @@ def listadoSocios(request):
 
 
 def cargaInicial (request):
-    template_name = "configuracion/migrations/disciplinas.csv"
-    model = Disciplinas()
-    Disciplinas.objects.all().delete()
-    with open (template_name) as f:
-        j = 1
-        reader = csv.reader(f )
-        for row in reader:
-            model.id= j
-            model.nombre =row[0]
-            model.save(force_insert=True)
-            j= j+1
-
-    cargarCategorias()
-
-    template_name = "configuracion/migrations/becas.csv"
-    model = Becas()
-    Becas.objects.all().delete()
-    with open (template_name) as f:
-        j = 1
-        reader = csv.reader(f )
-        for row in reader:
-            model.id= j
-            model.nombre =row[0]
-            model.porcentaje=id=row[1]
-            model.save(force_insert=True)
-            j= j+1
+    """
+    
     template_name = "configuracion/migrations/personas.csv"
     model = Personas()
     Personas.objects.all().delete()
@@ -123,7 +99,7 @@ def cargaInicial (request):
         j = 1
         reader = csv.reader(f )
         cargarPersona(row)
-
+"""
     return render (request, "cargaInicial.html")
 
 def cargarPersona(row):
@@ -239,19 +215,18 @@ def cargarJugador(persona,categoria):
 def cargarCategoriasArchivo():
     template_name = "configuracion/migrations/categorias.csv"
     model = Categorias()
-    Categorias.objects.all().delete()
+    #Categorias.objects.all().delete()
     with open (template_name) as f:
-        j = 1
         reader = csv.reader(f )
         for row in reader:
+            j = len(Disciplinas.objects.all())+1
             if not Categorias.objects.filter(nombre = row[0]).exists():
               model.id= j
               model.nombre =row[0]
               model.disciplina=Disciplinas.objects.get(id=row[1])
               model.save(force_insert=True)
-              j= j+1
             else:
-                print("categoria: "+ row+ " existe")
+                print("categoria: "+ row[0]+ " existe")
 
 
 def cargarCategorias(request):
@@ -259,3 +234,69 @@ def cargarCategorias(request):
     mensaje ="carga con exito"
     contexto ={  "mensaje":mensaje } 
     return render (request, "cargaMasiva.html",contexto)
+
+
+def cargaInicialDisciplinas(request):
+    template_name = "configuracion/migrations/disciplinas.csv"
+    model = Disciplinas()
+    #Disciplinas.objects.all().delete()
+    with open (template_name) as f:
+        reader = csv.reader(f )
+        for row in reader:
+           j = len(Disciplinas.objects.all())+1
+
+           if  not Disciplinas.objects.filter(nombre = row[0]).exists():
+                model.id= j
+                model.nombre =row[0]
+                model.save(force_insert=True)
+           else:
+                print(row)
+    mensaje ="carga con exito"
+    contexto ={  "mensaje":mensaje } 
+    return render (request, "cargaInicial.html",contexto)
+
+def cargaInicialBecas(request):
+    template_name = "configuracion/migrations/becas.csv"
+    model = Becas()
+    #Becas.objects.all().delete()
+    with open (template_name) as f:
+        reader = csv.reader(f )
+        for row in reader:
+            j = len(Becas.objects.all())+1
+
+            if  not Becas.objects.filter(nombre = row[0]).exists():
+              model.id= j
+              model.nombre =row[0]
+              model.porcentaje=id=row[1]
+              model.save(force_insert=True)
+            else:
+                print(row)
+    mensaje ="carga con exito"
+    contexto ={  "mensaje":mensaje } 
+    return render (request, "cargaInicial.html",contexto)
+
+def cargaInicialCuotas(request):
+    template_name = "configuracion/migrations/cuotas.csv"
+    model = Cuotas()
+    with open (template_name) as f:
+        reader = csv.reader(f )
+        for row in reader:
+            j = len(Cuotas.objects.all())+1
+
+            if  not Cuotas.objects.filter(nombre = row[0]).exists():
+              model.id= j
+              model.nombre =row[0]
+              model.porcentaje=id=row[1]
+              model.porcentaje=id=row[2]
+              model.save(force_insert=True)
+            else:
+                print(row)
+    mensaje ="carga con exito"
+    contexto ={  "mensaje":mensaje } 
+    return render (request, "cargaInicial.html",contexto)
+
+def cargaInicialCategorias(request):
+    cargarCategoriasArchivo()
+    mensaje ="carga con exito"
+    contexto ={  "mensaje":mensaje } 
+    return render (request, "cargaInicial.html",contexto)
