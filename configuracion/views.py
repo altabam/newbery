@@ -48,7 +48,7 @@ def listadoBecas(request):
     return render(request, "becas.html",  contexto)
 
 def listadoSocios(request):
-    listadoSocio = Socios.objects.all()
+    listadoSocio = Socios.objects.all().order_by("numero")
     print(listadoSocio)
     contexto ={ "listadoSocios": listadoSocio, }
     
@@ -281,10 +281,8 @@ def cargaInicialCuotas(request):
     with open (template_name) as f:
         reader = csv.reader(f )
         for row in reader:
-            j = len(Cuotas.objects.all())+1
-
             if  not Cuotas.objects.filter(nombre = row[0]).exists():
-              model.id= j
+              model.id= len(Cuotas.objects.all())+1
               model.nombre =row[0]
               model.porcentaje=id=row[1]
               model.porcentaje=id=row[2]
@@ -300,3 +298,27 @@ def cargaInicialCategorias(request):
     mensaje ="carga con exito"
     contexto ={  "mensaje":mensaje } 
     return render (request, "cargaInicial.html",contexto)
+
+def cargarAgrupacionFamiliarSocios(request):
+    template_name = "configuracion/migrations/agrupFamiliarSocios.csv"
+    model = Socios()
+    with open (template_name) as f:
+        reader = csv.reader(f )
+        for row in reader:
+            socio = Socios.objects.get(numero=row[0], responsable='S') 
+            if  not Socios.objects.filter(persona = row[1]).exists():
+              model.id = Socios.objects.last().id+1
+              model.numero =socio.numero
+              model.persona=Personas.objects.get(id= row[1])
+              model.responsable= 'N'
+              model.save(force_insert=True)
+              
+            else:
+                print("Agrupacion Familiar, persona existe")
+                print(row)
+    mensaje ="carga con exito"
+    contexto ={  "mensaje":mensaje } 
+    return render (request, "cargaMasiva.html",contexto)
+
+def borrarSocio(request,id):
+    Socios.objects.filter(id=id).delete()

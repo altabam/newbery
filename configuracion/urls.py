@@ -1,6 +1,6 @@
 from django.urls import path
 from configuracion.views import listadoPersonas, listadoDisciplinas, listadoCategorias, listadoBecas, listadoJugadores, listadoSocios, cargaInicial,cargaMasivaSocios,cargaMasiva, borrarTodosSocios,borrarJugadoresCategoria, cargarJugadoresCategoria, gestionarJugadoresCategoria, cargarCategorias, cargaInicialDisciplinas, cargaInicialBecas, cargaInicialCategorias 
-from configuracion.views import cargaInicialCuotas
+from configuracion.views import cargaInicialCuotas, cargarAgrupacionFamiliarSocios, borrarSocio
 urlpatterns = [
     path("listadoPersonas",listadoPersonas, name="listadoPersonas"),
     path("listadoDisciplinas",listadoDisciplinas, name="listadoDisciplinas"),
@@ -15,7 +15,9 @@ urlpatterns = [
     path("cargaInicialCuotas",cargaInicialCuotas, name="cargaInicialCuotas"),
     path("cargaMasiva",cargaMasiva, name="cargaMasiva"),
     path("cargaMasivaSocios",cargaMasivaSocios, name="cargaMasivaSocios"),
+    path("cargarAgrupacionFamiliarSocios",cargarAgrupacionFamiliarSocios, name="cargarAgrupacionFamiliarSocios"),
     path("borrarTodosSocios",borrarTodosSocios, name="borrarTodosSocios"),
+    path("borrarSocio/<int:id>",borrarSocio, name="borrarSocio"),
     path("borrarJugadoresCategoria/<int:id>",borrarJugadoresCategoria, name="borrarJugadoresCategoria"),
     path("cargarJugadoresCategoria/<int:id>",cargarJugadoresCategoria, name="cargarJugadoresCategoria"),
     path("gestionarJugadoresCategoria",gestionarJugadoresCategoria, name="gestionarJugadoresCategoria"),

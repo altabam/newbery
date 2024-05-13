@@ -5,9 +5,10 @@
     
     <thead>
         <tr>
-                <th>#</th>
+                <th>Id</th>
                 <th>Socio</th>
                 <th>Apellido y Nombre</th>
+                <th>Responsable</th>
                 <th colspan="3">Opciones</th>
         </tr>
     </thead>
@@ -16,9 +17,10 @@
 {% if listadoSocios %}
 {% for listadoSocio in listadoSocios %}
                 <tr>
-                    <td>{{forloop.counter}}</td>
+                    <td>{{listadoSocio.id}}</td>
                     <td>{{listadoSocio.numero}}</td>
                     <td>{{listadoSocio.persona.apellido}} {{listadoSocio.persona.nombre}}</td>
+                    <td>{{listadoSocio.responsable}} </td>
                 
                 </tr>
 {% endfor %}
