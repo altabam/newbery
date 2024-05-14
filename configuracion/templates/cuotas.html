@@ -1,0 +1,29 @@
+{% extends "base_nav.html"%}
+{% block body %}
+<h1> Gestion de Cuotas</h1>
+<table>
+    
+    <thead>
+        <tr>
+                <th>#</th>
+                <th>Concepto</th>
+                <th>Valor</th>
+                <th>Cant. Integrantes</th>
+                <th colspan="3">Opciones</th>
+        </tr>
+    </thead>
+    <tbody>
+
+{% if listadoCuotas %}
+{% for listadoCuota in listadoCuotas %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{listadoCuota.concepto}}</td>
+                    <td>{{listadoCuota.valor}}</td>
+                    <td>{{listadoCuota.cant_int}}</td>
+                
+                </tr>
+{% endfor %}
+{% endif %}
+</table>
+{% endblock %}

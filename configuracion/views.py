@@ -54,6 +54,14 @@ def listadoSocios(request):
     
     return render(request, "socios.html",  contexto)
 
+def listarCuotas(request):
+    listadoCuotas = Cuotas.objects.all().order_by("cant_int")
+    print(listadoCuotas)
+    contexto ={ "listadoCuotas": listadoCuotas, }
+    
+    return render(request, "cuotas.html",  contexto)
+
+
 
 def cargaInicial (request):
     """
@@ -196,18 +204,14 @@ def cargarJugadoresCategoria(request,id):
               cargarJugador(persona,categoria)
 
            # model.save(force_insert=True)
-          
-    
     listadoCategorias = Categorias.objects.all();
-
     contexto ={ "listadoCategorias": listadoCategorias, "mensaje":mensaje } 
     return render (request, "gestionarJugadoresCategoria.html",contexto)
 
 def cargarJugador(persona,categoria):
     model = Jugadores()
     print(categoria)
-    j = len(Jugadores.objects.all())
-    model.id=j
+    model.id = Jugadores.objects.last().id+1
     model.persona=persona
     model.categoria=categoria
     model.save(force_insert=True)
@@ -219,9 +223,8 @@ def cargarCategoriasArchivo():
     with open (template_name) as f:
         reader = csv.reader(f )
         for row in reader:
-            j = len(Disciplinas.objects.all())+1
             if not Categorias.objects.filter(nombre = row[0]).exists():
-              model.id= j
+              model.id = Categorias.objects.last().id+1
               model.nombre =row[0]
               model.disciplina=Disciplinas.objects.get(id=row[1])
               model.save(force_insert=True)
@@ -243,10 +246,8 @@ def cargaInicialDisciplinas(request):
     with open (template_name) as f:
         reader = csv.reader(f )
         for row in reader:
-           j = len(Disciplinas.objects.all())+1
-
            if  not Disciplinas.objects.filter(nombre = row[0]).exists():
-                model.id= j
+                model.id = Disciplinas.objects.last().id+1
                 model.nombre =row[0]
                 model.save(force_insert=True)
            else:
@@ -262,10 +263,8 @@ def cargaInicialBecas(request):
     with open (template_name) as f:
         reader = csv.reader(f )
         for row in reader:
-            j = len(Becas.objects.all())+1
-
             if  not Becas.objects.filter(nombre = row[0]).exists():
-              model.id= j
+              model.id = Becas.objects.last().id+1
               model.nombre =row[0]
               model.porcentaje=id=row[1]
               model.save(force_insert=True)
@@ -281,11 +280,11 @@ def cargaInicialCuotas(request):
     with open (template_name) as f:
         reader = csv.reader(f )
         for row in reader:
-            if  not Cuotas.objects.filter(nombre = row[0]).exists():
-              model.id= len(Cuotas.objects.all())+1
-              model.nombre =row[0]
-              model.porcentaje=id=row[1]
-              model.porcentaje=id=row[2]
+            if  not Cuotas.objects.filter(concepto = row[0]).exists():
+              model.id = Cuotas.objects.last().id+1
+              model.concepto =row[0]
+              model.valor=row[1]
+              model.cant_int=row[2]
               model.save(force_insert=True)
             else:
                 print(row)
@@ -305,11 +304,13 @@ def cargarAgrupacionFamiliarSocios(request):
     with open (template_name) as f:
         reader = csv.reader(f )
         for row in reader:
-            socio = Socios.objects.get(numero=row[0], responsable='S') 
-            if  not Socios.objects.filter(persona = row[1]).exists():
+            personaResponsable = Personas.objects.get(dni= row[0])
+            socio = Socios.objects.get(persona=personaResponsable, responsable='S') 
+            personaFamiliar = Personas.objects.get(dni= row[1])
+            if  not Socios.objects.filter(persona = personaFamiliar).exists():
               model.id = Socios.objects.last().id+1
               model.numero =socio.numero
-              model.persona=Personas.objects.get(id= row[1])
+              model.persona=personaFamiliar
               model.responsable= 'N'
               model.save(force_insert=True)
               

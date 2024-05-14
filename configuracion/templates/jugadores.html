@@ -1,3 +1,5 @@
+{% extends "base_nav.html"%}
+{% block body %}
 <h1> Gestion de Jugadores </h1>
 <table>
     
@@ -20,17 +22,19 @@
 {% if listadoJugadores %}
 {% for listadoJugador in listadoJugadores %}
                 <tr>
-                    <td>{{forloop.counter}}</td>
-                    <td>{{listadoJugador.categoria.disciplina.nombre}}</td>
-                    <td>{{listadoJugador.categoria.nombre}}</td>
-                    <td>{{listadoJugador.persona.id}}</td>
-                    <td>{{listadoJugador.persona.apellido}}</td>
-                    <td>{{listadoJugador.persona.nombre}}</td>
-                    <td>{{listadoJugador.persona.dni}}</td>
-                    <td>{{listadoJugador.persona.fecha_nacimiento}}</td>
+                    <td class="tdNumero">{{forloop.counter}}</td>
+                    <td class="tdTexto">{{listadoJugador.categoria.disciplina.nombre}}</td>
+                    <td class="tdTexto">{{listadoJugador.categoria.nombre}}</td>
+                    <td class="tdNumero">{{listadoJugador.persona.id}}</td>
+                    <td class="tdTexto">{{listadoJugador.persona.apellido}}</td>
+                    <td class="tdTexto">{{listadoJugador.persona.nombre}}</td>
+                    <td class="tdNumero">{{listadoJugador.persona.dni}}</td>
+                    <td class="tdTexto">{{listadoJugador.persona.fecha_nacimiento}}</td>
                 
                 </tr>
 {% endfor %}
 {% endif %}
 </table>
+
+{% endblock %}
 

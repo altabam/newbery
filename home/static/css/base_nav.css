@@ -1,0 +1,14 @@
+.tdTexto{
+ text-align: left;
+}
+
+.tdNumero{
+  text-align: right;
+}
+
+.tdTitulo{
+    text-align: center;
+    font-style: bold; ;
+}
+
+

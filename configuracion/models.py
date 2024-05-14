@@ -65,4 +65,6 @@ class Becas(models.Model):
 class Cuotas(models.Model):
     concepto = models.CharField(max_length=100)
     valor = models.DecimalField( max_digits=9, decimal_places=2) 
-    cant_hermanos = models.IntegerField()
+    cant_int = models.IntegerField()
+
+    

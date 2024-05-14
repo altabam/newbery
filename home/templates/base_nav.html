@@ -1,5 +1,9 @@
 {% extends "base.html"%}
-    {% block nav %}
+{% load static %}
+{% block styleOtros %}  
+     <link rel='stylesheet' href="{% static 'css/base_nav.css' %}" type="text/css">
+  {% endblock %}
+  {% block nav %}
     <nav class="barraMenu">
         <div class="menuPrincipal collapse navbar-collapse" id="navbarNav">
             <ul class="ulMenuPrincipal">
@@ -23,13 +27,18 @@
                 </li>
                 <li class="liMenuPrincipal">
                     <a class="linkMenu" href="/configuracion/listadoSocios">Socios</a>
+
                 </li>
+                <li class="liMenuPrincipal">
+                    <a class="linkMenu" href="/configuracion/listarCuotas">Cuotas</a>
+                </li>
+
 
             </ul>
         </div>
     </nav>
    
-    {% endblock %}
+  {% endblock %}
 
 
     
