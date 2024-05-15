@@ -1,10 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from datetime import datetime
 import csv
-from django.shortcuts import redirect, render
 from django.db.models import Count
 from .models import Personas, Disciplinas, Categorias, Jugadores, Becas, Socios, Cuotas
 from .forms import PersonaForm
+from .libreria.cargaMasiva import * 
+from .libreria.gest_socios import *
+from .libreria.gest_socios import *
 # Create your views here.
 def listadoPersonas(request):
     
@@ -17,19 +19,16 @@ def listadoDisciplinas(request):
     listadoDisciplina = Disciplinas.objects.all()
     print(listadoDisciplina)
     contexto =  { "listadoDisciplinas": listadoDisciplina, }
-    
     return render(request, "disciplinas.html",  contexto)
 
 def listadoCategorias(request):
     listadoCategoria = Categorias.objects.all()
     print(listadoCategoria)
     contexto =   { "listadoCategorias": listadoCategoria }
-    
     return render(request, "categorias.html",  contexto)
 
 def listadoJugadores(request):
     listadoJugador = Jugadores.objects.all()
-    print("paso")
     print(listadoJugador)
     contexto ={ "listadoJugadores": listadoJugador }
     result = (Jugadores.objects
@@ -49,7 +48,7 @@ def listadoBecas(request):
     return render(request, "becas.html",  contexto)
 
 def listadoSocios(request):
-    listadoSocio = Socios.objects.all().order_by("numero")
+    listadoSocio = obtenerSocios()
     print(listadoSocio)
     contexto ={ "listadoSocios": listadoSocio, }
     
@@ -126,38 +125,11 @@ def cargarPersona(row):
     model.direccion=row[5]
     model.save(force_insert=True)
     
-def cargarSocio(reader):
-    persona = Personas.objects.get(dni=reader)
-    socio = Socios()
-    socio.numero =len(Socios.objects.all())
-    socio.persona = persona
-    socio.responsable = 'S'
-    socio.save(force_insert=True)
+
 
 
 def cargaMasivaSocios(request):
-    template_name = "configuracion/migrations/socios.csv"
-    with open (template_name) as f:
-        j = len(Socios.objects.all())
-        print(j)
-        reader = csv.reader(f )
-        for row in reader:
-           persona = Personas.objects.get(dni=row[0])
-           print(row)
-           if persona :
-              
-             if  Socios.objects.filter(persona = persona).exists():
-                 print("socio existe")
-             else: 
-                 print("socio no existe")
-                 cargarSocio(row[0])
-           else:
-              cargarPersona(row)
-              cargarSocio(row[0])
-
-           # model.save(force_insert=True)
-           j= j+1
-
+    cargarSociosCsv( "configuracion/migrations/socios.csv")
     return render (request, "cargaMasiva.html")
 
 def cargaMasiva(request):

@@ -3,6 +3,7 @@ from configuracion.views import listadoDisciplinas, listadoCategorias, listadoBe
 from configuracion.views import cargaInicial,cargaMasivaSocios,cargaMasiva, borrarTodosSocios,borrarJugadoresCategoria, cargarJugadoresCategoria, gestionarJugadoresCategoria, cargarCategorias, cargaInicialDisciplinas, cargaInicialBecas, cargaInicialCategorias 
 from configuracion.views import cargaInicialCuotas, cargarAgrupacionFamiliarSocios, borrarSocio
 from configuracion.views import listadoPersonas, borrarPersona, editarPersona,agregarPersona
+from configuracion.libreria.gest_socios import agruparSocios
 app_name = 'configuracion'
 urlpatterns = [
     path("listadoPersonas",listadoPersonas, name="listadoPersonas"),
@@ -29,6 +30,7 @@ urlpatterns = [
     path("editarPersona/<int:id>",editarPersona, name="editarPersona"),
     path("borrarPersona/<int:id>",borrarPersona, name="borrarPersona"),
     path('agregarPersona/',agregarPersona, name='agregarPersona'),
+    path('agruparSocios/',agruparSocios, name='agruparSocios'),
   
 
         

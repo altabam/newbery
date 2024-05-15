@@ -29,7 +29,7 @@ def busqueda_socio(request):
         return HttpResponseBadRequest()
     valor = request.GET['q']
     print("valor de q", valor)
-    socios = Socios.objects.filter(numero__startswith= valor)
+    socios = Socios.objects.filter(persona__apellido__startswith= valor)
     
     user_fields = (
         'numero',
