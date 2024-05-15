@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from datetime import datetime
 import csv
+from django.shortcuts import redirect, render
 from django.db.models import Count
-from configuracion.models import Personas, Disciplinas, Categorias, Jugadores, Becas, Socios, Cuotas
-
+from .models import Personas, Disciplinas, Categorias, Jugadores, Becas, Socios, Cuotas
+from .forms import PersonaForm
 # Create your views here.
 def listadoPersonas(request):
     
@@ -323,3 +324,40 @@ def cargarAgrupacionFamiliarSocios(request):
 
 def borrarSocio(request,id):
     Socios.objects.filter(id=id).delete()
+
+def borrarPersona(request, id):
+  Socios.objects.filter(id=id).delete()
+
+def editarPersona(request,id):
+    persona = Personas.objects.get(id = id)
+    if request.method == 'POST':
+        form= PersonaForm(request.POST, instance=persona)
+        if form.is_valid():
+            form.save()
+            return redirect('/configuracion/listadoPersonas')
+    else:
+            form = PersonaForm( instance=persona)
+    
+    contexto ={ 
+            "accion":"Modificar", 
+            "form": form,
+            "datos": persona,
+         } 
+    return render(request, "editarPersona.html",contexto)
+
+def agregarPersona(request):
+    if request.method == 'POST':
+        form= PersonaForm(request.POST)
+        if form.is_valid():
+           form.save()
+           return redirect('/configuracion/listadoPersonas')
+    else:
+        form =PersonaForm()
+
+    contexto ={ 
+            "accion":"Agregar", 
+            "form": form,
+         } 
+    return render(request, "editarPersona.html", contexto )    
+
+       

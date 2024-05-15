@@ -1,8 +1,23 @@
 {% extends "base_nav.html"%}
+{% load static %}
+{% block styleOtros %}  
+     <link rel='stylesheet' href="{% static 'css/configuracion.css' %}" type="text/css">
+  {% endblock %}
 {% block body %}
 <h1> Gestion de Personas del Club</h1>
+
 <table>
     <thead>
+        <tr>   
+            <th colspan="9" > 
+                <div class="agregar">
+                    <a href="{% url 'configuracion:agregarPersona' %}">
+                        <img src="{% static 'img/agregar.jpg' %}" alt="agregar" title="agregar"  class="icono">
+                    </a>
+                </div>
+             </th>
+             
+        </tr>
         <tr>
                 <th>#</th>
                 <th>Dni</th>
@@ -18,16 +33,22 @@
 
 {% if listadoPersonas %}
 {% for listadoPersona in listadoPersonas %}
-                <tr>
-                    <td>{{forloop.counter}}</td>
-                    <td>{{listadoPersona.dni}}</td>
-                    <td>{{listadoPersona.nombre}}</td>
-                    <td>{{listadoPersona.apellido}}</td>
-                    <td>{{listadoPersona.fecha_nacimiento}}</td>
-                    <td>{{listadoPersona.telefono}}</td>
-                    <td>{{listadoPersona.direccion}}</td>
+    <tr>
+        <td>{{forloop.counter}}</td>
+        <td class="tdNumero">{{listadoPersona.dni}}</td>
+        <td class="tdTexto">{{listadoPersona.nombre}}</td>
+        <td class="tdTexto">{{listadoPersona.apellido}}</td>
+        <td class="tdTexto">{{listadoPersona.fecha_nacimiento}}</td>
+        <td class="tdNumero">{{listadoPersona.telefono}}</td>
+        <td class="tdTexto">{{listadoPersona.direccion}}</td>
+        <td colspan="3">
+            <a href="{% url 'configuracion:editarPersona' listadoPersona.id %}" ><img
+                src="{% static 'img/editar.png' %}" alt="Editar" title="Editar" class="icono"></a>
+            <a href="{% url 'configuracion:borrarPersona' listadoPersona.id %}" ><img
+                 src="{% static 'img/eliminar.png' %}" alt="Eliminar" title="Eliminar" class="icono"></a>
+        </td>   
+    </tr>
                 
-                </tr>
 {% endfor %}
 {% endif %}
 </table>

@@ -1,7 +1,9 @@
 from django.urls import path
-from configuracion.views import listadoPersonas, listadoDisciplinas, listadoCategorias, listadoBecas, listadoJugadores, listadoSocios, listarCuotas
+from configuracion.views import listadoDisciplinas, listadoCategorias, listadoBecas, listadoJugadores, listadoSocios, listarCuotas
 from configuracion.views import cargaInicial,cargaMasivaSocios,cargaMasiva, borrarTodosSocios,borrarJugadoresCategoria, cargarJugadoresCategoria, gestionarJugadoresCategoria, cargarCategorias, cargaInicialDisciplinas, cargaInicialBecas, cargaInicialCategorias 
 from configuracion.views import cargaInicialCuotas, cargarAgrupacionFamiliarSocios, borrarSocio
+from configuracion.views import listadoPersonas, borrarPersona, editarPersona,agregarPersona
+app_name = 'configuracion'
 urlpatterns = [
     path("listadoPersonas",listadoPersonas, name="listadoPersonas"),
     path("listadoDisciplinas",listadoDisciplinas, name="listadoDisciplinas"),
@@ -23,7 +25,11 @@ urlpatterns = [
     path("borrarJugadoresCategoria/<int:id>",borrarJugadoresCategoria, name="borrarJugadoresCategoria"),
     path("cargarJugadoresCategoria/<int:id>",cargarJugadoresCategoria, name="cargarJugadoresCategoria"),
     path("gestionarJugadoresCategoria",gestionarJugadoresCategoria, name="gestionarJugadoresCategoria"),
-   path("cargarCategorias",cargarCategorias, name="cargarCategorias"),
+    path("cargarCategorias",cargarCategorias, name="cargarCategorias"),
+    path("editarPersona/<int:id>",editarPersona, name="editarPersona"),
+    path("borrarPersona/<int:id>",borrarPersona, name="borrarPersona"),
+    path('agregarPersona/',agregarPersona, name='agregarPersona'),
+  
 
         
 ]

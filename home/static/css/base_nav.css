@@ -10,5 +10,11 @@
     text-align: center;
     font-style: bold; ;
 }
-
-
+.icono{
+  width: 32px;
+  height: 32px;
+}
+.agregar{
+  align-items: right;
+  background-color: black;
+}
