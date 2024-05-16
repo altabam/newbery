@@ -32,7 +32,7 @@ function __init()
             $.ajax({
                 dataType : 'json',
                 method : 'GET',
-                url : '/cobros/busquedaSocio/',
+                url : '/configuracion/buscarSocioResponsable/',
                 data : {
                     q : encodeURIComponent(request.term),
                     csrfmiddlewaretoken : $('input[name=csrfmiddlewaretoken]').val()
@@ -78,6 +78,7 @@ function __init()
         user_tmpl.append('<td>'+item.dni+'</td>');
         user_tmpl.append('<td>'+item.apellido+'</td>');
         user_tmpl.append('<td>'+item.nombre+'</td>');
+        user_tmpl.append('<td collspan="3">'+'<a href="/configuracion/listarIntegrantesSocios/'+item.id+'">Sumar Integrante</a>' +'</td>');
 
                         
         return $('#listSocios')

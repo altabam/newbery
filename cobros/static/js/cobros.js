@@ -32,7 +32,7 @@ function __init()
             $.ajax({
                 dataType : 'json',
                 method : 'GET',
-                url : '/cobros/busquedaSocio/',
+                url : '/configuracion/buscarSocio/',
                 data : {
                     q : encodeURIComponent(request.term),
                     csrfmiddlewaretoken : $('input[name=csrfmiddlewaretoken]').val()

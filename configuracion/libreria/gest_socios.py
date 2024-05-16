@@ -1,8 +1,23 @@
 import csv
-from django.shortcuts import render,redirect
+from django.utils import timezone
+from django.shortcuts import render, redirect
+from django.http import  HttpResponse, JsonResponse,HttpResponseBadRequest
+from django.core import serializers
+from django.core.serializers.json import DjangoJSONEncoder
+
+
 
 from configuracion.models import Socios, Personas
 from  .gest_personas import cargarPersona
+
+class LazyEncoder(DjangoJSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, YourCustomType):
+            return str(obj)
+        return super().default(obj)
+    
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
 def obtenerSocios():
     return Socios.objects.all().order_by("numero")
@@ -62,5 +77,80 @@ def cargarAgrupacionFamiliarSociosCsv(url):
 
 def agruparSocios(request):
     
-    contexto =  { "datos": "preuba", }
+    contexto =  { "datos": "Buscar Socios responsables", }
     return render(request, "agruparSocios.html", contexto ) 
+
+def buscarSocioResponsable(request):
+    if not (is_ajax(request=request) or request.method != "POST"):
+        print (is_ajax(request=request))
+        print (request.method != "POST")
+        return HttpResponseBadRequest()
+    valor = request.GET['q']
+    print("valor de q", valor)
+    socios = Socios.objects.filter(persona__apellido__startswith= valor, responsable='S')
+    data = serializers.serialize('json', socios,use_natural_foreign_keys=True,cls=LazyEncoder)
+    #print(data)
+    return HttpResponse(data, content_type="application/json") 
+
+
+
+def buscarSocio(request):
+    if not (is_ajax(request=request) or request.method != "POST"):
+        print (is_ajax(request=request))
+        print (request.method != "POST")
+        return HttpResponseBadRequest()
+    valor = request.GET['q']
+    print("valor de q", valor)
+    socios = Socios.objects.filter(persona__apellido__startswith__iexact= valor)
+    data = serializers.serialize('json', socios,use_natural_foreign_keys=True,cls=LazyEncoder)
+    print(data)
+    return HttpResponse(data, content_type="application/json") 
+
+def listarIntegrantesSocios(request, id):
+    socio = Socios.objects.get(pk =id)
+    print(socio)
+    listadoIntegrantes = Socios.objects.filter(numero = socio.numero, responsable="N") 
+    contexto =  { "responsable": socio,
+                 "listadoIntegrantes":listadoIntegrantes,
+    }
+    return render(request, "integrantesSocios.html", contexto ) 
+
+def listarIntegrantesSinSocio(request,id):
+    responsable = Socios.objects.get(pk=id)
+    socios = Socios.objects.all()
+    print([p.persona.id for p in socios])
+    personas = Personas.objects.exclude(id__in=([p.persona.id for p in socios]))
+    print(personas)
+    contexto =  { "responsable": responsable,
+                 "listadoPersonas":personas,
+    }
+    return render(request, "personasNoSocias.html", contexto ) 
+
+
+def agregarIntegranteSocio(request,id,idpk):
+    responsable = Socios.objects.get(pk=idpk)
+    socios = Socios.objects.all()
+    personas = Personas.objects.exclude(id__in=([p.persona.id for p in socios]))
+    
+    model = Socios()
+    model.numero = responsable.numero
+    model.persona = Personas.objects.get(pk=id)
+    model.responsable ="N"
+    model.fecha_alta = timezone.now()
+    model.save(force_insert=True)
+    
+    contexto =  { "responsable": responsable,
+                 "listadoPersonas":personas,
+    }
+    return render(request, "personasNoSocias.html", contexto) 
+  
+
+def quitarIntegranteSocio(request,id,idpk):
+    socio = Socios.objects.get(pk =idpk)
+    Socios.objects.get(pk=id).delete()
+    print(socio)
+    listadoIntegrantes = Socios.objects.filter(numero = socio.numero, responsable="N") 
+    contexto =  { "responsable": socio,
+                 "listadoIntegrantes":listadoIntegrantes,
+    }
+    return render(request, "integrantesSocios.html", contexto ) 

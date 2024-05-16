@@ -1,0 +1,45 @@
+{% extends "base_nav.html"%}
+{% block title %} Agrupar Socios {% endblock %}
+{% load static %}
+{% block styleOtros %}  
+     <link rel='stylesheet' href="{% static 'css/configuracion.css' %}" type="text/css">
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+     <script type="text/javascript" src="{% static 'js/agruparSocios.js' %}"></script>
+ 
+     {% endblock %}
+{% block body %}
+<h1> Agrupar Socios</h1>
+<p>Socio: {{responsable.numero}} - {{responsable.persona.apellido}}, {{responsable.persona.nombre}}</p>
+<div class="row">
+<table id="resultados" class="table">
+    <thead>
+        <tr >
+            <th colspan =8>Personas no figuran como Socias</th>
+        </tr>
+        <tr>
+            <th>#</th>
+            <th>Id </th>
+            <th>DNI</th>
+            <th>Apellido</th>
+            <th>Nombre</th>
+            <th colspan="3">Accion</th>
+        </tr>
+    </thead>
+    <tbody >
+        {% if listadoPersonas %}
+        {% for listadoPersona in listadoPersonas %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td class="tdNumero">{{listadoPersona.id}}</td>
+                        <td class="tdNumero">{{listadoPersona.dni}}</td>
+                        <td class="tdTexto">{{listadoPersona.apellido}} {{listadoPersona.nombre}}</td>
+                        <td collspan="3">
+                            <a href="/configuracion/agregarIntegranteSocio/{{listadoPersona.id}}/{{responsable.id}}">Agregar Integrante</a>
+                        </td>
+                    </tr>
+        {% endfor %}
+    {% endif %}
+    </tbody>
+</table>
+{% endblock %}  

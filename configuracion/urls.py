@@ -1,9 +1,9 @@
-from django.urls import path
+from django.urls import path,re_path
 from configuracion.views import listadoDisciplinas, listadoCategorias, listadoBecas, listadoJugadores, listadoSocios, listarCuotas
 from configuracion.views import cargaInicial,cargaMasivaSocios,cargaMasiva, borrarTodosSocios,borrarJugadoresCategoria, cargarJugadoresCategoria, gestionarJugadoresCategoria, cargarCategorias, cargaInicialDisciplinas, cargaInicialBecas, cargaInicialCategorias 
 from configuracion.views import cargaInicialCuotas, cargarAgrupacionFamiliarSocios, borrarSocio
 from configuracion.views import listadoPersonas, borrarPersona, editarPersona,agregarPersona
-from configuracion.libreria.gest_socios import agruparSocios
+from configuracion.libreria.gest_socios import agruparSocios, buscarSocio, buscarSocioResponsable,listarIntegrantesSocios,agregarIntegranteSocio, listarIntegrantesSinSocio, quitarIntegranteSocio
 app_name = 'configuracion'
 urlpatterns = [
     path("listadoPersonas",listadoPersonas, name="listadoPersonas"),
@@ -31,6 +31,13 @@ urlpatterns = [
     path("borrarPersona/<int:id>",borrarPersona, name="borrarPersona"),
     path('agregarPersona/',agregarPersona, name='agregarPersona'),
     path('agruparSocios/',agruparSocios, name='agruparSocios'),
+    path('listarIntegrantesSocios/<int:id>',listarIntegrantesSocios, name='listarIntegrantesSocios'),
+    path('listarIntegrantesSinSocio/<int:id>',listarIntegrantesSinSocio, name='listarIntegrantesSinSocio'),
+    path('agregarIntegranteSocio/<int:id>/<int:idpk>',agregarIntegranteSocio, name='agregarIntegranteSocio'),
+    path('quitarIntegranteSocio/<int:id>/<int:idpk>',quitarIntegranteSocio, name='quitarIntegranteSocio'),
+    re_path(r'^buscarSocio/$', buscarSocio, name='busquedaSocio'), 
+    re_path(r'^buscarSocioResponsable/',buscarSocioResponsable, name='buscarSocioResponsable'),
+
   
 
         

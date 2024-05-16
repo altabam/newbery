@@ -1,12 +1,11 @@
 from django.shortcuts import render,redirect
-from datetime import datetime
 import csv
 from django.db.models import Count
 from .models import Personas, Disciplinas, Categorias, Jugadores, Becas, Socios, Cuotas
 from .forms import PersonaForm
 from .libreria.cargaMasiva import * 
 from .libreria.gest_socios import *
-from .libreria.gest_socios import *
+from .libreria.gest_personas import *
 # Create your views here.
 def listadoPersonas(request):
     
@@ -110,20 +109,7 @@ def cargaInicial (request):
 """
     return render (request, "cargaInicial.html")
 
-def cargarPersona(row):
-    model = Personas()
-    j = len(Personas.objects.all())+1
-    print("nombre:"+ row[2])
-    print("fecha_nac:"+ row[3])
-    model.id = j
-    model.dni=row[0]
-    model.apellido=row[1]
-    model.nombre =row[2]
-    if row[3] != "":
-        model.fecha_nacimiento=datetime.strptime(row[3], '%d/%m/%Y').date()
-    model.telefono=row[4]
-    model.direccion=row[5]
-    model.save(force_insert=True)
+
     
 
 
@@ -272,24 +258,7 @@ def cargaInicialCategorias(request):
     return render (request, "cargaInicial.html",contexto)
 
 def cargarAgrupacionFamiliarSocios(request):
-    template_name = "configuracion/migrations/agrupFamiliarSocios.csv"
-    model = Socios()
-    with open (template_name) as f:
-        reader = csv.reader(f )
-        for row in reader:
-            personaResponsable = Personas.objects.get(dni= row[0])
-            socio = Socios.objects.get(persona=personaResponsable, responsable='S') 
-            personaFamiliar = Personas.objects.get(dni= row[1])
-            if  not Socios.objects.filter(persona = personaFamiliar).exists():
-              model.id = Socios.objects.last().id+1
-              model.numero =socio.numero
-              model.persona=personaFamiliar
-              model.responsable= 'N'
-              model.save(force_insert=True)
-              
-            else:
-                print("Agrupacion Familiar, persona existe")
-                print(row)
+    cargarAgrupacionFamiliarSociosCsv("configuracion/migrations/agrupFamiliarSocios.csv")
     mensaje ="carga con exito"
     contexto ={  "mensaje":mensaje } 
     return render (request, "cargaMasiva.html",contexto)
