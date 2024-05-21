@@ -4,10 +4,12 @@ from  configuracion.models import Personas
 
 def cargarPersona(row):
     model = Personas()
-    j = len(Personas.objects.all())+1
     print("nombre:"+ row[2])
     print("fecha_nac:"+ row[3])
-    model.id = j
+    if Personas.objects.last():
+        model.id = Personas.objects.last().id+1
+    else:
+        model.id = 1
     model.dni=row[0]
     model.apellido=row[1]
     model.nombre =row[2]

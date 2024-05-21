@@ -1,0 +1,26 @@
+{% extends "base_nav.html"%}
+{% block body %}
+<h1> Gestion de Motivos Becas</h1>
+<table>
+    
+    <thead>
+        <tr>
+                <th>#</th>
+                <th>Concepto</th>
+                <th colspan="3">Opciones</th>
+        </tr>
+    </thead>
+    <tbody>
+
+{% if listadoCalidadIntegrantes %}
+{% for listadoCalidadIntegrante in listadoCalidadIntegrantes %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{listadoCalidadIntegrante.concepto}}</td>
+                    <td colspan="3"></td>
+                
+                </tr>
+{% endfor %}
+{% endif %}
+</table>
+{% endblock %}

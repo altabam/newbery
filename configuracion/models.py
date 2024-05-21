@@ -67,4 +67,46 @@ class Cuotas(models.Model):
     valor = models.DecimalField( max_digits=9, decimal_places=2) 
     cant_int = models.IntegerField()
 
+class BecasMotivos(models.Model):
+    concepto = models.CharField(max_length=100)
+    def __str__(self):
+        return f"{self.concepto}"
+
+
+
+class CalidadIntegrante(models.Model):
+    concepto = models.CharField(max_length=100)
+    def __str__(self):
+        return f"{self.concepto}"
+
+
+class IntegrantesClub(models.Model):
+    persona = models.ForeignKey(Personas, on_delete=models.CASCADE)
+    calidad = models.ForeignKey(CalidadIntegrante, on_delete=models.CASCADE)
+    fecha_desde =models.DateField(null=True)
+    fecha_hasta = models.DateField(null=True)
+
+class BecasJugador(models.Model):
+    MES = (
+        ("ENE", "Enero"),
+        ("FEB", "Febrero"),
+        ("MAR", "Marzo"),
+        ("ABR", "Abril"),
+        ("MAY", "Mayo"),
+        ("JUN", "Junio"),
+        ("JUL", "Julio"),
+        ("AGO", "Agosto"),
+        ("SEP", "Septiembre"),
+        ("OCT", "Octubre"),
+        ("NOV", "Noviembre"),
+        ("DIC", "Diciembre"),
+    )
+    jugador = models.ForeignKey(Jugadores, on_delete=models.CASCADE)
+    beca = models.ForeignKey(Becas, on_delete=models.CASCADE)
+    anio =  models.CharField(max_length=4)
+    mesDesde = models.CharField(max_length=3, choices=MES, blank=True)
+    mesHasta = models.CharField(max_length=3, choices=MES, blank=True)
+    motivoSolicitud =models.ForeignKey(BecasMotivos, on_delete=models.CASCADE, blank=True)
+    solicita = models.ForeignKey(IntegrantesClub, on_delete=models.CASCADE)
+
     

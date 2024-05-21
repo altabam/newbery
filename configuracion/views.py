@@ -1,11 +1,12 @@
 from django.shortcuts import render,redirect
 import csv
 from django.db.models import Count
-from .models import Personas, Disciplinas, Categorias, Jugadores, Becas, Socios, Cuotas
+from .models import Personas, Disciplinas, Categorias, Jugadores, Becas, Socios, Cuotas, BecasJugador, BecasMotivos, CalidadIntegrante
 from .forms import PersonaForm
 from .libreria.cargaMasiva import * 
 from .libreria.gest_socios import *
 from .libreria.gest_personas import *
+from .libreria.gest_carga_inicial import *
 # Create your views here.
 def listadoPersonas(request):
     
@@ -53,12 +54,25 @@ def listadoSocios(request):
     
     return render(request, "socios.html",  contexto)
 
+
+
 def listarCuotas(request):
     listadoCuotas = Cuotas.objects.all().order_by("cant_int")
     print(listadoCuotas)
     contexto ={ "listadoCuotas": listadoCuotas, }
-    
     return render(request, "cuotas.html",  contexto)
+
+def listarMotivoBecas(request):
+    listadoMotivosBecas = BecasMotivos.objects.all()
+    print(listadoMotivosBecas)
+    contexto ={ "listadoMotivosBecas": listadoMotivosBecas, }
+    return render(request, "motivosBecas.html",  contexto)
+
+def listarMotivoCalicadIntegrantes(request):
+    listadoCalidadIntegrantes = CalidadIntegrante.objects.all()
+    print(listadoCalidadIntegrantes)
+    contexto ={ "listadoCalidadIntegrantes": listadoCalidadIntegrantes, }
+    return render(request, "calidadIntegrantes.html",  contexto)
 
 
 
@@ -113,13 +127,6 @@ def cargaInicial (request):
     
 
 
-
-def cargaMasivaSocios(request):
-    cargarSociosCsv( "configuracion/migrations/socios.csv")
-    return render (request, "cargaMasiva.html")
-
-def cargaMasiva(request):
-    return render (request, "cargaMasiva.html")
 
 
 def borrarTodosSocios(request):
@@ -191,6 +198,31 @@ def cargarCategoriasArchivo():
                 print("categoria: "+ row[0]+ " existe")
 
 
+def cargaBecasJugador(request):
+    template_name = "configuracion/migrations/becasJugador.csv"
+    model = BecasJugador()
+    with open (template_name) as f:
+        reader = csv.reader(f )
+        for row in reader:
+            personaResponsable = Personas.objects.get(dni= row[0])
+            socio = Socios.objects.get(persona=personaResponsable, responsable='S') 
+            personaFamiliar = Personas.objects.get(dni= row[1])
+            if  not Socios.objects.filter(persona = personaFamiliar).exists():
+              model.id = Socios.objects.last().id+1
+              model.numero =socio.numero
+              model.persona=personaFamiliar
+              model.responsable= 'N'
+              model.save(force_insert=True)
+              
+            else:
+                print("Agrupacion Familiar, persona existe")
+                print(row)
+    mensaje ="carga con exito"
+    contexto ={  "mensaje":mensaje } 
+    return render (request, "cargaMasiva.html",contexto)  
+
+
+
 def cargarCategorias(request):
     cargarCategoriasArchivo()
     mensaje ="carga con exito"
@@ -233,23 +265,6 @@ def cargaInicialBecas(request):
     contexto ={  "mensaje":mensaje } 
     return render (request, "cargaInicial.html",contexto)
 
-def cargaInicialCuotas(request):
-    template_name = "configuracion/migrations/cuotas.csv"
-    model = Cuotas()
-    with open (template_name) as f:
-        reader = csv.reader(f )
-        for row in reader:
-            if  not Cuotas.objects.filter(concepto = row[0]).exists():
-              model.id = Cuotas.objects.last().id+1
-              model.concepto =row[0]
-              model.valor=row[1]
-              model.cant_int=row[2]
-              model.save(force_insert=True)
-            else:
-                print(row)
-    mensaje ="carga con exito"
-    contexto ={  "mensaje":mensaje } 
-    return render (request, "cargaInicial.html",contexto)
 
 def cargaInicialCategorias(request):
     cargarCategoriasArchivo()

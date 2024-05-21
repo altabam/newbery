@@ -1,7 +1,7 @@
 import csv
 from django.utils import timezone
-from django.shortcuts import render, redirect
-from django.http import  HttpResponse, JsonResponse,HttpResponseBadRequest
+from django.shortcuts import render
+from django.http import  HttpResponse,HttpResponseBadRequest
 from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
 
@@ -101,7 +101,7 @@ def buscarSocio(request):
         return HttpResponseBadRequest()
     valor = request.GET['q']
     print("valor de q", valor)
-    socios = Socios.objects.filter(persona__apellido__startswith__iexact= valor)
+    socios = Socios.objects.filter(persona__apellido__startswith= valor)
     data = serializers.serialize('json', socios,use_natural_foreign_keys=True,cls=LazyEncoder)
     print(data)
     return HttpResponse(data, content_type="application/json") 

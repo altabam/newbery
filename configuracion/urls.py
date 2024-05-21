@@ -1,9 +1,14 @@
 from django.urls import path,re_path
 from configuracion.views import listadoDisciplinas, listadoCategorias, listadoBecas, listadoJugadores, listadoSocios, listarCuotas
+# pasar todo este from a gest_carga_inicial.py
 from configuracion.views import cargaInicial,cargaMasivaSocios,cargaMasiva, borrarTodosSocios,borrarJugadoresCategoria, cargarJugadoresCategoria, gestionarJugadoresCategoria, cargarCategorias, cargaInicialDisciplinas, cargaInicialBecas, cargaInicialCategorias 
-from configuracion.views import cargaInicialCuotas, cargarAgrupacionFamiliarSocios, borrarSocio
+from configuracion.views import cargarAgrupacionFamiliarSocios, borrarSocio
+from configuracion.views import listarMotivoBecas, cargaBecasJugador
+from configuracion.views import listarMotivoCalicadIntegrantes
 from configuracion.views import listadoPersonas, borrarPersona, editarPersona,agregarPersona
-from configuracion.libreria.gest_socios import agruparSocios, buscarSocio, buscarSocioResponsable,listarIntegrantesSocios,agregarIntegranteSocio, listarIntegrantesSinSocio, quitarIntegranteSocio
+from configuracion.libreria.gest_socios import agruparSocios, buscarSocio, buscarSocioResponsable,listarIntegrantesSocios,agregarIntegranteSocio, listarIntegrantesSinSocio, quitarIntegranteSocio, buscarSocio
+from configuracion.libreria.gest_carga_inicial import cargaInicialMotivosBeca, cargaInicialCalidadIntegrante, cargaInicialCuotas
+from configuracion.libreria.cargaMasiva import cargaIntegrantesClub
 app_name = 'configuracion'
 urlpatterns = [
     path("listadoPersonas",listadoPersonas, name="listadoPersonas"),
@@ -13,11 +18,17 @@ urlpatterns = [
     path("listadoJugadores",listadoJugadores, name="listadoJugadores"),
     path("listadoSocios",listadoSocios, name="listadoSocios"),
     path("listarCuotas",listarCuotas, name="listarCuotas"),
+    path("listarMotivoCalicadIntegrantes",listarMotivoCalicadIntegrantes, name="listarMotivoCalicadIntegrantes"),
+    path("listarMotivoBecas",listarMotivoBecas, name="listarMotivoBecas"),
     path("cargaInicial",cargaInicial, name="cargaInicial"),
     path("cargaInicialDisciplinas",cargaInicialDisciplinas, name="cargaInicialDisciplinas"),
     path("cargaInicialBecas",cargaInicialBecas, name="cargaInicialBecas"),
+    path("cargaInicialBecas",cargaInicialBecas, name="cargaInicialBecas"),
+    path("cargaInicialMotivosBeca",cargaInicialMotivosBeca, name="cargaInicialMotivosBeca"),
+    path("cargaInicialCalidadIntegrante",cargaInicialCalidadIntegrante, name="cargaInicialCalidadIntegrante"),
     path("cargaInicialCategorias",cargaInicialCategorias, name="cargaInicialCategorias"),
     path("cargaInicialCuotas",cargaInicialCuotas, name="cargaInicialCuotas"),
+    path("cargaIntegrantesClub",cargaIntegrantesClub, name="cargaIntegrantesClub"),
     path("cargaMasiva",cargaMasiva, name="cargaMasiva"),
     path("cargaMasivaSocios",cargaMasivaSocios, name="cargaMasivaSocios"),
     path("cargarAgrupacionFamiliarSocios",cargarAgrupacionFamiliarSocios, name="cargarAgrupacionFamiliarSocios"),
@@ -35,6 +46,9 @@ urlpatterns = [
     path('listarIntegrantesSinSocio/<int:id>',listarIntegrantesSinSocio, name='listarIntegrantesSinSocio'),
     path('agregarIntegranteSocio/<int:id>/<int:idpk>',agregarIntegranteSocio, name='agregarIntegranteSocio'),
     path('quitarIntegranteSocio/<int:id>/<int:idpk>',quitarIntegranteSocio, name='quitarIntegranteSocio'),
+
+    path('cargaBecasJugador',cargaBecasJugador, name='cargaBecasJugador'),
+    
     re_path(r'^buscarSocio/$', buscarSocio, name='busquedaSocio'), 
     re_path(r'^buscarSocioResponsable/',buscarSocioResponsable, name='buscarSocioResponsable'),
 
