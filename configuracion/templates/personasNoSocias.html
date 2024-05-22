@@ -10,7 +10,13 @@
      {% endblock %}
 {% block body %}
 <h1> Agrupar Socios</h1>
-<p>Socio: {{responsable.numero}} - {{responsable.persona.apellido}}, {{responsable.persona.nombre}}</p>
+<h2>Socio Nro: {{responsable.numero}} - Persona: {{responsable.persona.id}} -- {{responsable.persona.apellido}}, {{responsable.persona.nombre}}</h2>
+{% if integrantes %}
+{% for integrante in integrantes %}
+    <h3>Integrante {{forloop.counter}}: Persona: {{integrante.persona.id}} -- {{integrante.persona.apellido}}, {{integrante.persona.nombre}}</h3>
+{% endfor %}
+{% endif %}
+
 <div class="row">
 <table id="resultados" class="table">
     <thead>

@@ -116,25 +116,27 @@ def listarIntegrantesSocios(request, id):
     return render(request, "integrantesSocios.html", contexto ) 
 
 def listarIntegrantesSinSocio(request,id):
-    responsable = Socios.objects.get(pk=id)
+    responsable = Socios.objects.get(id=id)
+    integrantes = Socios.objects.filter(numero = responsable.numero, responsable="N")
     socios = Socios.objects.all()
     print([p.persona.id for p in socios])
     personas = Personas.objects.exclude(id__in=([p.persona.id for p in socios]))
     print(personas)
     contexto =  { "responsable": responsable,
                  "listadoPersonas":personas,
+                 "integrantes": integrantes,
     }
     return render(request, "personasNoSocias.html", contexto ) 
 
 
 def agregarIntegranteSocio(request,id,idpk):
-    responsable = Socios.objects.get(pk=idpk)
+    responsable = Socios.objects.get(id=idpk)
     socios = Socios.objects.all()
     personas = Personas.objects.exclude(id__in=([p.persona.id for p in socios]))
     
     model = Socios()
     model.numero = responsable.numero
-    model.persona = Personas.objects.get(pk=id)
+    model.persona = Personas.objects.get(id=id)
     model.responsable ="N"
     model.fecha_alta = timezone.now()
     model.save(force_insert=True)

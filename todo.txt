@@ -1,0 +1,21 @@
+//administracion
+falta completar el backup
+generar un archivo html, que por js vaya generando los csv y enviando a descarga, 
+Falta agregar auditoria a toda la aplicacion
+Falta agregar seguridad a toda la aplicacion
+
+//cobros
+falta agregar las becas y completar el tema de pago
+
+
+//configuracion
+faltan hacer los mantenimientos de todas las tablas de configuracion
+
+
+
+//datos
+Hay que cargar todos los datos de integrante 2008 / 2007
+Cargar los deudores
+Cargar los socios que pagaron Mayo segun archivo pasado por lavalle
+
+
