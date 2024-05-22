@@ -135,6 +135,7 @@ def agregarIntegranteSocio(request,id,idpk):
     personas = Personas.objects.exclude(id__in=([p.persona.id for p in socios]))
     
     model = Socios()
+    model.id = Socios.objects.last().id + 1
     model.numero = responsable.numero
     model.persona = Personas.objects.get(id=id)
     model.responsable ="N"
