@@ -282,7 +282,10 @@ def borrarSocio(request,id):
     Socios.objects.filter(id=id).delete()
 
 def borrarPersona(request, id):
-  Socios.objects.filter(id=id).delete()
+    Personas.objects.filter(id=id).delete()
+    listadoPersonas = Personas.objects.all()
+    contexto = { "listadoPersonas": listadoPersonas }
+    return render(request, "personas.html",  contexto)
 
 def editarPersona(request,id):
     persona = Personas.objects.get(id = id)
