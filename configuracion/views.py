@@ -10,8 +10,7 @@ from .libreria.gest_carga_inicial import *
 # Create your views here.
 def listadoPersonas(request):
     
-    listadoPersona = Personas.objects.all()
-    print(listadoPersona)
+    listadoPersona = Personas.objects.all().order_by('apellido','nombre')
     contexto = { "listadoPersonas": listadoPersona }
     return render(request, "personas.html",  contexto)
 
@@ -283,7 +282,7 @@ def borrarSocio(request,id):
 
 def borrarPersona(request, id):
     Personas.objects.filter(id=id).delete()
-    listadoPersonas = Personas.objects.all()
+    listadoPersonas = Personas.objects.all().order_by('apellido','nombre')
     contexto = { "listadoPersonas": listadoPersonas }
     return render(request, "personas.html",  contexto)
 

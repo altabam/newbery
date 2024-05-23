@@ -10,11 +10,6 @@ from django.core.serializers.json import DjangoJSONEncoder
 from configuracion.models import Socios, Personas
 from  .gest_personas import cargarPersona
 
-class LazyEncoder(DjangoJSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, YourCustomType):
-            return str(obj)
-        return super().default(obj)
     
 def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
@@ -86,10 +81,11 @@ def buscarSocioResponsable(request):
         print (request.method != "POST")
         return HttpResponseBadRequest()
     valor = request.GET['q']
-    print("valor de q", valor)
+    print("valor de q:", valor)
     socios = Socios.objects.filter(persona__apellido__startswith= valor, responsable='S')
-    data = serializers.serialize('json', socios,use_natural_foreign_keys=True,cls=LazyEncoder)
-    #print(data)
+    print(socios)
+    data = serializers.serialize('json', socios,use_natural_foreign_keys=True)
+    print(data)
     return HttpResponse(data, content_type="application/json") 
 
 
@@ -102,7 +98,7 @@ def buscarSocio(request):
     valor = request.GET['q']
     print("valor de q", valor)
     socios = Socios.objects.filter(persona__apellido__startswith= valor)
-    data = serializers.serialize('json', socios,use_natural_foreign_keys=True,cls=LazyEncoder)
+    data = serializers.serialize('json', socios,use_natural_foreign_keys=True)
     print(data)
     return HttpResponse(data, content_type="application/json") 
 
