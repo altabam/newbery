@@ -24,4 +24,9 @@ def backupPersonas(writer):
             writer.writerow(columnas)
     return writer
 
-    
+def gestionarBackup(request):
+    accion ="carga Inicial"
+    contexto ={
+        "accion" : accion,
+    }
+    return render(request,'gestionarBackup.html', contexto)    
