@@ -10,6 +10,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from configuracion.models import Socios, Personas
 from  .gest_personas import cargarPersona
 
+
     
 def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
@@ -127,8 +128,6 @@ def listarIntegrantesSinSocio(request,id):
 
 def agregarIntegranteSocio(request,id,idpk):
     responsable = Socios.objects.get(id=idpk)
-    socios = Socios.objects.all()
-    personas = Personas.objects.exclude(id__in=([p.persona.id for p in socios]))
     
     model = Socios()
     model.id = Socios.objects.last().id + 1
@@ -137,6 +136,9 @@ def agregarIntegranteSocio(request,id,idpk):
     model.responsable ="N"
     model.fecha_alta = timezone.now()
     model.save(force_insert=True)
+
+    socios = Socios.objects.all()
+    personas = Personas.objects.exclude(id__in=([p.persona.id for p in socios]))
     
     contexto =  { "responsable": responsable,
                  "listadoPersonas":personas,

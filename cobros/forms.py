@@ -1,8 +1,11 @@
 from django import forms
 
-from .models import Cobros
+from .models import Pagos, DetallePagos
 
-class CobrosForm(forms.ModelForm):
-    class Meta:
-        model = Cobros
-        fields = '__all__'
+
+
+class CobrosCreationForm(forms.Form):
+    cantCuotas = forms.CharField(max_length=30)
+
+    def retornarDato():
+        return cantCuotas()

@@ -1,0 +1,67 @@
+p{
+    text-align: left;
+}
+
+.datos{
+    border: 1px solid #1E679A;
+    padding: 4 4 4 4px;
+}
+
+.row{
+    border: 1px solid #57189e;
+    padding: 2 2 2 2px;
+
+}
+
+.table{
+    border: rgb(12, 2, 20) 2px solid;
+    border-collapse: collapse;
+}
+
+.cuerpo {
+    border: rgb(125, 199, 29) 1px solid;
+    padding: 1 1 1 1px;
+}
+
+
+.cabeceraCobros{
+    margin: 5px;
+    color: rgb(207, 204, 30);
+    font-family:  sans-serif;
+    height: 56px;
+    border: rgb(197, 172, 30) 1px solid;
+   
+  }
+
+  .cuerpoCobros{
+    margin: 0px;
+    color: rgb(15, 15, 4);
+    font-family:  sans-serif;
+    height: 36px;
+    border: rgb(197, 172, 30) 1px solid;
+   
+  }
+
+
+
+.cabeceraAnio, .cabeceraMes{
+    border: rgb(12, 12, 11) 1px solid;
+    margin: 4px;
+    
+}
+
+.thCabeceraAnio, .thCabeceraMes{
+    border: rgb(12, 12, 11) 1px solid;
+    margin: 4px;
+    
+}
+
+.anio, .mes{
+    border: rgb(12, 12, 11) 1px solid;
+    padding: 1 1 1 1px;
+}
+
+.tdDatosCobros{
+    margin: 20px;
+    
+}

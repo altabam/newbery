@@ -9,6 +9,7 @@
  
      {% endblock %}
 {% block body %}
+<p> <a href="{% url 'configuracion:agruparSocios' %}">Agrupar Socios</a></p>
 <h1> Agrupar Socios</h1>
 <h2>Socio Nro: {{responsable.numero}} - Persona: {{responsable.persona.id}} -- {{responsable.persona.apellido}}, {{responsable.persona.nombre}}</h2>
 {% if integrantes %}

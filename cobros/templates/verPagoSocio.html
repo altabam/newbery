@@ -2,54 +2,93 @@
 {% block title %} Pago Socio {% endblock %}
 {% load static %}
 {% block styleOtros %}  
-     <link rel='stylesheet' href="{% static 'css/configuracion.css' %}" type="text/css">
+     <link rel='stylesheet' href="{% static 'css/cobros.css' %}" type="text/css">
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
      <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-     <script type="text/javascript" src="{% static 'js/agruparSocios.js' %}"></script>
  
      {% endblock %}
 {% block body %}
+<div>
 <h1> Detalle Pago Socio</h1>
-
 {% for listadoSocio in listadoSocios %}
-    <p>Socio: {{listadoSocio.numero}} - {{listadoSocio.persona.apellido}}, {{listadoSocio.persona.nombre}}, resp: {{listadoSocio.responsable}}</p>
+    <p class="texto">Socio: <b> {{listadoSocio.numero}} - {{listadoSocio.persona.apellido}}, {{listadoSocio.persona.nombre}}, resp: {{listadoSocio.responsable}}</b></p>
 {% endfor %}
+<div class="datos">
+<h2>Beca</h2>
+    {% for becado in listabecados %}
+    <p>Socio Becado: {{becado.jugador.persona.dni}} - {{becado.jugador.persona.apellido}}, {{becado.jugador.persona.nombre}}</p>
+    <p>        beca: {{becado.beca.nombre}} por {{becado.motivoSolicitud.concepto}}</p>
+{% endfor %}
+</div>
+<div class="datos">
+    <h2>Montos:</h2>
+        <h3>Cuota Social: {{montoCuota}}</h3>
+        <h3>Becado: {{montoBeca}} </h3>
+        <h3>Debe: {{montoDebe}} </h3>
+</div>
+
+</div>
+
+
 
 <div class="row">
-{% if listadoPagos %}
-{% for listPago in listadoPagos %}
-<table id="resultados" class="table">
-    <thead>
-        <tr >
-         <th colspan =24>  {{listPago.anio}}  </th>
-        </tr>
+    <table>
         <tr>
-         {% for cabMes in listPago.cabMeses %}
-                    <th colspan="2">{{cabMes}}</th> 
-    
-        
-        {% endfor %}
+            <td class="tdDatosCobros">
+                {% if listadoPagos %}
+                {% for listPago in listadoPagos %}
+                    <table id="resultados" class="table">
+                        <thead class="cabeceraCobros">
+                            <tr class="cabeceraAnio">
+                            <th colspan =24 class="cabeceraMes">  {{listPago.anio}}  </th>
+                            </tr>
+                            <tr class="cabeceraMes">
+                            {% for cabMes in listPago.cabMeses %}
+                                        <th colspan="1" class="thCabeceraMes">{{cabMes}}</th> 
+                        
+                            
+                            {% endfor %}
+                            </tr>
+                        
+                        </thead>
+                        <tbody class="cuerpoCobros">
+                            <tr class="anio">
+                                {% for pagoMes in listPago.pagoMeses %}
+                                <td class="mes">{{pagoMes}}</td> 
+                                {% endfor %}
+                            </tr>
+                        </tbody>
+                    </table>
+
+                {% endfor %}
+                {% endif %}
+            </td>
+            <td class="tdDatosCobros">
+                <h4>Detalle de Cobros</h4>
+                {% if listadoCobros %}
+                {% for listadoCobro in listadoCobros %}
+                    <p>   Fecha pago: {{listadoCobro.fecha_pago}}   -  Monto:  ${{listadoCobro.monto}}</p>
+                {% endfor %}
+                {% endif %}
+            </td>
         </tr>
-    
-    </thead>
-    <tbody >
-        <tr>
-            {% for pagoMes in listPago.pagoMeses %}
-            <td>{{pagoMes}}</td> 
-            <td>pagar</td> 
-            {% endfor %}
-        </tr>
 
-</tbody>
+    </table>
 
-</table>
-{% endfor %}
+   
+</div>
 
-{% endif %}
-<form  method="POST">{% csrf_token %}
-    <input type="text" class=" text-white ">
-    
-    <button type="submit" class="btn btn-success btn-block text-white ">Enviar Pago</button>
+<div class="datos">
+ <h2>Pago:</h2>
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="hidden" value="{{montoCuota}}" id="montoCuota" />
+    <br>
+    <h4> Total a pagar:    <label id="etiqueta" class="montoAPagar"></label></h4>
+     <input type="submit" value="Enviar Pago" />
+    <script type="text/javascript" src="{% static 'js/verPagoSocio.js' %}"></script>
 
 </form>
+</div>
 {% endblock %}  
