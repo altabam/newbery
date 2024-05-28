@@ -34,10 +34,11 @@ def verPagoSocio(request,id):
          print(beca.persona)
          if Jugadores.objects.filter(persona = beca.persona).exists():
             jugador = Jugadores.objects.get(persona = beca.persona)
-            integrante = BecasJugador.objects.get(jugador  = jugador)
-            if integrante:
-                  becados.append(integrante)
-                  montoBeca = montoBeca+ float(montoDisciplina.valor)*float( integrante.beca.porcentaje)
+            print("jugador:",jugador)
+            if BecasJugador.objects.filter(jugador = jugador).exists():
+                integrante = BecasJugador.objects.get(jugador  = jugador)
+                becados.append(integrante)
+                montoBeca = montoBeca+ float(montoDisciplina.valor)*float( integrante.beca.porcentaje)
     print("cantidad de integrantes:"+ str(cantIntegrantes))
     montoCuota =  float(Cuotas.objects.get(cant_int = cantIntegrantes).valor) - float(montoBeca)
     print (montoCuota)

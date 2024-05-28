@@ -9,6 +9,7 @@ from configuracion.views import listadoPersonas, borrarPersona, editarPersona,ag
 from configuracion.libreria.gest_socios import agruparSocios, buscarSocio, buscarSocioResponsable,listarIntegrantesSocios,agregarIntegranteSocio, listarIntegrantesSinSocio, quitarIntegranteSocio, buscarSocio
 from configuracion.libreria.gest_carga_inicial import cargaInicialMotivosBeca, cargaInicialCalidadIntegrante, cargaInicialCuotas
 from configuracion.libreria.cargaMasiva import cargaIntegrantesClub, cargaBecasJugadores
+from configuracion.libreria.gest_becas import listarBecados
 app_name = 'configuracion'
 urlpatterns = [
     path("listadoPersonas",listadoPersonas, name="listadoPersonas"),
@@ -46,6 +47,8 @@ urlpatterns = [
     path('agruparSocios/',agruparSocios, name='agruparSocios'),
     path('listarIntegrantesSocios/<int:id>',listarIntegrantesSocios, name='listarIntegrantesSocios'),
     path('listarIntegrantesSinSocio/<int:id>',listarIntegrantesSinSocio, name='listarIntegrantesSinSocio'),
+    path('listarBecados',listarBecados, name='listarBecados'),
+    
     path('agregarIntegranteSocio/<int:id>/<int:idpk>',agregarIntegranteSocio, name='agregarIntegranteSocio'),
     path('quitarIntegranteSocio/<int:id>/<int:idpk>',quitarIntegranteSocio, name='quitarIntegranteSocio'),
 
