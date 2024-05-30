@@ -1,5 +1,5 @@
 
-{% extends "./base.html"%}
+{% extends "./base_nav.html"%}
 {% block title %} Gestion de Cobros {% endblock %}
 {% load static %}
 {% block styleOtros %}  
@@ -15,12 +15,14 @@
     <div class="col-md-4 offset-md-4">
         <div class="card">
             <div class="card-body">
+                    <br>
+                    <label>Ingrese Apellido de Socio:</label>
                     <input id="search_input" type="text" name="q">
                     {% csrf_token %}
+                    <br>
             </div>
 
         </div>
-        <p id="resultado_busqueda"></p>
     </div>
 </div>
 <table id="resultados" class="table">

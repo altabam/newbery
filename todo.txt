@@ -5,7 +5,7 @@ Falta agregar auditoria a toda la aplicacion
 Falta agregar seguridad a toda la aplicacion
 
 //cobros
-falta agregar las becas y completar el tema de pago
+falta agregar las becas 
 
 
 //configuracion

@@ -67,7 +67,7 @@ def cargaBecasJugadores(request):
                     model.motivoSolicitud = BecasMotivos.objects.get(id=row[6])
                     model.save(force_insert=True)
                 else:
-                        print("Beca de:"+ row +"existe")
+                        print("Beca de: ", row ," existe")
             else:
                 print("Jugador:", row[0], "no existe" )
                 mensaje ="Jugador:"+ row[0]+ " no existe" 
