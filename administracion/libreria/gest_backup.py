@@ -6,6 +6,7 @@ from configuracion.models import Personas
 
 
 def realizarBackup(request,slug):
+    print (slug)
     response = HttpResponse(
         content_type="text/csv",
         headers={"Content-Disposition": 'attachment; filename="'+slug+'.csv"'},
