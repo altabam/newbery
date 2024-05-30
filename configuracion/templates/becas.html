@@ -5,7 +5,7 @@
     
     <thead>
         <tr>
-                <th>#</th>
+                <th>id</th>
                 <th>Nombre</th>
                 <th>Porcentaje</th>
                 <th colspan="3">Opciones</th>
@@ -16,7 +16,7 @@
 {% if listadoBecas %}
 {% for listadoBeca in listadoBecas %}
                 <tr>
-                    <td>{{forloop.counter}}</td>
+                    <td>{{listadoBeca.id}}</td>
                     <td>{{listadoBeca.nombre}}</td>
                     <td>{{listadoBeca.porcentaje}}</td>
                 

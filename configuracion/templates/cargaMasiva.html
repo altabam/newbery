@@ -1,4 +1,5 @@
-
+{% extends "base_nav.html"%}
+{% block body %}
 <h1> Administracion de Carga Masiva</h1>
 <h2>Cargas Masivas</h2>
 <ul class="ulMenuPrincipal">
@@ -18,7 +19,10 @@
         <a class="linkMenu active" aria-current="page" href="/configuracion/cargaBecasJugador">Cargar Becas por Jugador</a>
     </li>
     <li class="liMenuPrincipal">
-        <a class="linkMenu active" aria-current="page" href="/configuracion/cargaIntegrantesClub">Cargar Becas por Jugador</a>
+        <a class="linkMenu active" aria-current="page" href="/configuracion/cargaIntegrantesClub">Cargar Integrantes del Club</a>
+    </li>
+    <li class="liMenuPrincipal">
+        <a class="linkMenu active" aria-current="page" href="/configuracion/cargaBecasJugadores">Cargar Becas de Jugadores</a>
     </li>
 
 
@@ -37,3 +41,4 @@
 </ul>
 
 <h3>{{mensaje}}</h3>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base_nav.html"%}
+{% block body %}
+<h1> Listado de Becados </h1>
+<table>
+    
+    <thead>
+        <tr>
+                <th>#</th>
+                <th>Apellido y Nombre</th>
+                <th>Beca</th>
+                <th>Año</th>
+                <th>Mes desde</th>
+                <th>Mes hasta</th>
+                <th>Motivo </th>
+                <th>Solicitante</th>
+  
+                <th colspan="3">Opciones</th>
+        </tr>
+    </thead>
+    <tbody>
+
+{% if listarBecados %}
+{% for listadoBecado in listarBecados %}
+                <tr>
+                    <td class="tdNumero">{{forloop.counter}}</td>
+                    <td class="tdTexto">{{listadoBecado.jugador.persona.nombre}} {{listadoBecado.jugador.persona.apellido}}</td>
+                    <td class="tdTexto">{{listadoBecado.beca.nombre}}</td>
+                    <td class="tdNumero">{{listadoBecado.anio}}</td>
+                    <td class="tdTexto">{{listadoBecado.mesDesde}}</td>
+                    <td class="tdTexto">{{listadoBecado.mesHasta}}</td>
+                    <td class="tdNumero">{{listadoBecado.motivoSolcitud.motivo}}</td>
+                    <td class="tdTexto">{{listadoJugador.solicitante.persona.nombre}} {{listadoJugador.solicitante.persona.nombre}}</td>
+                
+                </tr>
+{% endfor %}
+{% endif %}
+</table>
+
+{% endblock %}
+

@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 import csv
 from django.db.models import Count
-from .models import Personas, Disciplinas, Categorias, Jugadores, Becas, Socios, Cuotas, BecasJugador, BecasMotivos, CalidadIntegrante
+from .models import Personas, Disciplinas, Categorias, Jugadores, Becas, Socios, Cuotas, BecasJugador, BecasMotivos, CalidadIntegrante, IntegrantesClub
 from .forms import PersonaForm
 from .libreria.cargaMasiva import * 
 from .libreria.gest_socios import *
@@ -41,14 +41,12 @@ def listadoJugadores(request):
 
 def listadoBecas(request):
     listadoBeca = Becas.objects.all()
-    print(listadoBeca)
     contexto ={ "listadoBecas": listadoBeca, }
     
     return render(request, "becas.html",  contexto)
 
 def listadoSocios(request):
     listadoSocio = obtenerSocios()
-    print(listadoSocio)
     contexto ={ "listadoSocios": listadoSocio, }
     
     return render(request, "socios.html",  contexto)
@@ -57,22 +55,24 @@ def listadoSocios(request):
 
 def listarCuotas(request):
     listadoCuotas = Cuotas.objects.all().order_by("cant_int")
-    print(listadoCuotas)
     contexto ={ "listadoCuotas": listadoCuotas, }
     return render(request, "cuotas.html",  contexto)
 
 def listarMotivoBecas(request):
     listadoMotivosBecas = BecasMotivos.objects.all()
-    print(listadoMotivosBecas)
     contexto ={ "listadoMotivosBecas": listadoMotivosBecas, }
     return render(request, "motivosBecas.html",  contexto)
 
 def listarMotivoCalicadIntegrantes(request):
     listadoCalidadIntegrantes = CalidadIntegrante.objects.all()
-    print(listadoCalidadIntegrantes)
     contexto ={ "listadoCalidadIntegrantes": listadoCalidadIntegrantes, }
     return render(request, "calidadIntegrantes.html",  contexto)
 
+def listarIntegrantesClub(request):
+    listadoIntegranteClub = IntegrantesClub.objects.all()
+    print(listadoIntegranteClub)
+    contexto ={ "listadoIntegranteClub": listadoIntegranteClub, }
+    return render(request, "integrantesClub.html",  contexto)
 
 
 def cargaInicial (request):
