@@ -19,7 +19,7 @@
              
         </tr>
         <tr>
-                <th >Id</th>
+                <th >id</th>
                 <th>Socio</th>
                 <th>Dni</th>
                 <th>Apellido y Nombre</th>
@@ -29,18 +29,21 @@
     </thead>
     <tbody>
 
-{% if listadoSocios %}
+    {% if listadoSocios %}
     {% for listadoSocio in listadoSocios %}
-                <tr>
-                    <td>{{listadoSocio.id}}</td>
-                    <td class="tdNumero">{{listadoSocio.numero}}</td>
-                    <td class="tdNumero">{{listadoSocio.persona.dni}}</td>
-                    <td class="tdTexto">{{listadoSocio.persona.apellido}} {{listadoSocio.persona.nombre}}</td>
-                    <td class="tdNumero">{{listadoSocio.responsable}} </td>
+            <tr>
+                <td>{{listadoSocio.id}}</td>
+                <td class="tdNumero">{{listadoSocio.numero}}</td>
+                <td class="tdNumero">{{listadoSocio.persona.dni}}</td>
+                <td class="tdTexto">{{listadoSocio.persona.apellido}} {{listadoSocio.persona.nombre}}</td>
+                <td class="tdNumero">{{listadoSocio.responsable}} </td>
+                <td class="tdNumero" colspan="3"> </td>
                 
-                </tr>
+            </tr>
     {% endfor %}
-{% endif %}
+    {% endif %}
+    </tbody>
+
 </table>
 {% endblock %}
 

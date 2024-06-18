@@ -307,6 +307,7 @@ def agregarPersona(request):
     if request.method == 'POST':
         form= PersonaForm(request.POST)
         if form.is_valid():
+           form.id = id =Personas.objects.order_by('id').last().id+1
            form.save()
            return redirect('/configuracion/listadoPersonas')
     else:

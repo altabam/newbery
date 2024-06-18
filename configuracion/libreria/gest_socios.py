@@ -26,18 +26,20 @@ def cargarSociosCsv(url):
         print(j)
         reader = csv.reader(f )
         for row in reader:
-           persona = Personas.objects.get(dni=row[0])
            print(row)
-           if persona :
+           try:
+              persona = Personas.objects.get(dni=row[0])
+
               
-             if  Socios.objects.filter(persona = persona).exists():
+              if  Socios.objects.filter(persona = persona).exists():
                  print("socio existe")
-             else: 
+              else: 
                  print("socio no existe")
                  cargarSocio(row[0])
-           else:
+           except Personas.DoesNotExist:
               cargarPersona(row)
               cargarSocio(row[0])
+              pass
 
            # model.save(force_insert=True)
            j= j+1

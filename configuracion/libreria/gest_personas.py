@@ -6,7 +6,7 @@ def cargarPersona(row):
     model = Personas()
     print("nombre:"+ row[2])
     print("fecha_nac:"+ row[3])
-    id =Personas.objects.order_by(id).last().id+1
+    id =Personas.objects.order_by('id').last().id+1
     if id:
         model.id = id
     else:
