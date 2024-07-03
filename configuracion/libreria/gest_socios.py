@@ -29,8 +29,6 @@ def cargarSociosCsv(url):
            print(row)
            try:
               persona = Personas.objects.get(dni=row[0])
-
-              
               if  Socios.objects.filter(persona = persona).exists():
                  print("socio existe")
               else: 
