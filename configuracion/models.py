@@ -50,6 +50,7 @@ class Disciplinas(models.Model):
 class Categorias (models.Model):
     nombre = models.CharField(max_length=100)
     disciplina = models.ForeignKey(Disciplinas, on_delete=models.CASCADE)
+    paga_disciplina = models.BooleanField(default="True")
     def __str__(self):
         return f"{self.nombre}"
 
@@ -57,6 +58,8 @@ class Categorias (models.Model):
 class Jugadores(models.Model):
     persona = models.ForeignKey(Personas, on_delete=models.CASCADE)
     categoria = models.ForeignKey(Categorias, on_delete=models.CASCADE)
+    fecha_desde = models.DateField(null=True)
+    fecha_hasta = models.DateField(null=True)
 
 class Becas(models.Model):
     nombre = models.CharField(max_length=100)
