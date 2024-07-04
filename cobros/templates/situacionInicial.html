@@ -1,0 +1,49 @@
+{% extends "base_nav.html"%}
+{% load static %}
+
+{% block body %}
+<h1> Situacion Inicial</h1>
+<table>
+    
+    <thead>
+        <tr>   
+            <th colspan="9" > 
+                <div class="agregar">
+                    <a href="{% url 'cobros:agregarSitInicial' %}">
+                        <img src="{% static 'img/agregar.jpg' %}" alt="agregar" title="agregar"  class="icono">
+                    </a>
+                </div>
+             </th>
+             
+        </tr>
+
+        <tr>
+                <th>#</th>
+                <th>Disciplina</th>
+                <th>Año</th>
+                <th>Mes</th>
+                <th colspan="3">Opciones</th>
+        </tr>
+    </thead>
+    <tbody>
+
+{% if listadoSitInicial %}
+{% for listadoSitInicial in listadoSitInicial %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{listadoSitInicial.disciplina.nombre}}</td>
+                    <td>{{listadoSitInicial.anio}}</td>
+                    <td>{{listadoSitInicial.mes}}</td>
+                    <td colspan="3">
+                        <a href="{% url 'cobros:editarSitInicial' listadoSitInicial.id %}" ><img
+                            src="{% static 'img/editar.png' %}" alt="Editar" title="Editar" class="icono"></a>
+                        <a href="{% url 'cobros:borrarSitInicial' listadoSitInicial.id %}" ><img
+                             src="{% static 'img/eliminar.png' %}" alt="Eliminar" title="Eliminar" class="icono"></a>
+                    </td>   
+            
+                
+                </tr>
+{% endfor %}
+{% endif %}
+</table>
+{% endblock %}

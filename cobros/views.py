@@ -1,9 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from datetime import datetime, timedelta, date
 
 from configuracion.models import Socios, BecasJugador, Jugadores,Cuotas
-from .models import DetallePagos , Pagos
-from .forms import CobrosCreationForm
+from .models import DetallePagos , Pagos, SituacionInicial
+from .forms import CobrosCreationForm, SituacionInicialForm
 
 # Create your views here.
 
@@ -129,5 +129,51 @@ def  grabarDetallePago(pago, cantCuotas):
         model.pago = pago
         model.mes = cuota
         model.save(force_insert=True)
+
+
+def agregarSitInicial(request):
+    if request.method == 'POST':
+        form= SituacionInicialForm(request.POST)
+        if form.is_valid():
+           form.save()
+           return redirect('/cobros/listarSitInicial')
+    else:
+        form =SituacionInicialForm()
+
+    contexto ={ 
+            "accion":"Agregar", 
+            "form": form,
+         } 
+    return render(request, "editarSituacionInicial.html", contexto )    
+
+def editarSitInicial(request,id):
+    sitInicial = SituacionInicial.objects.get(id = id)
+    if request.method == 'POST':
+        form= SituacionInicialForm(request.POST, instance=sitInicial)
+        if form.is_valid():
+            form.save()
+            return redirect('/cobros/listarSitInicial')
+    else:
+            form = SituacionInicialForm( instance=sitInicial)
+    
+    contexto ={ 
+            "accion":"Modificar", 
+            "form": form,
+            "datos": sitInicial,
+         } 
+    return render(request, "editarSituacionInicial.html",contexto)
+
+def listarSitInicial(request):
+    listadoSitInicial = SituacionInicial.objects.all()
+    contexto = { "listadoSitInicial": listadoSitInicial }
+    return render(request, "situacioninicial.html",  contexto)
+
+def borrarSitInicial(request, id):
+    SituacionInicial.objects.filter(id=id).delete()
+    listadoSitInicial = SituacionInicial.objects.all()
+    contexto = { "listadoSitInicial": listadoSitInicial }
+    return render(request, "situacioninicial.html",  contexto)
+
+
 
 
