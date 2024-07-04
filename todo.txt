@@ -19,3 +19,9 @@ Cargar los deudores
 Cargar los socios que pagaron Mayo segun archivo pasado por lavalle
 
 
+// Para resetear sequencias
+python manage.py sqlsequencereset myapp| psql
+
+//generar login
+datos
+

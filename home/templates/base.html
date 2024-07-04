@@ -26,12 +26,22 @@
             <h1 class="tituloCabecera">Sistema de Gestion Newbery</h1>
     
         </div>
+        {% if user.is_authenticated  %}
+
         <div class="itemCabecera">
-                <a class="contacto-mail" href="/accounts/login/">Login</a>
+                <a class="contacto-mail" href="{% url 'logout' %}">Logout</a>
         </div>
+        {% else %}
+        <div class="itemCabecera">
+            <a class="contacto-mail" href="{% url 'login' %}">Login</a>
+    </div>
+
+        {% endif %}
 
     </header>
     <hr>
+    {% if user.is_authenticated  %}
+    
     {% block nav %}
     {% endblock %}
 
@@ -40,6 +50,9 @@
         {% endblock %}
 
     </section>
+
+    {% endif %}
+
     <footer>
         <section>
             <p> Copyright Newbery</p>
