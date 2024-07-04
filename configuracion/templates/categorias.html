@@ -8,6 +8,7 @@
                 <th>#</th>
                 <th>Disciplina</th>
                 <th>Categoria</th>
+                <th>Paga Disciplina</th>
                 <th colspan="3">Opciones</th>
         </tr>
     </thead>
@@ -19,6 +20,7 @@
                     <td>{{forloop.counter}}</td>
                     <td>{{listadoCategoria.disciplina.nombre}}</td>
                     <td>{{listadoCategoria.nombre}}</td>
+                    <td>{{listadoCategoria.paga_disciplina}}</td>
                 
                 </tr>
 {% endfor %}
