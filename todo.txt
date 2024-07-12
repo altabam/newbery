@@ -25,3 +25,4 @@ python manage.py sqlsequencereset myapp| psql
 //generar login
 datos
 
+ALTER SEQUENCE configuracion_personas_id_seq RESTART WITH 1

@@ -5,7 +5,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [ 
     "newbery-production.up.railway.app",
-    "localhost"
+    "localhost",
 ]
 
 
