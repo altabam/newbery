@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 import csv
 from django.db.models import Count
 from .models import Personas, Disciplinas, Categorias, Jugadores, Becas, Socios, Cuotas, BecasJugador, BecasMotivos, CalidadIntegrante, IntegrantesClub
-from .forms import PersonaForm
+from .forms import PersonaForm, DisciplinasForm
 from .libreria.cargaMasiva import * 
 from .libreria.gest_socios import *
 from .libreria.gest_personas import *
@@ -17,7 +17,7 @@ def listadoPersonas(request):
 def listadoDisciplinas(request):
     listadoDisciplina = Disciplinas.objects.all()
     print(listadoDisciplina)
-    contexto =  { "listadoDisciplinas": listadoDisciplina, }
+    contexto =  { "listadoDisciplinas": listadoDisciplina }
     return render(request, "disciplinas.html",  contexto)
 
 def listadoCategorias(request):
@@ -319,4 +319,36 @@ def agregarPersona(request):
          } 
     return render(request, "editarPersona.html", contexto )    
 
-       
+def agregarDisciplinas(request):
+    if request.method == 'POST':
+        form= DisciplinasForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/configuracion/listadoDisciplinas')
+    else:
+        form =DisciplinasForm()
+    
+    return render(request, 'agregarDisciplinas.html', {'form': form})
+
+def editarDisciplinas(request,id):
+    disciplina = Disciplinas.objects.get(id = id)
+    if request.method == 'POST':
+        form= DisciplinasForm(request.POST, instance=disciplina)
+        if form.is_valid():
+            form.save()
+            return redirect('/configuracion/listadoDisciplinas')
+    else:
+            form = DisciplinasForm( instance=disciplina)
+
+    contexto ={ 
+            "accion":"Modificar", 
+            "form": form,
+            "datos": disciplina,
+         } 
+    return render(request, "editarDisciplina.html",contexto)
+
+def borrarDisciplinas(request, id):
+    Disciplinas.objects.filter(id=id).delete()
+    listadoDisciplinas = Disciplinas.objects.all()
+    contexto = { "listadoDisciplinas": listadoDisciplinas }
+    return render(request, "disciplinas.html",  contexto)

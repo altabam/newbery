@@ -5,7 +5,7 @@ from configuracion.views import cargaInicial,cargaMasivaSocios,cargaMasiva, borr
 from configuracion.views import cargarAgrupacionFamiliarSocios, borrarSocio
 from configuracion.views import listarMotivoBecas, cargaBecasJugador
 from configuracion.views import listarMotivoCalicadIntegrantes, listarIntegrantesClub
-from configuracion.views import listadoPersonas, borrarPersona, editarPersona,agregarPersona
+from configuracion.views import listadoPersonas, borrarPersona, editarPersona,agregarPersona,agregarDisciplinas,editarDisciplinas,borrarDisciplinas
 from configuracion.libreria.gest_socios import agruparSocios, buscarSocio, buscarSocioResponsable,listarIntegrantesSocios,agregarIntegranteSocio, listarIntegrantesSinSocio, quitarIntegranteSocio, buscarSocio
 from configuracion.libreria.gest_carga_inicial import cargaInicialMotivosBeca, cargaInicialCalidadIntegrante, cargaInicialCuotas
 from configuracion.libreria.cargaMasiva import cargaIntegrantesClub, cargaBecasJugadores
@@ -42,8 +42,11 @@ urlpatterns = [
     path("gestionarJugadoresCategoria",gestionarJugadoresCategoria, name="gestionarJugadoresCategoria"),
     path("cargarCategorias",cargarCategorias, name="cargarCategorias"),
     path("editarPersona/<int:id>",editarPersona, name="editarPersona"),
+    path("editarDisciplinas/<int:id>",editarDisciplinas, name="editarDisciplinas"),
     path("borrarPersona/<int:id>",borrarPersona, name="borrarPersona"),
+    path("borrarDisciplinas/<int:id>",borrarDisciplinas, name="borrarDisciplinas"),
     path('agregarPersona/',agregarPersona, name='agregarPersona'),
+    path('agregarDisciplinas/',agregarDisciplinas, name='agregarDisciplinas'),
     path('agruparSocios/',agruparSocios, name='agruparSocios'),
     path('listarIntegrantesSocios/<int:id>',listarIntegrantesSocios, name='listarIntegrantesSocios'),
     path('listarIntegrantesSinSocio/<int:id>',listarIntegrantesSinSocio, name='listarIntegrantesSinSocio'),
