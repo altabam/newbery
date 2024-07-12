@@ -10,6 +10,7 @@ from configuracion.libreria.gest_socios import agruparSocios, buscarSocio, busca
 from configuracion.libreria.gest_carga_inicial import cargaInicialMotivosBeca, cargaInicialCalidadIntegrante, cargaInicialCuotas
 from configuracion.libreria.cargaMasiva import cargaIntegrantesClub, cargaBecasJugadores
 from configuracion.libreria.gest_becas import listarBecados
+from configuracion.libreria.reportes import reportes, reporteJugadoresPorDisciplina, reporteJugadoresPorCategoria
 app_name = 'configuracion'
 urlpatterns = [
     path("listadoPersonas",listadoPersonas, name="listadoPersonas"),
@@ -57,6 +58,10 @@ urlpatterns = [
     re_path(r'^buscarSocio/$', buscarSocio, name='busquedaSocio'), 
     re_path(r'^buscarSocioResponsable/',buscarSocioResponsable, name='buscarSocioResponsable'),
 
+path('reporteJugadoresPorDisciplina',reporteJugadoresPorDisciplina, name='reporteJugadoresPorDisciplina'),
+path('reporteJugadoresPorCategoria',reporteJugadoresPorCategoria, name='reporteJugadoresPorCategoria'),
+path('reportes',reportes, name='reportes'),
+    
   
 
         

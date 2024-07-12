@@ -1,0 +1,28 @@
+{% extends "base_nav.html"%}
+{% block body %}
+<h1> Reporte de Jugadores por Categoria </h1>
+<table>
+    
+    <thead>
+        <tr>
+                <th>Disciplina</th>
+                <th>Categoria</th>
+                <th>Cantidad</th>
+        </tr>
+    </thead>
+    <tbody>
+
+{% if cat %}
+{% for reporte in cat %}
+                <tr>
+                    <td class="tdTexto">{{reporte.disciplina}}</td>
+                    <td class="tdTexto">{{reporte.categoria}}</td>
+                    <td class="tdNumero">{{reporte.cantidad}}</td>
+                
+                </tr>
+{% endfor %}
+{% endif %}
+</table>
+
+{% endblock %}
+
