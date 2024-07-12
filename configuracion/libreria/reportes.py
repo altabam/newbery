@@ -8,7 +8,7 @@ def reportes(request):
     return render(request, "reportes.html" )
 
 def reporteJugadoresPorCategoria(request):
-     jugxcat = Jugadores.objects.values('categoria').annotate(dcount=Count('categoria')).order_by()
+     jugxcat = Jugadores.objects.values('categoria').annotate(dcount=Count('categoria')).order_by('categoria__disciplina')
      reporteJugPorCat =[]
 
      for categoria in jugxcat:
