@@ -12,7 +12,7 @@
 </div>
 
 
-<a id="boton1" href="{% url 'configuracion:agregarDisciplinas' %}" >
+<a id="boton-agregar" href="{% url 'configuracion:agregarDisciplinas' %}" >
     <img src="{% static 'img/agregar-disciplina.png' %}" alt="Agregar" title="Agregar">
 </a>
 
@@ -31,14 +31,15 @@
             <tr>
                 <td>{{forloop.counter}}</td>
                 <td class="td-disciplinas">{{disciplina.nombre}}</td>
-                <td class="td-disciplinas">
-                    <a id="boton-editar" href="{% url 'configuracion:editarDisciplinas' disciplina.id %}"> 
-                        <img  src="{% static 'img/editar.png?v=2.' %}" alt="Editar" title="Editar" class="icono"></a>
+                <td class="td-opciones">
+                    <div class="td-opciones container">
+                        <a id="boton-editar" href="{% url 'configuracion:editarDisciplinas' disciplina.id %}"> 
+                            <img  src="{% static 'img/editar.png?v=2.' %}" alt="Editar" title="Editar" class="icono"></a>
+                        <a id="boton-eliminar" href="{% url 'configuracion:borrarDisciplinas' disciplina.id %}"> 
+                            <img  src="{% static 'img/eliminar1.png?v=2.' %}" alt="Eliminar" title="Eliminar" class="icono"></a>
+                    </div>
                 </td>
-                <td class="td-disciplinas">
-                    <a id="boton-eliminar" href="{% url 'configuracion:borrarDisciplinas' disciplina.id %}"> 
-                        <img  src="{% static 'img/eliminar1.png?v=2.' %}" alt="Eliminar" title="Eliminar" class="icono"></a>
-                </td>
+
             </tr>
     {% endfor %}
     {% endif %}

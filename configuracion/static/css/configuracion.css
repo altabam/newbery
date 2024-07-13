@@ -36,8 +36,21 @@ table {
     border-collapse: collapse;
     border: 3px solid purple;
   }
-  
-  
+
+  .td-disciplinas{
+    text-align:  center !important;
+  }
+
+.td-opciones{
+  text-align:  right !important;
+}
+.td-opciones.container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
   th,
   td {
     padding: 5px;
@@ -100,7 +113,7 @@ table {
     clip-path: polygon(0% 0%, 100% 0%, 100% 70%, 50% 100%, 0% 70%);
   }
 
-  #boton1{
+  #boton-agregar{
     text-align: left;
     float: right;
     width: 40px; 
@@ -108,26 +121,20 @@ table {
     padding: 0;
   }
 
-  #boton1 img {
+  #boton-agregar img {
     width: 100%; 
     height: auto; 
   }
 
-  .td-disciplinas{
-    text-align: center;
-    padding: 0;
-    width: 10px; 
-    height: auto;
-  }
-  
   #boton-editar img{
     width: 20px; 
-    height: auto;
+    height: 23px;
     padding: 0;
   }
 
 #boton-eliminar img{
   width: 40px; 
   height: auto;
+  padding: 0;
 }
   
