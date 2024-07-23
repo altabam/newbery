@@ -37,7 +37,7 @@ table {
     border: 3px solid purple;
   }
 
-  .td-disciplinas{
+  .td-nombre{
     text-align:  center !important;
   }
 
@@ -105,7 +105,7 @@ table {
     text-align: center;
   }
   
-  #disciplinas {
+  .titulo {
     text-align: center;
     background-color: yellow;
     /*padding-top: 20px;*/
@@ -113,28 +113,31 @@ table {
     clip-path: polygon(0% 0%, 100% 0%, 100% 70%, 50% 100%, 0% 70%);
   }
 
-  #boton-agregar{
+  .boton-agregar{
     text-align: left;
     float: right;
     width: 40px; 
     height: auto;
     padding: 0;
+    margin-right: 30px;
   }
 
-  #boton-agregar img {
+  .boton-agregar img {
     width: 100%; 
     height: auto; 
   }
 
-  #boton-editar img{
+  .boton-editar img{
     width: 20px; 
     height: 23px;
     padding: 0;
   }
 
-#boton-eliminar img{
+.boton-eliminar img{
   width: 40px; 
   height: auto;
   padding: 0;
 }
+
+
   

@@ -1,5 +1,6 @@
 from django import forms
-from .models import Personas, Disciplinas
+from .models import Personas, Disciplinas, Categorias
+
 class PersonaForm(forms.ModelForm):
     class Meta:
         model = Personas
@@ -15,3 +16,7 @@ class DisciplinasForm(forms.ModelForm):
         model =Disciplinas
         fields= '__all__'
         
+class CategoriasForm(forms.ModelForm):
+    class Meta:
+        model=Categorias
+        fields= '__all__'

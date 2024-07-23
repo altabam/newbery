@@ -1,8 +1,9 @@
 from django.shortcuts import render,redirect
 import csv
 from django.db.models import Count
+from django.core.exceptions import ObjectDoesNotExist   
 from .models import Personas, Disciplinas, Categorias, Jugadores, Becas, Socios, Cuotas, BecasJugador, BecasMotivos, CalidadIntegrante, IntegrantesClub
-from .forms import PersonaForm, DisciplinasForm
+from .forms import PersonaForm, DisciplinasForm, CategoriasForm
 from .libreria.cargaMasiva import * 
 from .libreria.gest_socios import *
 from .libreria.gest_personas import *
@@ -187,13 +188,30 @@ def cargarCategoriasArchivo():
     with open (template_name) as f:
         reader = csv.reader(f )
         for row in reader:
-            if not Categorias.objects.filter(nombre = row[0]).exists():
-              model.id = Categorias.objects.last().id+1
-              model.nombre =row[0]
-              model.disciplina=Disciplinas.objects.get(id=row[1])
-              model.save(force_insert=True)
+            #aqui inicia codigo de prueba
+            nombre_categoria = row[0]
+            id_disciplina = row[1]
+            
+            if not Categorias.objects.filter(nombre=nombre_categoria).exists():
+                try:
+                    disciplina = Disciplinas.objects.get(id=id_disciplina)
+                    nueva_categoria = Categorias(
+                        nombre=nombre_categoria,
+                        disciplina=disciplina
+                    )
+                    nueva_categoria.save()
+                    print(f"Categoría {nombre_categoria} agregada con éxito.")
+                except ObjectDoesNotExist:
+                    print(f"Disciplina con id {id_disciplina} no existe. No se pudo agregar la categoría {nombre_categoria}.")
             else:
-                print("categoria: "+ row[0]+ " existe")
+                print(f"Categoría {nombre_categoria} ya existe.")
+            #if not Categorias.objects.filter(nombre = row[0]).exists():
+            #  model.id = Categorias.objects.last().id+1
+             # model.nombre =row[0]
+             # model.disciplina=Disciplinas.objects.get(id=row[1])
+             # model.save(force_insert=True)
+           # else:
+            #    print("categoria: "+ row[0]+ " existe")
 
 
 def cargaBecasJugador(request):
@@ -318,6 +336,7 @@ def agregarPersona(request):
          } 
     return render(request, "editarPersona.html", contexto )    
 
+#Vistas de acciones sobre Disciplinas
 def agregarDisciplinas(request):
     if request.method == 'POST':
         form= DisciplinasForm(request.POST)
@@ -351,3 +370,37 @@ def borrarDisciplinas(request, id):
     listadoDisciplinas = Disciplinas.objects.all()
     contexto = { "listadoDisciplinas": listadoDisciplinas }
     return render(request, "disciplinas.html",  contexto)
+
+#Vistas de acciones sobre Categorias
+def agregarCategorias(request):
+    if request.method == 'POST':
+        form= CategoriasForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/configuracion/listadoCategorias')
+    else:
+        form =CategoriasForm()
+    
+    return render(request, 'agregarCategorias.html', {'form': form})
+
+def editarCategorias(request,id):
+    categoria = Categorias.objects.get(id=id)
+    if request.method == 'POST':
+        form= CategoriasForm(request.POST, instance=categoria)
+        if form.is_valid():
+            form.save()
+            return redirect('/configuracion/listadoCategorias')
+    else:
+            form = CategoriasForm( instance=categoria)
+    contexto ={ 
+            "accion":"Modificar", 
+            "form": form,
+            "datos": categoria,
+         } 
+    return render(request, "editarCategoria.html",contexto)
+
+def borrarCategorias(request,id):
+    Categorias.objects.filter(id=id).delete()
+    listadoCategorias = Categorias.objects.all()
+    contexto = { "listadoCategorias": listadoCategorias }
+    return render(request, "categorias.html",  contexto)

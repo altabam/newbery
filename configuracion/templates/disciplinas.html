@@ -7,17 +7,16 @@
 {% block body %}
 <div >
     <header>
-        <h1 id="disciplinas"> Gestion de Disciplinas</h1>
+        <h1 class="titulo"> Gestion de Disciplinas</h1>
     </header>
 </div>
 
 
-<a id="boton-agregar" href="{% url 'configuracion:agregarDisciplinas' %}" >
-    <img src="{% static 'img/agregar-disciplina.png' %}" alt="Agregar" title="Agregar">
+<a class="boton-agregar" href="{% url 'configuracion:agregarDisciplinas' %}" >
+    <img src="{% static 'img/agregar.png' %}" alt="Agregar" title="Agregar">
 </a>
 
 <table>
-    
     <thead>
         <tr>
                 <th>#</th>
@@ -30,12 +29,12 @@
         {% for disciplina in listadoDisciplinas %}
             <tr>
                 <td>{{forloop.counter}}</td>
-                <td class="td-disciplinas">{{disciplina.nombre}}</td>
+                <td class="td-nombre">{{disciplina.nombre}}</td>
                 <td class="td-opciones">
                     <div class="td-opciones container">
-                        <a id="boton-editar" href="{% url 'configuracion:editarDisciplinas' disciplina.id %}"> 
+                        <a class="boton-editar" href="{% url 'configuracion:editarDisciplinas' disciplina.id %}"> 
                             <img  src="{% static 'img/editar.png?v=2.' %}" alt="Editar" title="Editar" class="icono"></a>
-                        <a id="boton-eliminar" href="{% url 'configuracion:borrarDisciplinas' disciplina.id %}"> 
+                        <a class="boton-eliminar" href="{% url 'configuracion:borrarDisciplinas' disciplina.id %}"> 
                             <img  src="{% static 'img/eliminar1.png?v=2.' %}" alt="Eliminar" title="Eliminar" class="icono"></a>
                     </div>
                 </td>
