@@ -1,6 +1,20 @@
 {% extends "base_nav.html"%}
+{% load static %}
+{% block styleOtros %}
+<link rel="stylesheet" href="{% static 'css/configuracion.css' %}">
+{% endblock %}
+
 {% block body %}
-<h1> Gestion de Jugadores </h1>
+<div >
+    <header>
+        <h1 class="titulo"> Gestion de Jugadores</h1>
+    </header>
+</div>
+
+<a class="boton-agregar" href="{% url 'configuracion:agregarJugadorCategorias' %}" >
+    <img src="{% static 'img/agregar.png' %}" alt="Agregar" title="Agregar">
+</a>
+
 <table>
     
     <thead>
@@ -30,6 +44,14 @@
                     <td class="tdTexto">{{listadoJugador.persona.nombre}}</td>
                     <td class="tdNumero">{{listadoJugador.persona.dni}}</td>
                     <td class="tdTexto">{{listadoJugador.persona.fecha_nacimiento}}</td>
+                    <td class="td-opciones">
+                        <div class="td-opciones container">
+                            <a class="boton-editar" href="{% url 'configuracion:editarJugadorCategorias' listadoJugador.id %}"> 
+                                <img  src="{% static 'img/editar.png?v=2.' %}" alt="Editar" title="Editar" class="icono"></a>
+                            <a class="boton-eliminar" href="{% url 'configuracion:borrarJugadorCategorias' listadoJugador.id %}">
+                                <img  src="{% static 'img/eliminar1.png?v=2.' %}" alt="Eliminar" title="Eliminar" class="icono">
+                            </a>
+                        </div>
                 
                 </tr>
 {% endfor %}

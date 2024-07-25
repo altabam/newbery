@@ -1,9 +1,10 @@
 from django.shortcuts import render,redirect
 import csv
+from django.http import JsonResponse
 from django.db.models import Count
 from django.core.exceptions import ObjectDoesNotExist   
 from .models import Personas, Disciplinas, Categorias, Jugadores, Becas, Socios, Cuotas, BecasJugador, BecasMotivos, CalidadIntegrante, IntegrantesClub
-from .forms import PersonaForm, DisciplinasForm, CategoriasForm
+from .forms import PersonaForm, DisciplinasForm, CategoriasForm, JugadoresCategoriasForm
 from .libreria.cargaMasiva import * 
 from .libreria.gest_socios import *
 from .libreria.gest_personas import *
@@ -380,8 +381,12 @@ def agregarCategorias(request):
             return redirect('/configuracion/listadoCategorias')
     else:
         form =CategoriasForm()
-    
-    return render(request, 'agregarCategorias.html', {'form': form})
+    contexto = {
+        'form': form,
+        'titulo': 'Agregar Categoría',
+        'boton_texto': 'Agregar Categoría',
+    }
+    return render(request, 'agregarCategorias.html', contexto)
 
 def editarCategorias(request,id):
     categoria = Categorias.objects.get(id=id)
@@ -399,8 +404,62 @@ def editarCategorias(request,id):
          } 
     return render(request, "editarCategoria.html",contexto)
 
+def borrarLogCategorias(request,id):
+    categoria = Categorias.objects.get(id=id)
+    if categoria.method == 'POST':
+        categoria.activo =False
+        categoria.save()
+        return redirect('listadoCategorias')  # Redirige al listado de categorías después de la "eliminación"
+    return render(request, 'confirmar_eliminacion.html', {'categoria': categoria})
+
 def borrarCategorias(request,id):
     Categorias.objects.filter(id=id).delete()
     listadoCategorias = Categorias.objects.all()
     contexto = { "listadoCategorias": listadoCategorias }
     return render(request, "categorias.html",  contexto)
+
+#vistas de acciones sobre jugadores de categorias
+def agregarJugadorCategorias(request):
+    if request.method == 'POST':
+        form= JugadoresCategoriasForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/configuracion/listadoJugadores')
+    else:
+        form =JugadoresCategoriasForm()
+    contexto = {
+        'form': form,
+        'titulo': 'Agregar Jugador a Categoría',
+        'boton_texto': 'Agregar Jugador',
+    }
+    return render(request, 'agregarJugadorCategorias.html', contexto) 
+    
+def obtenerCategorias(request):
+    disciplina_id = request.GET.get('disciplina_id')
+    categorias = Categorias.objects.filter(disciplina__id=disciplina_id)
+    return JsonResponse(list(categorias.values()), safe=False)
+
+
+
+
+def editarJugadorCategorias(request,id):
+    jugador= Jugadores.objects.filter(id=id)
+    if request.method == 'POST':
+        form= JugadoresCategoriasForm(request.POST, instance=jugador)
+        if form.is_valid():
+            form.save()
+            return redirect('/configuracion/listadoJugadores')
+    else: 
+        form = JugadoresCategoriasForm( instance=jugador)
+    contexto={
+        "accion":"Modificar", 
+        "form": form,
+        "datos": jugador,
+    }
+    return render(request, 'editarCategorias.html', contexto)
+
+def borrarJugadorCategorias(request, id):   #Para borrar jugadores(por INDIVIDUAL) de forma TOTAL DE LA BASE DE DATOS. 
+    Jugadores.objects.filter(id=id).delete()
+    listadoJugadores = Jugadores.objects.all
+    contexto ={'listadoJugadores': listadoJugadores}
+    return render(request,'Jugadores.html', contexto)
