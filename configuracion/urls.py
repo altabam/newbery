@@ -5,7 +5,7 @@ from configuracion.views import cargaInicial,cargaMasivaSocios,cargaMasiva, borr
 from configuracion.views import cargarAgrupacionFamiliarSocios, borrarSocio
 from configuracion.views import listarMotivoBecas, cargaBecasJugador
 from configuracion.views import listarMotivoCalicadIntegrantes, listarIntegrantesClub
-from configuracion.views import listadoPersonas, borrarPersona, editarPersona,agregarPersona,agregarDisciplinas,editarDisciplinas,borrarDisciplinas, agregarCategorias, editarCategorias,borrarCategorias, agregarJugadorCategorias, editarJugadorCategorias, borrarJugadorCategorias
+from configuracion.views import listadoPersonas, borrarPersona, editarPersona,agregarPersona,agregarDisciplinas,editarDisciplinas,borrarDisciplinas, agregarCategorias, editarCategorias,borrarCategorias, agregarJugadorCategorias, editarJugadorCategorias,borrarJugadorLogCategorias, borrarJugadorCategorias
 from configuracion.views import obtenerCategorias,obtener_personas
 from configuracion.libreria.gest_socios import agruparSocios, buscarSocio, buscarSocioResponsable,listarIntegrantesSocios,agregarIntegranteSocio, listarIntegrantesSinSocio, quitarIntegranteSocio, buscarSocio
 from configuracion.libreria.gest_carga_inicial import cargaInicialMotivosBeca, cargaInicialCalidadIntegrante, cargaInicialCuotas
@@ -39,7 +39,8 @@ urlpatterns = [
     path("cargarAgrupacionFamiliarSocios",cargarAgrupacionFamiliarSocios, name="cargarAgrupacionFamiliarSocios"),
     path("borrarTodosSocios",borrarTodosSocios, name="borrarTodosSocios"),
     path("borrarSocio/<int:id>",borrarSocio, name="borrarSocio"),
-    path("borrarJugadoresCategoria/<int:id>",borrarJugadoresCategoria, name="borrarJugadoresCategoria"),
+    path("borrarJugadorLogCategorias/<int:id>",borrarJugadorLogCategorias, name="borrarJugadorLogCategorias"),
+    path("borrarJugadoresCategorias/<int:id>",borrarJugadoresCategoria, name="borrarJugadoresCategoria"),
     path("cargarJugadoresCategoria/<int:id>",cargarJugadoresCategoria, name="cargarJugadoresCategoria"),
     path("gestionarJugadoresCategoria",gestionarJugadoresCategoria, name="gestionarJugadoresCategoria"),
     path("cargarCategorias",cargarCategorias, name="cargarCategorias"),

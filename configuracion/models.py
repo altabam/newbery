@@ -64,6 +64,7 @@ class Jugadores(models.Model):
     categoria = models.ForeignKey(Categorias, on_delete=models.CASCADE)
     fecha_desde = models.DateField(null=True)
     fecha_hasta = models.DateField(null=True)
+    activo = models.BooleanField(default=True)  # Campo para la eliminación lógica
     def __str__(self):
         return f"{self.persona} - {self.categoria}"
     def clean(self):

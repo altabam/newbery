@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 import csv
 from django.http import JsonResponse
 from django.db.models import Count
@@ -29,7 +29,7 @@ def listadoCategorias(request):
     return render(request, "categorias.html",  contexto)
 
 def listadoJugadores(request):
-    listadoJugador = Jugadores.objects.all().order_by('categoria__disciplina','categoria')
+    listadoJugador = Jugadores.objects.filter(activo=True).order_by('categoria__disciplina','categoria')
     print(listadoJugador)
     contexto ={ "listadoJugadores": listadoJugador }
     result = (Jugadores.objects
@@ -52,7 +52,6 @@ def listadoSocios(request):
     contexto ={ "listadoSocios": listadoSocio, }
     
     return render(request, "socios.html",  contexto)
-
 
 
 def listarCuotas(request):
@@ -466,6 +465,13 @@ def editarJugadorCategorias(request,id):
         "datos": jugador,
     }
     return render(request, 'editarCategorias.html', contexto)
+
+def borrarJugadorLogCategorias(request, id,):
+    jugador = get_object_or_404(Jugadores, id=id)
+    jugador.activo= False
+    jugador.save()
+    return redirect('/configuracion/listadoJugadores')  
+
 
 def borrarJugadorCategorias(request, id):   #Para borrar jugadores(por INDIVIDUAL) de forma TOTAL DE LA BASE DE DATOS. 
     Jugadores.objects.filter(id=id).delete()

@@ -48,7 +48,10 @@
                         <div class="td-opciones container">
                             <a class="boton-editar" href="{% url 'configuracion:editarJugadorCategorias' listadoJugador.id %}"> 
                                 <img  src="{% static 'img/editar.png?v=2.' %}" alt="Editar" title="Editar" class="icono"></a>
-                            <a class="boton-eliminar" href="{% url 'configuracion:borrarJugadorCategorias' listadoJugador.id %}">
+                            <!-- <a class="boton-eliminar" href="{% url 'configuracion:borrarJugadorCategorias' listadoJugador.id %}">
+                                <img  src="{% static 'img/eliminar1.png?v=2.' %}" alt="Eliminar" title="Eliminar" class="icono">
+                            </a> -->
+                            <a class="boton-eliminar" href="{% url 'configuracion:borrarJugadorLogCategorias' listadoJugador.id %}">
                                 <img  src="{% static 'img/eliminar1.png?v=2.' %}" alt="Eliminar" title="Eliminar" class="icono">
                             </a>
                         </div>
