@@ -6,7 +6,7 @@ from configuracion.views import cargarAgrupacionFamiliarSocios, borrarSocio
 from configuracion.views import listarMotivoBecas, cargaBecasJugador
 from configuracion.views import listarMotivoCalicadIntegrantes, listarIntegrantesClub
 from configuracion.views import listadoPersonas, borrarPersona, editarPersona,agregarPersona,agregarDisciplinas,editarDisciplinas,borrarDisciplinas, agregarCategorias, editarCategorias,borrarCategorias, agregarJugadorCategorias, editarJugadorCategorias, borrarJugadorCategorias
-from configuracion.views import obtenerCategorias
+from configuracion.views import obtenerCategorias,obtener_personas
 from configuracion.libreria.gest_socios import agruparSocios, buscarSocio, buscarSocioResponsable,listarIntegrantesSocios,agregarIntegranteSocio, listarIntegrantesSinSocio, quitarIntegranteSocio, buscarSocio
 from configuracion.libreria.gest_carga_inicial import cargaInicialMotivosBeca, cargaInicialCalidadIntegrante, cargaInicialCuotas
 from configuracion.libreria.cargaMasiva import cargaIntegrantesClub, cargaBecasJugadores
@@ -61,6 +61,7 @@ urlpatterns = [
     path('listarBecados',listarBecados, name='listarBecados'),
     
     path('agregarJugadorCategorias/obtenerCategorias/', obtenerCategorias, name='obtenerCategorias'),
+    path('obtener_personas/', obtener_personas, name='obtener_personas'),
 
     path('agregarIntegranteSocio/<int:id>/<int:idpk>',agregarIntegranteSocio, name='agregarIntegranteSocio'),
     path('quitarIntegranteSocio/<int:id>/<int:idpk>',quitarIntegranteSocio, name='quitarIntegranteSocio'),

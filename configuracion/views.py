@@ -29,7 +29,7 @@ def listadoCategorias(request):
     return render(request, "categorias.html",  contexto)
 
 def listadoJugadores(request):
-    listadoJugador = Jugadores.objects.all()
+    listadoJugador = Jugadores.objects.all().order_by('categoria__disciplina','categoria')
     print(listadoJugador)
     contexto ={ "listadoJugadores": listadoJugador }
     result = (Jugadores.objects
@@ -425,6 +425,11 @@ def agregarJugadorCategorias(request):
         if form.is_valid():
             form.save()
             return redirect('/configuracion/listadoJugadores')
+        else:
+            #Recarga las categorias dinamicamente en caso de un error de formulario
+            disciplina_id = request.POST.get('disciplina') #Por ejemplo, si el usuario cambia la disciplina
+            if disciplina_id:      
+                form.fields['categoria'].queryset = Categorias.objects.filter(disciplina_id=disciplina_id) 
     else:
         form =JugadoresCategoriasForm()
     contexto = {
@@ -439,7 +444,11 @@ def obtenerCategorias(request):
     categorias = Categorias.objects.filter(disciplina__id=disciplina_id)
     return JsonResponse(list(categorias.values()), safe=False)
 
-
+def obtener_personas(request):
+    term = request.GET.get('term', '')
+    personas = Personas.objects.filter(dni__icontains=term)
+    results = [{'id': persona.id, 'text': persona.dni} for persona in personas]
+    return JsonResponse(results, safe=False)
 
 
 def editarJugadorCategorias(request,id):

@@ -24,7 +24,13 @@ class CategoriasForm(forms.ModelForm):
 class JugadoresCategoriasForm(forms.ModelForm):
     disciplina = forms.ModelChoiceField(queryset=Disciplinas.objects.all(), required=True)
     categoria = forms.ModelChoiceField(queryset=Categorias.objects.none(), required=True)
-    persona = forms.ModelChoiceField(queryset=Personas.objects.all(), required=True)  # borrar posiblemente
+   
+    persona = forms.ModelChoiceField(
+        queryset=Personas.objects.all(),
+        widget=forms.Select(attrs={'class': 'select2'}),
+        label='Persona'
+    )
+    
     class Meta:
         model= Jugadores
         fields= ['persona', 'disciplina', 'categoria', 'fecha_desde', 'fecha_hasta']
@@ -33,4 +39,14 @@ class JugadoresCategoriasForm(forms.ModelForm):
         input_formats= {'fecha_desde':["%Y-%m-%d"],'fecha_hasta':["%Y-%m-%d"]
          }
 
-    
+    # Personalizamos la inicialización del formulario, para que solo muestre las categorías relevantes según la disciplina seleccionada
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if 'disciplina' in self.data:
+            try:
+                disciplina_id = int(self.data.get('disciplina'))
+                self.fields['categoria'].queryset = Categorias.objects.filter(disciplina_id=disciplina_id).order_by('nombre')
+            except (ValueError, TypeError):
+                pass  
+        elif self.instance.pk:
+            self.fields['categoria'].queryset = self.instance.disciplina.categoria_set.order_by('nombre')
