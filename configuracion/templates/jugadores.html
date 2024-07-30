@@ -32,18 +32,17 @@
         </tr>
     </thead>
     <tbody>
-
-{% if listadoJugadores %}
-{% for listadoJugador in listadoJugadores %}
+    {% if listadoJugadores %}
+    {% for listadoJugador in listadoJugadores %}
                 <tr>
                     <td class="tdNumero">{{forloop.counter}}</td>
-                    <td class="tdTexto">{{listadoJugador.categoria.disciplina.nombre}}</td>
-                    <td class="tdTexto">{{listadoJugador.categoria.nombre}}</td>
+                    <td class="tdTitulo">{{listadoJugador.categoria.disciplina.nombre}}</td>
+                    <td class="td-nombre">{{listadoJugador.categoria.nombre}}</td>
                     <td class="tdNumero">{{listadoJugador.persona.id}}</td>
-                    <td class="tdTexto">{{listadoJugador.persona.apellido}}</td>
-                    <td class="tdTexto">{{listadoJugador.persona.nombre}}</td>
+                    <td class="td-nombre">{{listadoJugador.persona.apellido}}</td>
+                    <td class="td-nombre">{{listadoJugador.persona.nombre}}</td>
                     <td class="tdNumero">{{listadoJugador.persona.dni}}</td>
-                    <td class="tdTexto">{{listadoJugador.persona.fecha_nacimiento}}</td>
+                    <td class="td-nombre">{{listadoJugador.persona.fecha_nacimiento}}</td>
                     <td class="td-opciones">
                         <div class="td-opciones container">
                             <a class="boton-editar" href="{% url 'configuracion:editarJugadorCategorias' listadoJugador.id %}"> 

@@ -23,7 +23,7 @@ def listadoDisciplinas(request):
     return render(request, "disciplinas.html",  contexto)
 
 def listadoCategorias(request):
-    listadoCategoria = Categorias.objects.all()
+    listadoCategoria = Categorias.objects.filter(activo=True)
     print(listadoCategoria)
     contexto =   { "listadoCategorias": listadoCategoria }
     return render(request, "categorias.html",  contexto)
@@ -404,12 +404,16 @@ def editarCategorias(request,id):
     return render(request, "editarCategoria.html",contexto)
 
 def borrarLogCategorias(request,id):
-    categoria = Categorias.objects.get(id=id)
-    if categoria.method == 'POST':
-        categoria.activo =False
-        categoria.save()
-        return redirect('listadoCategorias')  # Redirige al listado de categorías después de la "eliminación"
-    return render(request, 'confirmar_eliminacion.html', {'categoria': categoria})
+    categoria = get_object_or_404(Categorias, id=id)
+    categoria.activo= False
+    categoria.save()
+    return redirect('/configuracion/listadoCategorias')  
+    #categoria = get_object_or_404(Categorias, id=id)
+  #  if request.method == 'POST':
+  #      categoria.activo =False
+  #      categoria.save()
+  #  return redirect('listadoCategorias')  # Redirige al listado de categorías después de la "eliminación"
+ #   return render(request, 'confirmar_eliminacion.html', {'categoria': categoria})
 
 def borrarCategorias(request,id):
     Categorias.objects.filter(id=id).delete()
@@ -451,7 +455,7 @@ def obtener_personas(request):
 
 
 def editarJugadorCategorias(request,id):
-    jugador= Jugadores.objects.filter(id=id)
+    jugador = get_object_or_404(Jugadores, id=id)
     if request.method == 'POST':
         form= JugadoresCategoriasForm(request.POST, instance=jugador)
         if form.is_valid():
@@ -464,7 +468,7 @@ def editarJugadorCategorias(request,id):
         "form": form,
         "datos": jugador,
     }
-    return render(request, 'editarCategorias.html', contexto)
+    return render(request, "agregarJugadorCategorias.html",contexto)
 
 def borrarJugadorLogCategorias(request, id,):
     jugador = get_object_or_404(Jugadores, id=id)

@@ -5,7 +5,7 @@ from configuracion.views import cargaInicial,cargaMasivaSocios,cargaMasiva, borr
 from configuracion.views import cargarAgrupacionFamiliarSocios, borrarSocio
 from configuracion.views import listarMotivoBecas, cargaBecasJugador
 from configuracion.views import listarMotivoCalicadIntegrantes, listarIntegrantesClub
-from configuracion.views import listadoPersonas, borrarPersona, editarPersona,agregarPersona,agregarDisciplinas,editarDisciplinas,borrarDisciplinas, agregarCategorias, editarCategorias,borrarCategorias, agregarJugadorCategorias, editarJugadorCategorias,borrarJugadorLogCategorias, borrarJugadorCategorias
+from configuracion.views import listadoPersonas, borrarPersona, editarPersona,agregarPersona,agregarDisciplinas,editarDisciplinas,borrarDisciplinas, agregarCategorias, editarCategorias,borrarLogCategorias,borrarCategorias, agregarJugadorCategorias, editarJugadorCategorias,borrarJugadorLogCategorias, borrarJugadorCategorias
 from configuracion.views import obtenerCategorias,obtener_personas
 from configuracion.libreria.gest_socios import agruparSocios, buscarSocio, buscarSocioResponsable,listarIntegrantesSocios,agregarIntegranteSocio, listarIntegrantesSinSocio, quitarIntegranteSocio, buscarSocio
 from configuracion.libreria.gest_carga_inicial import cargaInicialMotivosBeca, cargaInicialCalidadIntegrante, cargaInicialCuotas
@@ -51,6 +51,7 @@ urlpatterns = [
     path("borrarPersona/<int:id>",borrarPersona, name="borrarPersona"),
     path("borrarDisciplinas/<int:id>",borrarDisciplinas, name="borrarDisciplinas"),
     path("borrarCategorias/<int:id>",borrarCategorias, name="borrarCategorias"),
+    path("borrarLogCategorias/<int:id>",borrarLogCategorias, name="borrarLogCategorias"),
     path("borrarJugadorCategorias/<int:id>",borrarJugadorCategorias, name="borrarJugadorCategorias"),
     path('agregarPersona/',agregarPersona, name='agregarPersona'),
     path('agregarDisciplinas/',agregarDisciplinas, name='agregarDisciplinas'),
@@ -62,6 +63,7 @@ urlpatterns = [
     path('listarBecados',listarBecados, name='listarBecados'),
     
     path('agregarJugadorCategorias/obtenerCategorias/', obtenerCategorias, name='obtenerCategorias'),
+    path('editarJugadorCategorias/obtenerCategorias/', obtenerCategorias, name='obtenerCategorias'),
     path('obtener_personas/', obtener_personas, name='obtener_personas'),
 
     path('agregarIntegranteSocio/<int:id>/<int:idpk>',agregarIntegranteSocio, name='agregarIntegranteSocio'),

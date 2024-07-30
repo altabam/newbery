@@ -7,13 +7,13 @@
    }
    
 .tdNumero{
-     text-align: right;
-   }
+  text-align:  center !important;
+  }
    
 .tdTitulo{
-       text-align: center;
-       font-style: bold; ;
-   }
+  text-align:  center !important;
+  font-style:bold;
+  }
 
 .agregar{
     text-align: right;

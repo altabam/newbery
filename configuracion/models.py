@@ -54,7 +54,7 @@ class Categorias (models.Model):
     nombre = models.CharField(max_length=100)
     disciplina = models.ForeignKey(Disciplinas, on_delete=models.CASCADE)
     paga_disciplina = models.BooleanField(default="True")
-  #  activo = models.BooleanField(default=True)  # Campo para la eliminación lógica
+    activo = models.BooleanField(default=True)  # Campo para la eliminación lógica
     def __str__(self):
         return f"{self.nombre}"
 

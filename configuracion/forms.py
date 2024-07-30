@@ -49,4 +49,6 @@ class JugadoresCategoriasForm(forms.ModelForm):
             except (ValueError, TypeError):
                 pass  
         elif self.instance.pk:
-            self.fields['categoria'].queryset = self.instance.disciplina.categoria_set.order_by('nombre')
+            if self.instance.categoria:
+                self.fields['categoria'].queryset = Categorias.objects.filter(disciplina=self.instance.categoria.disciplina).order_by('nombre') 
+              

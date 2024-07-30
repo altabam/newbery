@@ -29,7 +29,7 @@
     {% for listadoCategoria in listadoCategorias %}
                 <tr>
                     <td>{{forloop.counter}}</td>
-                    <td class="td-nombre">{{listadoCategoria.disciplina.nombre}}</td>
+                    <td class="tdTitulo">{{listadoCategoria.disciplina.nombre}}</td>
                     <td class="td-nombre">{{listadoCategoria.nombre}}</td>
                     <td class="td-nombre">
                         {% if listadoCategoria.paga_disciplina %}
@@ -42,7 +42,10 @@
                         <div class="td-opciones container">
                             <a class="boton-editar" href="{% url 'configuracion:editarCategorias' listadoCategoria.id %}"> 
                                 <img  src="{% static 'img/editar.png?v=2.' %}" alt="Editar" title="Editar" class="icono"></a>
-                            <a class="boton-eliminar" href="{% url 'configuracion:borrarCategorias' listadoCategoria.id %}">
+                             <!-- <a class="boton-eliminar" href="{% url 'configuracion:borrarCategorias' listadoCategoria.id %}">
+                                <img  src="{% static 'img/eliminar.png?v=2.' %}" alt="Eliminar" title="Eliminar" class="icono">
+                            </a>  -->
+                            <a class="boton-eliminar" href="{% url 'configuracion:borrarLogCategorias' listadoCategoria.id %}">
                                 <img  src="{% static 'img/eliminar1.png?v=2.' %}" alt="Eliminar" title="Eliminar" class="icono">
                             </a>
                         </div>
