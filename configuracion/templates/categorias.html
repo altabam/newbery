@@ -1,6 +1,18 @@
 {% extends "base_nav.html"%}
+{% load static %}
+{% block styleOtros %}
+<link rel="stylesheet" href="{% static 'css/configuracion.css' %}">
+{% endblock %}
+
 {% block body %}
-<h1> Gestion de Disciplinas</h1>
+<div >
+    <header>
+        <h1 class="titulo"> Gestion de Categorias</h1>
+    </header>
+</div>
+<!-- Botón para agregar una nueva categoría -->
+<a class="boton-agregar" href="{% url 'configuracion:agregarCategorias' %}">
+    <img src="{% static 'img/agregar.png' %}" alt="Agregar" title="Agregar"></a>
 <table>
     
     <thead>
@@ -13,14 +25,31 @@
         </tr>
     </thead>
     <tbody>
-
-{% if listadoCategorias %}
-{% for listadoCategoria in listadoCategorias %}
+    {% if listadoCategorias %}
+    {% for listadoCategoria in listadoCategorias %}
                 <tr>
                     <td>{{forloop.counter}}</td>
-                    <td>{{listadoCategoria.disciplina.nombre}}</td>
-                    <td>{{listadoCategoria.nombre}}</td>
-                    <td>{{listadoCategoria.paga_disciplina}}</td>
+                    <td class="tdTitulo">{{listadoCategoria.disciplina.nombre}}</td>
+                    <td class="td-nombre">{{listadoCategoria.nombre}}</td>
+                    <td class="td-nombre">
+                        {% if listadoCategoria.paga_disciplina %}
+                            <a class="boton-editar"><img  src="{% static 'img/check.png' %}"></a>
+                        {% else %}
+                            <a class="boton-editar"><img  src="{% static 'img/no.png' %}"></a>
+                        {% endif %}
+                    </td>
+                    <td class="td-opciones">
+                        <div class="td-opciones container">
+                            <a class="boton-editar" href="{% url 'configuracion:editarCategorias' listadoCategoria.id %}"> 
+                                <img  src="{% static 'img/editar.png?v=2.' %}" alt="Editar" title="Editar" class="icono"></a>
+                             <!-- <a class="boton-eliminar" href="{% url 'configuracion:borrarCategorias' listadoCategoria.id %}">
+                                <img  src="{% static 'img/eliminar.png?v=2.' %}" alt="Eliminar" title="Eliminar" class="icono">
+                            </a>  -->
+                            <a class="boton-eliminar" href="{% url 'configuracion:borrarLogCategorias' listadoCategoria.id %}">
+                                <img  src="{% static 'img/eliminar1.png?v=2.' %}" alt="Eliminar" title="Eliminar" class="icono">
+                            </a>
+                        </div>
+                    </td>
                 
                 </tr>
 {% endfor %}

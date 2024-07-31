@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 
@@ -46,11 +47,14 @@ class Socios(models.Model):
 
 class Disciplinas(models.Model):
     nombre = models.CharField(max_length=100)
+    def __str__(self):
+        return self.nombre
 
 class Categorias (models.Model):
     nombre = models.CharField(max_length=100)
     disciplina = models.ForeignKey(Disciplinas, on_delete=models.CASCADE)
     paga_disciplina = models.BooleanField(default="True")
+    activo = models.BooleanField(default=True)  # Campo para la eliminación lógica
     def __str__(self):
         return f"{self.nombre}"
 
@@ -60,6 +64,31 @@ class Jugadores(models.Model):
     categoria = models.ForeignKey(Categorias, on_delete=models.CASCADE)
     fecha_desde = models.DateField(null=True)
     fecha_hasta = models.DateField(null=True)
+    activo = models.BooleanField(default=True)  # Campo para la eliminación lógica
+    def __str__(self):
+        return f"{self.persona} - {self.categoria}"
+    def clean(self):
+        # Validación personalizada para evitar duplicados en el mismo periodo de tiempo.
+        if Jugadores.objects.filter(
+            persona=self.persona,
+            categoria=self.categoria,
+            fecha_desde__lte=self.fecha_hasta,
+            fecha_hasta__gte=self.fecha_desde
+        ).exclude(id=self.id).exists():
+            raise ValidationError('El jugador ya está asignado a esta categoría y disciplina en el mismo periodo de tiempo.')
+
+    def save(self, *args, **kwargs):
+        # Llamar a la validación personalizada antes de guardar
+        self.clean()
+        super().save(*args, **kwargs)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(#asegura que la restricción se respete directamente en base de datos
+                fields=['persona', 'categoria', 'fecha_desde', 'fecha_hasta'],
+                name='unique_player_category_period'
+            )
+        ]
 
 class Becas(models.Model):
     nombre = models.CharField(max_length=100)
