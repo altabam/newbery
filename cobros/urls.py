@@ -1,5 +1,5 @@
 from django.urls import path
-from cobros.views import render_cobros, verPagoSocio,listarSitInicial, agregarSitInicial, editarSitInicial, borrarSitInicial
+from cobros.views import render_cobros, verPagoSocio,listarSitInicial, agregarSitInicial, editarSitInicial, borrarSitInicial, listarSociosDeuda
 app_name = 'cobros'
 
 urlpatterns = [
@@ -9,6 +9,7 @@ urlpatterns = [
     path("editarSitInicial/<int:id>",editarSitInicial, name="editarSitInicial"),
     path("borrarSitInicial/<int:id>",borrarSitInicial, name="borrarSitInicial"),
     path("listarSitInicial",listarSitInicial, name="listarSitInicial"),
+    path("listarSociosDeuda",listarSociosDeuda, name="listarSociosDeuda"),
 
     
     

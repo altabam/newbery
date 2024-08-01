@@ -1,0 +1,45 @@
+{% extends "base_nav.html"%}
+{% load static %}
+{% block styleOtros %}  
+     <link rel='stylesheet' href="{% static 'css/configuracion.css' %}" type="text/css">
+  {% endblock %}
+
+{% block body %}
+<h1> Listado Deuda de Socios</h1>
+<br>
+<h3 > Monto total Deuda: {{montoTotalDeuda}}</h3>
+<table>
+    <thead>
+        <tr>
+                <th>Socio</th>
+                <th>Dni</th>
+                <th>Apellido y Nombre Responsable</th>
+                <th>Monto Cuota</th>
+                <th>Monto Beca</th>
+                <th>Monto Pagar</th>
+                <th>Cant. cuotas adeudadas</th>
+                <th>Deuda</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    {% if listadoDeudores %}
+    {% for listadoDeudor in listadoDeudores %}
+            <tr>
+                <td class="tdNumero">{{listadoDeudor.numero}}</td>
+                <td class="tdNumero">{{listadoDeudor.dni}}</td>
+                <td class="tdTexto">{{listadoDeudor.nombre}}</td>
+                <td class="tdNumero">{{listadoDeudor.montoCuota}} </td>
+                <td class="tdNumero">{{listadoDeudor.montoBeca}} </td>
+                <td class="tdNumero">{{listadoDeudor.montoPagar}} </td>
+                <td class="tdNumero">{{listadoDeudor.cuotasImpagas}} </td>
+                <td class="tdNumero">{{listadoDeudor.montoDeuda}} </td>
+                
+            </tr>
+    {% endfor %}
+    {% endif %}
+    </tbody>
+
+</table>
+{% endblock %}
+
