@@ -14,6 +14,8 @@ def render_cobros(request):
     
     return render(request, "cobros.html", )
 
+def pagarCuota(request):
+    return render(request, "pagarCuota.html")
 
 def verPagoSocio(request,id):
     meses =[  "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL","AGO","SEP", "OCT", "NOV","DIC", ]
@@ -180,7 +182,7 @@ def listarSociosDeuda(request):
     montoTotalDeuda =0
     for socio in socios :
          
-        cuotasImpagas =  calcularCuotasImpagas(socio.numero)
+        cuotasImpagas =  calcularCuotasImpagas(socio)
         if cuotasImpagas > 0:
             montos = calcularMontoPago(socio.numero)
             deuda = montos['montoPagar'] * cuotasImpagas
@@ -203,44 +205,39 @@ def listarSociosDeuda(request):
 
 def calcularMontoPago(nroSocio):
     integrantes = Socios.objects.filter(numero = nroSocio)
-    cantIntegrantes = 0
+    cantIntegrantes = 1
     montoCuota  = Cuotas.objects.get(cant_int=1).valor
     montoBeca =0
     for integrante in integrantes:
-         cantIntegrantes=cantIntegrantes+1
          if Jugadores.objects.filter(persona = integrante.persona).exists():
-            jugador = Jugadores.objects.get(persona = integrante.persona)
-            if BecasJugador.objects.filter(jugador = jugador).exists():
-                integrante = BecasJugador.objects.get(jugador  = jugador)
-                montoBeca = montoBeca+ float(montoCuota)*float( integrante.beca.porcentaje)
+            disciplinasParticipa = Jugadores.objects.filter(persona = integrante.persona)
+            for jugador in disciplinasParticipa:
+                if (jugador.fecha_hasta is None):
+                    if (jugador.categoria.paga_disciplina):
+                        cantIntegrantes=cantIntegrantes+1
+                        if BecasJugador.objects.filter(jugador = jugador).exists():
+                            integrante = BecasJugador.objects.get(jugador  = jugador)
+                            montoBeca = montoBeca+ float(montoCuota)*float( integrante.beca.porcentaje)
     montoCuota =  float(Cuotas.objects.get(cant_int = cantIntegrantes).valor) 
     montoPagar = montoCuota - float(montoBeca)
     montos ={"montoBeca": montoBeca, "montoCuota": montoCuota,"montoPagar": montoPagar}
     return montos
 
-def calcularCuotasImpagas(nroSocio):
+def calcularCuotasImpagas(socio):
     meses =[  "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL","AGO","SEP", "OCT", "NOV","DIC", ]
     anio_actual = date.today().year
     mes_actual = int(date.today().month)
     anio_anterior =  str(int(anio_actual)-1)
     anios = [anio_anterior, anio_actual]
     cantCuotasImpagas = 0
-
-    pagoSocio = Pagos.objects.filter(socio= nroSocio)
+    pagoSocio = Pagos.objects.filter(socio= socio)
     for i in anios:
-        mesesAnioPago=[]
         mes = 1
         for j in meses:
-            if i == anio_actual and mes > mes_actual:
-                print("no va este mes")
-            else:
-                  #  print("va este mes:",j)
-                    detallePago = DetallePagos.objects.filter(anio=i, mes=mes, pago__in = pagoSocio)
-
-                    if (detallePago):
-                        print("paso por aqui")
-                    else:
-                        cantCuotasImpagas +=1
+            if not (i == anio_actual and mes > mes_actual):
+                detallePago = DetallePagos.objects.filter(anio=i, mes=mes, pago__in = pagoSocio)
+                if (not detallePago):
+                    cantCuotasImpagas +=1
             mes= mes +1
     return cantCuotasImpagas
 
