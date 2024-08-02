@@ -19,3 +19,4 @@ Cargar los deudores
 Cargar los socios que pagaron Mayo segun archivo pasado por lavalle
 
 
+ALTER SEQUENCE configuracion_personas_id_seq RESTART WITH 1

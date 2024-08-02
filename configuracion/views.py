@@ -152,13 +152,12 @@ def cargarJugadoresCategoria(request,id):
     template_name = "configuracion/migrations/categoria"+categoria.nombre+".csv"
     print(template_name)
     with open (template_name) as f:
-              
         reader = csv.reader(f )
         for row in reader:
            print(row)
            if Personas.objects.filter(dni = row[0]).exists():
              persona = Personas.objects.get(dni=row[0])
-             if  Jugadores.objects.filter(persona = persona).exists():
+             if  Jugadores.objects.filter(persona = persona, categoria=categoria).exists():
                  print("Jugador: "+row[0]+" existe")
              else: 
                  print("Jugador : "+row[0]+" no existe")
