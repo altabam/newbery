@@ -8,6 +8,7 @@
 
    <!--  {% load static %} -->
     <!-- Uso Select2 -->
+    <link rel="stylesheet" href="{% static 'css/configuracion.css' %}">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
@@ -45,13 +46,16 @@
     });
     </script>
 </head>
-<body>
-    <h1>{{ titulo }}</h1>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Guardar</button>
-    </form>
+<body class="bodyForm">
+    <div class="divForm">
+        <h1 class="titulo" >{{ titulo }}</h1>
+        <form class="formulario" method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Guardar</button>
+        </form>
+    </div>
+    
 
     <script> 
     /* Esta funcion actualiza las categorias cuando el usuario selecciona una disciplina */

@@ -67,15 +67,28 @@ class Jugadores(models.Model):
     activo = models.BooleanField(default=True)  # Campo para la eliminación lógica
     def __str__(self):
         return f"{self.persona} - {self.categoria}"
+
     def clean(self):
-        # Validación personalizada para evitar duplicados en el mismo periodo de tiempo.
-        if Jugadores.objects.filter(
-            persona=self.persona,
-            categoria=self.categoria,
-            fecha_desde__lte=self.fecha_hasta,
-            fecha_hasta__gte=self.fecha_desde
-        ).exclude(id=self.id).exists():
-            raise ValidationError('El jugador ya está asignado a esta categoría y disciplina en el mismo periodo de tiempo.')
+        if not self.persona or not self.categoria:
+            # Si persona o categoria no están definidos, no podemos hacer la validación
+            return
+
+        disciplina = self.categoria.disciplina
+        if disciplina:
+            overlap= Jugadores.objects.filter(
+                persona=self.persona,
+                categoria=self.categoria,
+                activo=True,
+                fecha_desde=self.fecha_desde
+            ).exclude(id=self.id)
+            for jugador in overlap:
+                if (
+                    (jugador.fecha_hasta is None or jugador.fecha_hasta >= self.fecha_desde) and
+                    (self.fecha_hasta is None or self.fecha_hasta >= jugador.fecha_desde)
+                ):
+                    raise ValidationError('El jugador ya está activo en esta categoría y disciplina dentro del mismo periodo de tiempo.')
+            #if overlap.exists():
+              #  raise ValidationError('El jugador ya está activo en esta categoría y disciplina')
 
     def save(self, *args, **kwargs):
         # Llamar a la validación personalizada antes de guardar
@@ -85,7 +98,7 @@ class Jugadores(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(#asegura que la restricción se respete directamente en base de datos
-                fields=['persona', 'categoria', 'fecha_desde', 'fecha_hasta'],
+                fields=['persona', 'categoria', 'fecha_desde'],
                 name='unique_player_category_period'
             )
         ]

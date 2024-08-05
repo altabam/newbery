@@ -15,6 +15,28 @@
     <img src="{% static 'img/agregar.png' %}" alt="Agregar" title="Agregar">
 </a>
 
+<!-- formulario para filtrar por disciplina -->
+<form method="get" action="{% url 'configuracion:listadoJugadores' %}">
+    <select name="disciplina" onchange="this.form.submit()">
+        <option value="">Seleccione una disciplina</option>
+        {% for disciplina in disciplinas %}
+        <option value="{{ disciplina.id }}" {% if request.GET.disciplina == disciplina.id|stringformat:"s" %}selected{% endif %}>
+            {{ disciplina.nombre }}
+        </option>
+        {% endfor %}
+    </select>
+</form>
+<!-- formulario para filtrar por categoria -->
+<form method="get" action="{% url 'configuracion:listadoJugadores' %}">
+    <select name="disciplina" onchange="this.form.submit()">
+        <option value="">Seleccione una categoria</option>
+        {% for categoria in categorias %}
+        <option value="{{ categoria.id }}" {% if request.GET.categoria == categoria.id|stringformat:"s" %}selected{% endif %}>
+            {{ categoria.nombre }}
+        </option>
+        {% endfor %}
+    </select>
+</form>
 <table>
     
     <thead>
@@ -27,7 +49,8 @@
                 <th>Nombre</th>
                 <th>Dni</th>
                 <th>Fecha de Nacimiento</th>
-  
+                <!-- <th>Activo?</th> -->
+
                 <th colspan="3">Opciones</th>
         </tr>
     </thead>
@@ -43,13 +66,20 @@
                     <td class="td-nombre">{{listadoJugador.persona.nombre}}</td>
                     <td class="tdNumero">{{listadoJugador.persona.dni}}</td>
                     <td class="td-nombre">{{listadoJugador.persona.fecha_nacimiento}}</td>
+                   <!--  <td class="td-nombre">
+                        {% if listadoJugador.activo %}
+                            <a class="boton-editar"><img  src="{% static 'img/check.png' %}"></a>
+                        {% else %}
+                            <a class="boton-editar"><img  src="{% static 'img/no.png' %}"></a>
+                        {% endif %}
+                    </td> -->
                     <td class="td-opciones">
                         <div class="td-opciones container">
                             <a class="boton-editar" href="{% url 'configuracion:editarJugadorCategorias' listadoJugador.id %}"> 
                                 <img  src="{% static 'img/editar.png?v=2.' %}" alt="Editar" title="Editar" class="icono"></a>
-                            <!-- <a class="boton-eliminar" href="{% url 'configuracion:borrarJugadorCategorias' listadoJugador.id %}">
-                                <img  src="{% static 'img/eliminar1.png?v=2.' %}" alt="Eliminar" title="Eliminar" class="icono">
-                            </a> -->
+                            <!--  <a class="boton-eliminar" href="{% url 'configuracion:borrarJugadorCategorias' listadoJugador.id %}">
+                                <img  src="{% static 'img/eliminar.png?v=2.' %}" alt="Eliminar" title="Eliminar" class="icono">
+                            </a>  -->
                             <a class="boton-eliminar" href="{% url 'configuracion:borrarJugadorLogCategorias' listadoJugador.id %}">
                                 <img  src="{% static 'img/eliminar1.png?v=2.' %}" alt="Eliminar" title="Eliminar" class="icono">
                             </a>
