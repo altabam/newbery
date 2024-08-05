@@ -50,7 +50,7 @@ def listadoJugadores(request):
     if disciplinaId:
         listadoJugador = listadoJugador.filter(categoria__disciplina_id=disciplinaId)
         categorias = categorias.filter(disciplina_id= disciplinaId) #en base a la disciplina seleccionada filtra la categoria.
-    
+
     if categoriaId:
         listadoJugador = listadoJugador.filter(categoria_id=categoriaId)
     contexto ={ 
