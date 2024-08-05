@@ -27,7 +27,7 @@ def verPagoSocio(request,id):
     anios = [anio_anterior, anio_actual]
     socio = Socios.objects.get(id=id)
     socios = Socios.objects.filter(numero = socio.numero)
-    montoDisciplina = Cuotas.objects.get(cant_int=1)
+    montoDisciplina = Cuotas.objects.get(cant_int=1, fecha_hasta = None)
     print(socios)
     cantIntegrantes=0
     montoBeca =0
@@ -42,7 +42,7 @@ def verPagoSocio(request,id):
                 becados.append(integrante)
                 montoBeca = montoBeca+ float(montoDisciplina.valor)*float( integrante.beca.porcentaje)
     print("cantidad de integrantes:"+ str(cantIntegrantes))
-    montoCuota =  float(Cuotas.objects.get(cant_int = cantIntegrantes).valor) - float(montoBeca)
+    montoCuota =  float(Cuotas.objects.get(cant_int = cantIntegrantes, fecha_hasta = None).valor) - float(montoBeca)
     print (montoCuota)
     montoDebe = 0
     mes =1
@@ -206,7 +206,7 @@ def listarSociosDeuda(request):
 def calcularMontoPago(nroSocio):
     integrantes = Socios.objects.filter(numero = nroSocio)
     cantIntegrantes = 1
-    montoCuota  = Cuotas.objects.get(cant_int=1).valor
+    montoCuota  = Cuotas.objects.get(cant_int=1, fecha_hasta=None).valor
     montoBeca =0
     for integrante in integrantes:
          if Jugadores.objects.filter(persona = integrante.persona).exists():
@@ -218,7 +218,7 @@ def calcularMontoPago(nroSocio):
                         if BecasJugador.objects.filter(jugador = jugador).exists():
                             integrante = BecasJugador.objects.get(jugador  = jugador)
                             montoBeca = montoBeca+ float(montoCuota)*float( integrante.beca.porcentaje)
-    montoCuota =  float(Cuotas.objects.get(cant_int = cantIntegrantes).valor) 
+    montoCuota =  float(Cuotas.objects.get(cant_int = cantIntegrantes, fecha_hasta=None).valor) 
     montoPagar = montoCuota - float(montoBeca)
     montos ={"montoBeca": montoBeca, "montoCuota": montoCuota,"montoPagar": montoPagar}
     return montos

@@ -69,6 +69,8 @@ class Cuotas(models.Model):
     concepto = models.CharField(max_length=100)
     valor = models.DecimalField( max_digits=9, decimal_places=2) 
     cant_int = models.IntegerField()
+    fecha_desde = models.DateField(null=True)
+    fecha_hasta= models.DateField(null=True)
 
 class BecasMotivos(models.Model):
     concepto = models.CharField(max_length=100)
