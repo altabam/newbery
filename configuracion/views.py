@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.db.models import Count
 from django.core.exceptions import ObjectDoesNotExist   
 from .models import Personas, Disciplinas, Categorias, Jugadores, Becas, Socios, Cuotas, BecasJugador, BecasMotivos, CalidadIntegrante, IntegrantesClub
-from .forms import PersonaForm, DisciplinasForm, CategoriasForm, JugadoresCategoriasForm
+from .forms import PersonaForm, DisciplinasForm, CategoriasForm, JugadoresCategoriasForm,borrarJugadorForm
 from .libreria.cargaMasiva import * 
 from .libreria.gest_socios import *
 from .libreria.gest_personas import *
@@ -29,9 +29,26 @@ def listadoCategorias(request):
     return render(request, "categorias.html",  contexto)
 
 def listadoJugadores(request):
+
+    # Obtener todas las disciplinas y categorias disponibles
+    disciplinas = Disciplinas.objects.all()
+    categorias = Categorias.objects.filter(activo= True)
+
+    disciplinaId = request.GET.get('disciplina') #obtenemos el valor del select
+    categoriaId = request.GET.get('categoria')
     listadoJugador = Jugadores.objects.filter(activo=True).order_by('categoria__disciplina','categoria')
-    print(listadoJugador)
-    contexto ={ "listadoJugadores": listadoJugador }
+
+    # Si se proporciona un ID de disciplina, filtrar
+    if disciplinaId:
+        listadoJugador = listadoJugador.filter(categoria__disciplina_id=disciplinaId)
+        categorias = categorias.filter(disciplina_id= disciplinaId) #en base a la disciplina seleccionada filtra la categoria.
+    
+    if categoriaId:
+        listadoJugador = listadoJugador.filter(categoria_id=categoriaId)
+    contexto ={ 
+        "listadoJugadores": listadoJugador,
+        'disciplinas': disciplinas,
+        'categorias':categorias }
     result = (Jugadores.objects
         .values('categoria')
         .annotate(dcount=Count('categoria'))
@@ -408,12 +425,7 @@ def borrarLogCategorias(request,id):
     categoria.activo= False
     categoria.save()
     return redirect('/configuracion/listadoCategorias')  
-    #categoria = get_object_or_404(Categorias, id=id)
-  #  if request.method == 'POST':
-  #      categoria.activo =False
-  #      categoria.save()
-  #  return redirect('listadoCategorias')  # Redirige al listado de categorías después de la "eliminación"
- #   return render(request, 'confirmar_eliminacion.html', {'categoria': categoria})
+
 
 def borrarCategorias(request,id):
     Categorias.objects.filter(id=id).delete()
@@ -470,11 +482,19 @@ def editarJugadorCategorias(request,id):
     }
     return render(request, "agregarJugadorCategorias.html",contexto)
 
-def borrarJugadorLogCategorias(request, id,):
+def borrarJugadorLogCategorias(request, id):
     jugador = get_object_or_404(Jugadores, id=id)
-    jugador.activo= False
-    jugador.save()
-    return redirect('/configuracion/listadoJugadores')  
+ 
+    if request.method == 'POST':
+        fecha_hasta = request.POST.get('fecha_hasta')
+        if fecha_hasta:
+            jugador.activo = False
+            jugador.fecha_hasta = fecha_hasta
+            jugador.save()
+            return redirect('/configuracion/listadoJugadores')
+    
+    return render(request, 'borrarJugadorCategorias.html')
+   
 
 
 def borrarJugadorCategorias(request, id):   #Para borrar jugadores(por INDIVIDUAL) de forma TOTAL DE LA BASE DE DATOS. 

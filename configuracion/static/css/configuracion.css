@@ -1,3 +1,42 @@
+
+/* estilos para formularios  */
+.bodyForm {
+  background-color: #E4E4E4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  min-height: 100vh;
+}
+
+.divForm{
+  background-color: #F5F5F5;
+  width: 500px;
+  height: 600px;
+  padding: 50px;
+
+  
+}
+.formulario{
+  background-color: transparent;
+  text-align: center;
+  width: 500px;
+  height:400px;
+  display: grid;
+  align-self: center;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.formulario > p{
+  background-color:#d7e02d;
+  border-radius: 35px;
+  border: 2px solid #cbcbcb;
+}
+.filtro{
+  text-align: left;
+  display: flex;
+}
+
 .icono{
     width: 32px;
     height: 32px;
@@ -140,5 +179,3 @@ table {
   padding: 0;
 }
 
-
-  

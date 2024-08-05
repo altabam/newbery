@@ -33,7 +33,7 @@ class JugadoresCategoriasForm(forms.ModelForm):
     
     class Meta:
         model= Jugadores
-        fields= ['persona', 'disciplina', 'categoria', 'fecha_desde', 'fecha_hasta']
+        fields= ['persona', 'disciplina', 'categoria', 'fecha_desde']
         widgets= {'fecha_desde':forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"}),'fecha_hasta':forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"})
          }
         input_formats= {'fecha_desde':["%Y-%m-%d"],'fecha_hasta':["%Y-%m-%d"]
@@ -51,4 +51,13 @@ class JugadoresCategoriasForm(forms.ModelForm):
         elif self.instance.pk:
             if self.instance.categoria:
                 self.fields['categoria'].queryset = Categorias.objects.filter(disciplina=self.instance.categoria.disciplina).order_by('nombre') 
-              
+    
+class borrarJugadorForm(forms.ModelForm):
+    class Meta:
+        model =Jugadores
+        fields= ['fecha_hasta']
+        widgets= {'fecha_hasta':forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"}),
+        
+         }
+        input_formats= {'fecha_hasta':["%Y-%m-%d"],
+         }
