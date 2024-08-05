@@ -1,11 +1,14 @@
 from django.urls import path,re_path
 from configuracion.views import listadoDisciplinas, listadoCategorias, listadoBecas, listadoJugadores, listadoSocios, listarCuotas
 # pasar todo este from a gest_carga_inicial.py
-from configuracion.views import cargaInicial,cargaMasivaSocios,cargaMasiva, borrarTodosSocios,borrarJugadoresCategoria, cargarJugadoresCategoria, gestionarJugadoresCategoria, cargarCategorias, cargaInicialDisciplinas, cargaInicialBecas, cargaInicialCategorias 
+from configuracion.views import cargaInicial,cargaMasivaSocios,cargaMasiva, borrarTodosSocios
+from configuracion.views import borrarJugadoresCategoria, cargarJugadoresCategoria, gestionarJugadoresCategoria, listarJugadoresNoSocios
+from configuracion.views import cargarCategorias, cargaInicialDisciplinas, cargaInicialBecas, cargaInicialCategorias 
 from configuracion.views import cargarAgrupacionFamiliarSocios, borrarSocio
 from configuracion.views import listarMotivoBecas, cargaBecasJugador
 from configuracion.views import listarMotivoCalicadIntegrantes, listarIntegrantesClub
-from configuracion.views import listadoPersonas, borrarPersona, editarPersona,agregarPersona
+from configuracion.views import listadoPersonas, borrarPersona, editarPersona,agregarPersona,agregarDisciplinas,editarDisciplinas,borrarDisciplinas, agregarCategorias, editarCategorias,borrarLogCategorias,borrarCategorias, agregarJugadorCategorias, editarJugadorCategorias,borrarJugadorLogCategorias, borrarJugadorCategorias
+from configuracion.views import obtenerCategorias,obtener_personas
 from configuracion.libreria.gest_socios import agruparSocios, buscarSocio, buscarSocioResponsable,listarIntegrantesSocios,agregarIntegranteSocio, listarIntegrantesSinSocio, quitarIntegranteSocio, buscarSocio
 from configuracion.libreria.gest_carga_inicial import cargaInicialMotivosBeca, cargaInicialCalidadIntegrante, cargaInicialCuotas
 from configuracion.libreria.cargaMasiva import cargaIntegrantesClub, cargaBecasJugadores
@@ -38,18 +41,34 @@ urlpatterns = [
     path("cargarAgrupacionFamiliarSocios",cargarAgrupacionFamiliarSocios, name="cargarAgrupacionFamiliarSocios"),
     path("borrarTodosSocios",borrarTodosSocios, name="borrarTodosSocios"),
     path("borrarSocio/<int:id>",borrarSocio, name="borrarSocio"),
-    path("borrarJugadoresCategoria/<int:id>",borrarJugadoresCategoria, name="borrarJugadoresCategoria"),
+    path("borrarJugadorLogCategorias/<int:id>",borrarJugadorLogCategorias, name="borrarJugadorLogCategorias"),
+    path("borrarJugadoresCategorias/<int:id>",borrarJugadoresCategoria, name="borrarJugadoresCategoria"),
     path("cargarJugadoresCategoria/<int:id>",cargarJugadoresCategoria, name="cargarJugadoresCategoria"),
     path("gestionarJugadoresCategoria",gestionarJugadoresCategoria, name="gestionarJugadoresCategoria"),
     path("cargarCategorias",cargarCategorias, name="cargarCategorias"),
     path("editarPersona/<int:id>",editarPersona, name="editarPersona"),
+    path("editarDisciplinas/<int:id>",editarDisciplinas, name="editarDisciplinas"),
+    path("editarCategorias/<int:id>",editarCategorias, name="editarCategorias"),
+    path("editarJugadorCategorias/<int:id>",editarJugadorCategorias, name="editarJugadorCategorias"),
     path("borrarPersona/<int:id>",borrarPersona, name="borrarPersona"),
+    path("borrarDisciplinas/<int:id>",borrarDisciplinas, name="borrarDisciplinas"),
+    path("borrarCategorias/<int:id>",borrarCategorias, name="borrarCategorias"),
+    path("borrarLogCategorias/<int:id>",borrarLogCategorias, name="borrarLogCategorias"),
+    path("borrarJugadorCategorias/<int:id>",borrarJugadorCategorias, name="borrarJugadorCategorias"),
     path('agregarPersona/',agregarPersona, name='agregarPersona'),
+    path('agregarDisciplinas/',agregarDisciplinas, name='agregarDisciplinas'),
+    path('agregarCategorias/', agregarCategorias, name='agregarCategorias'),
+    path('agregarJugadorCategorias/', agregarJugadorCategorias, name='agregarJugadorCategorias'),
     path('agruparSocios/',agruparSocios, name='agruparSocios'),
     path('listarIntegrantesSocios/<int:id>',listarIntegrantesSocios, name='listarIntegrantesSocios'),
     path('listarIntegrantesSinSocio/<int:id>',listarIntegrantesSinSocio, name='listarIntegrantesSinSocio'),
     path('listarBecados',listarBecados, name='listarBecados'),
     
+    path('agregarJugadorCategorias/obtenerCategorias/', obtenerCategorias, name='obtenerCategorias'),
+    path('editarJugadorCategorias/obtenerCategorias/', obtenerCategorias, name='obtenerCategorias'),
+    path('obtener_personas/', obtener_personas, name='obtener_personas'),
+    path('listarJugadoresNoSocios/', listarJugadoresNoSocios, name='listarJugadoresNoSocios'),
+
     path('agregarIntegranteSocio/<int:id>/<int:idpk>',agregarIntegranteSocio, name='agregarIntegranteSocio'),
     path('quitarIntegranteSocio/<int:id>/<int:idpk>',quitarIntegranteSocio, name='quitarIntegranteSocio'),
 
@@ -58,9 +77,11 @@ urlpatterns = [
     re_path(r'^buscarSocio/$', buscarSocio, name='busquedaSocio'), 
     re_path(r'^buscarSocioResponsable/',buscarSocioResponsable, name='buscarSocioResponsable'),
 
-path('reporteJugadoresPorDisciplina',reporteJugadoresPorDisciplina, name='reporteJugadoresPorDisciplina'),
-path('reporteJugadoresPorCategoria',reporteJugadoresPorCategoria, name='reporteJugadoresPorCategoria'),
-path('reportes',reportes, name='reportes'),
+
+
+    path('reporteJugadoresPorDisciplina',reporteJugadoresPorDisciplina, name='reporteJugadoresPorDisciplina'),
+    path('reporteJugadoresPorCategoria',reporteJugadoresPorCategoria, name='reporteJugadoresPorCategoria'),
+    path('reportes',reportes, name='reportes'),
     
   
 

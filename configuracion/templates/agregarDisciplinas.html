@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nueva Disciplina</title>
+</head>
+
+<div class="card-body">
+    <form  method="POST">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success btn-block text-white ">enviar {{accion}}</button>
+    </form>
+</div>
+
+</html>

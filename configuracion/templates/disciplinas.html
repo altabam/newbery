@@ -1,8 +1,22 @@
 {% extends "base_nav.html"%}
+{% load static %}
+{% block styleOtros %}
+<link rel="stylesheet" href="{% static 'css/configuracion.css' %}">
+{% endblock %}
+
 {% block body %}
-<h1> Gestion de Disciplinas</h1>
+<div >
+    <header>
+        <h1 class="titulo"> Gestion de Disciplinas</h1>
+    </header>
+</div>
+
+
+<a class="boton-agregar" href="{% url 'configuracion:agregarDisciplinas' %}" >
+    <img src="{% static 'img/agregar.png' %}" alt="Agregar" title="Agregar">
+</a>
+
 <table>
-    
     <thead>
         <tr>
                 <th>#</th>
@@ -11,16 +25,24 @@
         </tr>
     </thead>
     <tbody>
+    {% if listadoDisciplinas %}
+        {% for disciplina in listadoDisciplinas %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td class="td-nombre">{{disciplina.nombre}}</td>
+                <td class="td-opciones">
+                    <div class="td-opciones container">
+                        <a class="boton-editar" href="{% url 'configuracion:editarDisciplinas' disciplina.id %}"> 
+                            <img  src="{% static 'img/editar.png?v=2.' %}" alt="Editar" title="Editar" class="icono"></a>
+                        <a class="boton-eliminar" href="{% url 'configuracion:borrarDisciplinas' disciplina.id %}"> 
+                            <img  src="{% static 'img/eliminar1.png?v=2.' %}" alt="Eliminar" title="Eliminar" class="icono"></a>
+                    </div>
+                </td>
 
-{% if listadoDisciplinas %}
-{% for listadoDisciplina in listadoDisciplinas %}
-                <tr>
-                    <td>{{forloop.counter}}</td>
-                    <td>{{listadoDisciplina.nombre}}</td>
-                
-                </tr>
-{% endfor %}
-{% endif %}
+            </tr>
+    {% endfor %}
+    {% endif %}
+    </tbody>
 </table>
 {% endblock %}
 

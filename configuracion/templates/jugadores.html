@@ -1,6 +1,45 @@
 {% extends "base_nav.html"%}
+{% load static %}
+{% block styleOtros %}
+<link rel="stylesheet" href="{% static 'css/configuracion.css' %}">
+{% endblock %}
+
 {% block body %}
-<h1> Gestion de Jugadores </h1>
+<div >
+    <header>
+        <h1 class="titulo"> Gestion de Jugadores</h1>
+    </header>
+</div>
+
+<a class="boton-agregar" href="{% url 'configuracion:agregarJugadorCategorias' %}" >
+    <img src="{% static 'img/agregar.png' %}" alt="Agregar" title="Agregar">
+</a>
+<div class="filtro">
+    <p>Filtrar por: </p>
+    <!-- formulario para filtrar por disciplina -->
+    <form method="get" action="{% url 'configuracion:listadoJugadores' %}">
+        <select name="disciplina" onchange="this.form.submit()">
+            <option value="">Seleccione una disciplina</option>
+            {% for disciplina in disciplinas %}
+            <option value="{{ disciplina.id }}" {% if request.GET.disciplina == disciplina.id|stringformat:"s" %}selected{% endif %}>
+                {{ disciplina.nombre }}
+            </option>
+            {% endfor %}
+        </select>
+    </form>
+    <!-- formulario para filtrar por categoria -->
+    <form method="get" action="{% url 'configuracion:listadoJugadores' %}">
+        <select name="categoria" onchange="this.form.submit()">
+            <option value="">Seleccione una categoria</option>
+            {% for categoria in categorias %}
+            <option value="{{ categoria.id }}" {% if request.GET.categoria == categoria.id|stringformat:"s" %}selected{% endif %}>
+                {{ categoria.nombre }}
+            </option>
+            {% endfor %}
+        </select>
+        <button type="submit">Filtrar</button>
+    </form>
+</div>
 <table>
     
     <thead>
@@ -13,23 +52,41 @@
                 <th>Nombre</th>
                 <th>Dni</th>
                 <th>Fecha de Nacimiento</th>
-  
+                <!-- <th>Activo?</th> -->
+
                 <th colspan="3">Opciones</th>
         </tr>
     </thead>
     <tbody>
-
-{% if listadoJugadores %}
-{% for listadoJugador in listadoJugadores %}
+    {% if listadoJugadores %}
+    {% for listadoJugador in listadoJugadores %}
                 <tr>
                     <td class="tdNumero">{{forloop.counter}}</td>
-                    <td class="tdTexto">{{listadoJugador.categoria.disciplina.nombre}}</td>
-                    <td class="tdTexto">{{listadoJugador.categoria.nombre}}</td>
+                    <td class="tdTitulo">{{listadoJugador.categoria.disciplina.nombre}}</td>
+                    <td class="td-nombre">{{listadoJugador.categoria.nombre}}</td>
                     <td class="tdNumero">{{listadoJugador.persona.id}}</td>
-                    <td class="tdTexto">{{listadoJugador.persona.apellido}}</td>
-                    <td class="tdTexto">{{listadoJugador.persona.nombre}}</td>
+                    <td class="td-nombre">{{listadoJugador.persona.apellido}}</td>
+                    <td class="td-nombre">{{listadoJugador.persona.nombre}}</td>
                     <td class="tdNumero">{{listadoJugador.persona.dni}}</td>
-                    <td class="tdTexto">{{listadoJugador.persona.fecha_nacimiento}}</td>
+                    <td class="td-nombre">{{listadoJugador.persona.fecha_nacimiento}}</td>
+                   <!--  <td class="td-nombre">
+                        {% if listadoJugador.activo %}
+                            <a class="boton-editar"><img  src="{% static 'img/check.png' %}"></a>
+                        {% else %}
+                            <a class="boton-editar"><img  src="{% static 'img/no.png' %}"></a>
+                        {% endif %}
+                    </td> -->
+                    <td class="td-opciones">
+                        <div class="td-opciones container">
+                            <a class="boton-editar" href="{% url 'configuracion:editarJugadorCategorias' listadoJugador.id %}"> 
+                                <img  src="{% static 'img/editar.png?v=2.' %}" alt="Editar" title="Editar" class="icono"></a>
+                            <!--  <a class="boton-eliminar" href="{% url 'configuracion:borrarJugadorCategorias' listadoJugador.id %}">
+                                <img  src="{% static 'img/eliminar.png?v=2.' %}" alt="Eliminar" title="Eliminar" class="icono">
+                            </a>  -->
+                            <a class="boton-eliminar" href="{% url 'configuracion:borrarJugadorLogCategorias' listadoJugador.id %}">
+                                <img  src="{% static 'img/eliminar1.png?v=2.' %}" alt="Eliminar" title="Eliminar" class="icono">
+                            </a>
+                        </div>
                 
                 </tr>
 {% endfor %}

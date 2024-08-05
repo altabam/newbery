@@ -4,5 +4,5 @@ from django.db import connection
 # Create your views here.
 def actualizarSecuenciaIdPersonas(request):
     with connection.cursor() as cursor:
-      cursor.execute("SELECT SETVAL((SELECT PG_GET_SERIAL_SEQUENCE('configuracion_personas', 'id')), (SELECT (MAX('id') + 1) FROM 'configuracion_personas'), FALSE);")
+      cursor.execute("SELECT setval(pg_get_serial_sequence('""configuracion_personas""','id'), coalesce(max('id'), 1), max('id') IS NOT null) FROM 'configuracion_personas';")
     return render(request,'configuracion/cargaMasiva.html', contexto)   

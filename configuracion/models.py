@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 
@@ -46,11 +47,14 @@ class Socios(models.Model):
 
 class Disciplinas(models.Model):
     nombre = models.CharField(max_length=100)
+    def __str__(self):
+        return self.nombre
 
 class Categorias (models.Model):
     nombre = models.CharField(max_length=100)
     disciplina = models.ForeignKey(Disciplinas, on_delete=models.CASCADE)
     paga_disciplina = models.BooleanField(default="True")
+    activo = models.BooleanField(default=True)  # Campo para la eliminación lógica
     def __str__(self):
         return f"{self.nombre}"
 
@@ -60,6 +64,44 @@ class Jugadores(models.Model):
     categoria = models.ForeignKey(Categorias, on_delete=models.CASCADE)
     fecha_desde = models.DateField(null=True)
     fecha_hasta = models.DateField(null=True)
+    activo = models.BooleanField(default=True)  # Campo para la eliminación lógica
+    def __str__(self):
+        return f"{self.persona} - {self.categoria}"
+
+    def clean(self):
+        if not self.persona or not self.categoria:
+            # Si persona o categoria no están definidos, no podemos hacer la validación
+            return
+
+        disciplina = self.categoria.disciplina
+        if disciplina:
+            overlap= Jugadores.objects.filter(
+                persona=self.persona,
+                categoria=self.categoria,
+                activo=True,
+                fecha_desde=self.fecha_desde
+            ).exclude(id=self.id)
+            for jugador in overlap:
+                if (
+                    (jugador.fecha_hasta is None or jugador.fecha_hasta >= self.fecha_desde) and
+                    (self.fecha_hasta is None or self.fecha_hasta >= jugador.fecha_desde)
+                ):
+                    raise ValidationError('El jugador ya está activo en esta categoría y disciplina dentro del mismo periodo de tiempo.')
+            #if overlap.exists():
+              #  raise ValidationError('El jugador ya está activo en esta categoría y disciplina')
+
+    def save(self, *args, **kwargs):
+        # Llamar a la validación personalizada antes de guardar
+        self.clean()
+        super().save(*args, **kwargs)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(#asegura que la restricción se respete directamente en base de datos
+                fields=['persona', 'categoria', 'fecha_desde'],
+                name='unique_player_category_period'
+            )
+        ]
 
 class Becas(models.Model):
     nombre = models.CharField(max_length=100)
