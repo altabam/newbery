@@ -18,6 +18,7 @@
     {{listarJugadoresNoSocios.Jugadores.persona.nombre}}
         {% for listarJugadoresNoSocio in listarJugadoresNoSocios %}
         <tr>
+            <td class="tdTexto">{{listarJugadoresNoSocio.persona.id}}</td>
             <td class="tdTexto">{{listarJugadoresNoSocio.persona.dni}}</td>
             <td class="tdTexto">{{listarJugadoresNoSocio.persona.nombre}} {{listarJugadoresNoSocio.persona.apellido}}</td>
             <td class="tdTexto">{{listarJugadoresNoSocio.categoria.disciplina}}</td>

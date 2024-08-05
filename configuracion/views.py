@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,get_object_or_404
 import csv
 from django.http import JsonResponse
-from django.db.models import Count
+from django.db.models import Count, Subquery
 from django.core.exceptions import ObjectDoesNotExist   
 from .models import Personas, Disciplinas, Categorias, Jugadores, Becas, Socios, Cuotas, BecasJugador, BecasMotivos, CalidadIntegrante, IntegrantesClub
 from .forms import PersonaForm, DisciplinasForm, CategoriasForm, JugadoresCategoriasForm,borrarJugadorForm
@@ -26,13 +26,13 @@ def listadoCategorias(request):
     return render(request, "categorias.html",  contexto)
 
 def listarJugadoresNoSocios(request):
-    socio = Socios.objects.filter(fecha_baja = None).values()
-    print(socio)
-    jugadores =Jugadores.objects.exclude(persona_id__in = socio.model.persona)
-    print(jugadores)
-    
-    
-    listarJugadoresNoSocios = Jugadores.objects.filter(activo=True)
+    socios= Socios.objects.filter(fecha_baja = None).values()
+    id=[]
+    for socio in socios:
+        print (socio.get('persona_id'))
+        id.append(socio.get('persona_id'))
+    print(id)
+    listarJugadoresNoSocios =Jugadores.objects.exclude(persona_id__in = id)
     contexto =   { "listarJugadoresNoSocios": listarJugadoresNoSocios }
     return render(request, "listarJugadoresNoSocios.html",  contexto)
 
