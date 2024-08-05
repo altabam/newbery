@@ -11,22 +11,30 @@ from .libreria.gest_personas import *
 from .libreria.gest_carga_inicial import *
 # Create your views here.
 def listadoPersonas(request):
-    
     listadoPersona = Personas.objects.all().order_by('apellido','nombre')
     contexto = { "listadoPersonas": listadoPersona }
     return render(request, "personas.html",  contexto)
 
 def listadoDisciplinas(request):
     listadoDisciplina = Disciplinas.objects.all()
-    print(listadoDisciplina)
     contexto =  { "listadoDisciplinas": listadoDisciplina }
     return render(request, "disciplinas.html",  contexto)
 
 def listadoCategorias(request):
     listadoCategoria = Categorias.objects.filter(activo=True)
-    print(listadoCategoria)
     contexto =   { "listadoCategorias": listadoCategoria }
     return render(request, "categorias.html",  contexto)
+
+def listarJugadoresNoSocios(request):
+    socio = Socios.objects.filter(fecha_baja = None).values()
+    print(socio)
+    jugadores =Jugadores.objects.exclude(persona_id__in = socio.model.persona)
+    print(jugadores)
+    
+    
+    listarJugadoresNoSocios = Jugadores.objects.filter(activo=True)
+    contexto =   { "listarJugadoresNoSocios": listarJugadoresNoSocios }
+    return render(request, "listarJugadoresNoSocios.html",  contexto)
 
 def listadoJugadores(request):
 

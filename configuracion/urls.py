@@ -1,7 +1,9 @@
 from django.urls import path,re_path
 from configuracion.views import listadoDisciplinas, listadoCategorias, listadoBecas, listadoJugadores, listadoSocios, listarCuotas
 # pasar todo este from a gest_carga_inicial.py
-from configuracion.views import cargaInicial,cargaMasivaSocios,cargaMasiva, borrarTodosSocios,borrarJugadoresCategoria, cargarJugadoresCategoria, gestionarJugadoresCategoria, cargarCategorias, cargaInicialDisciplinas, cargaInicialBecas, cargaInicialCategorias 
+from configuracion.views import cargaInicial,cargaMasivaSocios,cargaMasiva, borrarTodosSocios
+from configuracion.views import borrarJugadoresCategoria, cargarJugadoresCategoria, gestionarJugadoresCategoria, listarJugadoresNoSocios
+from configuracion.views import cargarCategorias, cargaInicialDisciplinas, cargaInicialBecas, cargaInicialCategorias 
 from configuracion.views import cargarAgrupacionFamiliarSocios, borrarSocio
 from configuracion.views import listarMotivoBecas, cargaBecasJugador
 from configuracion.views import listarMotivoCalicadIntegrantes, listarIntegrantesClub
@@ -65,6 +67,7 @@ urlpatterns = [
     path('agregarJugadorCategorias/obtenerCategorias/', obtenerCategorias, name='obtenerCategorias'),
     path('editarJugadorCategorias/obtenerCategorias/', obtenerCategorias, name='obtenerCategorias'),
     path('obtener_personas/', obtener_personas, name='obtener_personas'),
+    path('listarJugadoresNoSocios/', listarJugadoresNoSocios, name='listarJugadoresNoSocios'),
 
     path('agregarIntegranteSocio/<int:id>/<int:idpk>',agregarIntegranteSocio, name='agregarIntegranteSocio'),
     path('quitarIntegranteSocio/<int:id>/<int:idpk>',quitarIntegranteSocio, name='quitarIntegranteSocio'),
@@ -74,9 +77,11 @@ urlpatterns = [
     re_path(r'^buscarSocio/$', buscarSocio, name='busquedaSocio'), 
     re_path(r'^buscarSocioResponsable/',buscarSocioResponsable, name='buscarSocioResponsable'),
 
-path('reporteJugadoresPorDisciplina',reporteJugadoresPorDisciplina, name='reporteJugadoresPorDisciplina'),
-path('reporteJugadoresPorCategoria',reporteJugadoresPorCategoria, name='reporteJugadoresPorCategoria'),
-path('reportes',reportes, name='reportes'),
+
+
+    path('reporteJugadoresPorDisciplina',reporteJugadoresPorDisciplina, name='reporteJugadoresPorDisciplina'),
+    path('reporteJugadoresPorCategoria',reporteJugadoresPorCategoria, name='reporteJugadoresPorCategoria'),
+    path('reportes',reportes, name='reportes'),
     
   
 
