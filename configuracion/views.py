@@ -29,16 +29,26 @@ def listadoCategorias(request):
     return render(request, "categorias.html",  contexto)
 
 def listadoJugadores(request):
-    disciplinaId = request.GET.get('disciplina')
-    listadoJugador = Jugadores.objects.filter(activo=True).order_by('categoria__disciplina','categoria')
-     # Obtener todas las disciplinas disponibles
+
+    # Obtener todas las disciplinas y categorias disponibles
     disciplinas = Disciplinas.objects.all()
-      # Si se proporciona un ID de disciplina, filtrar
+    categorias = Categorias.objects.filter(activo= True)
+
+    disciplinaId = request.GET.get('disciplina') #obtenemos el valor del select
+    categoriaId = request.GET.get('categoria')
+    listadoJugador = Jugadores.objects.filter(activo=True).order_by('categoria__disciplina','categoria')
+
+    # Si se proporciona un ID de disciplina, filtrar
     if disciplinaId:
         listadoJugador = listadoJugador.filter(categoria__disciplina_id=disciplinaId)
+        categorias = categorias.filter(disciplina_id= disciplinaId) #en base a la disciplina seleccionada filtra la categoria.
+    
+    if categoriaId:
+        listadoJugador = listadoJugador.filter(categoria_id=categoriaId)
     contexto ={ 
         "listadoJugadores": listadoJugador,
-        'disciplinas': disciplinas }
+        'disciplinas': disciplinas,
+        'categorias':categorias }
     result = (Jugadores.objects
         .values('categoria')
         .annotate(dcount=Count('categoria'))

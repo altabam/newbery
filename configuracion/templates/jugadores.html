@@ -14,29 +14,31 @@
 <a class="boton-agregar" href="{% url 'configuracion:agregarJugadorCategorias' %}" >
     <img src="{% static 'img/agregar.png' %}" alt="Agregar" title="Agregar">
 </a>
-
-<!-- formulario para filtrar por disciplina -->
-<form method="get" action="{% url 'configuracion:listadoJugadores' %}">
-    <select name="disciplina" onchange="this.form.submit()">
-        <option value="">Seleccione una disciplina</option>
-        {% for disciplina in disciplinas %}
-        <option value="{{ disciplina.id }}" {% if request.GET.disciplina == disciplina.id|stringformat:"s" %}selected{% endif %}>
-            {{ disciplina.nombre }}
-        </option>
-        {% endfor %}
-    </select>
-</form>
-<!-- formulario para filtrar por categoria -->
-<form method="get" action="{% url 'configuracion:listadoJugadores' %}">
-    <select name="disciplina" onchange="this.form.submit()">
-        <option value="">Seleccione una categoria</option>
-        {% for categoria in categorias %}
-        <option value="{{ categoria.id }}" {% if request.GET.categoria == categoria.id|stringformat:"s" %}selected{% endif %}>
-            {{ categoria.nombre }}
-        </option>
-        {% endfor %}
-    </select>
-</form>
+<div class="filtro">
+    <p>Filtrar por: </p>
+    <!-- formulario para filtrar por disciplina -->
+    <form method="get" action="{% url 'configuracion:listadoJugadores' %}">
+        <select name="disciplina" onchange="this.form.submit()">
+            <option value="">Seleccione una disciplina</option>
+            {% for disciplina in disciplinas %}
+            <option value="{{ disciplina.id }}" {% if request.GET.disciplina == disciplina.id|stringformat:"s" %}selected{% endif %}>
+                {{ disciplina.nombre }}
+            </option>
+            {% endfor %}
+        </select>
+    </form>
+    <!-- formulario para filtrar por categoria -->
+    <form method="get" action="{% url 'configuracion:listadoJugadores' %}">
+        <select name="disciplina" onchange="this.form.submit()">
+            <option value="">Seleccione una categoria</option>
+            {% for categoria in categorias %}
+            <option value="{{ categoria.id }}" {% if request.GET.categoria == categoria.id|stringformat:"s" %}selected{% endif %}>
+                {{ categoria.nombre }}
+            </option>
+            {% endfor %}
+        </select>
+    </form>
+</div>
 <table>
     
     <thead>
