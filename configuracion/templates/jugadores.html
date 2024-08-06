@@ -16,7 +16,7 @@
 </a>
 <div class="filtro">
     <p>Filtrar por: </p>
-    <!-- formulario para filtrar por disciplina -->
+    <!-- definimos un formulario para filtrar por disciplina -->
     <form method="get" action="{% url 'configuracion:listadoJugadores' %}">
         <select name="disciplina" onchange="this.form.submit()">
             <option value="">Seleccione una disciplina</option>
@@ -26,9 +26,6 @@
             </option>
             {% endfor %}
         </select>
-    </form>
-    <!-- formulario para filtrar por categoria -->
-    <form method="get" action="{% url 'configuracion:listadoJugadores' %}">
         <select name="categoria" onchange="this.form.submit()">
             <option value="">Seleccione una categoria</option>
             {% for categoria in categorias %}
