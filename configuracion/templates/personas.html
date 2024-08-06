@@ -20,9 +20,10 @@
         </tr>
         <tr>
                 <th>#</th>
+                <th>Id</th>
                 <th>Dni</th>
-                <th>Nombre Socio</th>
-                <th>Apellido Socio</th>
+                <th>Nombre Persona</th>
+                <th>Apellido Persona</th>
                 <th>Fecha Nac.</th>
                 <th>Telefono</th>
                 <th>Direccion</th>
@@ -35,6 +36,7 @@
 {% for listadoPersona in listadoPersonas %}
     <tr>
         <td>{{forloop.counter}}</td>
+        <td class="tdNumero">{{listadoPersona.id}}</td>
         <td class="tdNumero">{{listadoPersona.dni}}</td>
         <td class="tdTexto">{{listadoPersona.nombre}}</td>
         <td class="tdTexto">{{listadoPersona.apellido}}</td>
