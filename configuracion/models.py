@@ -47,6 +47,7 @@ class Socios(models.Model):
 
 class Disciplinas(models.Model):
     nombre = models.CharField(max_length=100)
+    activo = models.BooleanField(default=True)  # Campo para la eliminación lógica
     def __str__(self):
         return self.nombre
 

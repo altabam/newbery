@@ -167,11 +167,15 @@ table {
     height: auto; 
   }
 
-  .boton-editar img{
+.boton-editar{
+  background-color: transparent;
+  border: transparent;
+}
+.boton-editar img{
     width: 20px; 
     height: 23px;
     padding: 0;
-  }
+}
 
 .boton-eliminar img{
   width: 40px; 

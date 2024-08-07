@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cartel de alerta para confirmar una baja</title>
+</head>
+
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <title>Confirmar eliminación</title>
+        <p>¿Estás seguro de que deseas eliminar este registro?</p>
+        <button type="submit">Confirmar Baja</button>
+    </form>
+    <a href="{{ cancel_url }}">Cancelar</a>   <!-- usamos un href dinamico para poder utilizarlo con varias vistas -->
+</body>
+</html>

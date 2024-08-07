@@ -390,7 +390,16 @@ def editarDisciplinas(request,id):
          } 
     return render(request, "editarDisciplina.html",contexto)
 
-def borrarDisciplinas(request, id):
+def borrarLogDisciplinas(request,id):
+    disciplina = get_object_or_404(Disciplinas, id=id)
+    if request.method == 'POST':
+        disciplina.activo= False
+        disciplina.save()
+        return redirect('/configuracion/listadoDisciplinas')
+    cancel_url =  '/configuracion/listadoDisciplinas'
+    return render(request, 'alert.html', {'cancel_url': cancel_url})
+
+def borrarDisciplinas(request, id):  # Permite borrar Disciplinas DEFINITIVAMENTE de base de datos, NO SE USA
     Disciplinas.objects.filter(id=id).delete()
     listadoDisciplinas = Disciplinas.objects.all()
     contexto = { "listadoDisciplinas": listadoDisciplinas }
@@ -430,12 +439,15 @@ def editarCategorias(request,id):
 
 def borrarLogCategorias(request,id):
     categoria = get_object_or_404(Categorias, id=id)
-    categoria.activo= False
-    categoria.save()
-    return redirect('/configuracion/listadoCategorias')  
+    if request.method == 'POST':
+        categoria.activo= False
+        categoria.save()
+        return redirect('/configuracion/listadoCategorias')  
+    cancel_url =  '/configuracion/listadoCategorias'
+    return render(request, 'alert.html', {'cancel_url': cancel_url})
+    
 
-
-def borrarCategorias(request,id):
+def borrarCategorias(request,id):   # Permite borrar categorias DEFINITIVAMENTE de base de datos, NO SE USA
     Categorias.objects.filter(id=id).delete()
     listadoCategorias = Categorias.objects.all()
     contexto = { "listadoCategorias": listadoCategorias }
@@ -443,6 +455,8 @@ def borrarCategorias(request,id):
 
 #vistas de acciones sobre jugadores de categorias
 def agregarJugadorCategorias(request):
+    categorias = Categorias.objects.filter(activo= True)
+
     if request.method == 'POST':
         form= JugadoresCategoriasForm(request.POST)
         if form.is_valid():
@@ -452,7 +466,7 @@ def agregarJugadorCategorias(request):
             #Recarga las categorias dinamicamente en caso de un error de formulario
             disciplina_id = request.POST.get('disciplina') #Por ejemplo, si el usuario cambia la disciplina
             if disciplina_id:      
-                form.fields['categoria'].queryset = Categorias.objects.filter(disciplina_id=disciplina_id) 
+                form.fields['categoria'].queryset = categorias.filter(disciplina_id=disciplina_id) 
     else:
         form =JugadoresCategoriasForm()
     contexto = {
@@ -463,8 +477,9 @@ def agregarJugadorCategorias(request):
     return render(request, 'agregarJugadorCategorias.html', contexto) 
     
 def obtenerCategorias(request):
+    categorias = Categorias.objects.filter(activo= True)
     disciplina_id = request.GET.get('disciplina_id')
-    categorias = Categorias.objects.filter(disciplina__id=disciplina_id)
+    categorias = categorias.filter(disciplina__id=disciplina_id)
     return JsonResponse(list(categorias.values()), safe=False)
 
 def obtener_personas(request):
@@ -505,7 +520,7 @@ def borrarJugadorLogCategorias(request, id):
    
 
 
-def borrarJugadorCategorias(request, id):   #Para borrar jugadores(por INDIVIDUAL) de forma TOTAL DE LA BASE DE DATOS. 
+def borrarJugadorCategorias(request, id):   # Permite borrar Jugadores DEFINITIVAMENTE de base de datos, NO SE USA 
     Jugadores.objects.filter(id=id).delete()
     listadoJugadores = Jugadores.objects.all
     contexto ={'listadoJugadores': listadoJugadores}
