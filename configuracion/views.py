@@ -1,4 +1,5 @@
 from django.shortcuts import render,redirect,get_object_or_404
+from django.contrib import messages
 import csv
 from django.http import JsonResponse
 from django.db.models import Count, Subquery
@@ -392,6 +393,10 @@ def editarDisciplinas(request,id):
 
 def borrarLogDisciplinas(request,id):
     disciplina = get_object_or_404(Disciplinas, id=id)
+    categorias_activas= Categorias.objects.filter(disciplina=disciplina, activo=True).exists()
+    jugadores_activos= Jugadores.objects.filter(categoria__disciplina=disciplina, activo=True).exists()
+    if categorias_activas or jugadores_activos:
+       return HttpResponse("<h2>No se puede dar de baja la disciplina porque tiene categorías o jugadores activos.<h2>")
     if request.method == 'POST':
         disciplina.activo= False
         disciplina.save()
