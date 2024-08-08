@@ -46,7 +46,7 @@ class Socios(models.Model):
 
 
 class Disciplinas(models.Model):
-    nombre = models.CharField(max_length=100)
+    nombre = models.CharField(max_length=100, unique=True)
     activo = models.BooleanField(default=True)  # Campo para la eliminación lógica
     def __str__(self):
         return self.nombre
@@ -88,11 +88,9 @@ class Jugadores(models.Model):
                     (self.fecha_hasta is None or self.fecha_hasta >= jugador.fecha_desde)
                 ):
                     raise ValidationError('El jugador ya está activo en esta categoría y disciplina dentro del mismo periodo de tiempo.')
-            #if overlap.exists():
-              #  raise ValidationError('El jugador ya está activo en esta categoría y disciplina')
 
     def save(self, *args, **kwargs):
-        # Llamar a la validación personalizada antes de guardar
+        # Llamar a la validación antes de guardar
         self.clean()
         super().save(*args, **kwargs)
 
