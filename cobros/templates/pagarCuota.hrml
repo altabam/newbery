@@ -1,0 +1,26 @@
+{% extends "cobros.html"%}
+ 
+{% block body %} 
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <div class="card">
+            <div class="card-body">
+                    <br>
+                    <label>Ingrese Apellido de Socio:</label>
+                    <input id="search_input" type="text" name="q">
+                    {% csrf_token %}
+                    <br>
+            </div>
+
+        </div>
+    </div>
+</div>
+<table id="resultados" class="table">
+    <tbody id="listSocios">
+    </tbody>
+</table>
+<script type="text/javascript">
+     $(document).ready(__init);
+</script>
+
+{% endblock %}  

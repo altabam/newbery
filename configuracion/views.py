@@ -81,7 +81,7 @@ def listadoSocios(request):
 
 
 def listarCuotas(request):
-    listadoCuotas = Cuotas.objects.all().order_by("cant_int")
+    listadoCuotas = Cuotas.objects.all().order_by("fecha_hasta","cant_int")
     contexto ={ "listadoCuotas": listadoCuotas, }
     return render(request, "cuotas.html",  contexto)
 
@@ -103,55 +103,7 @@ def listarIntegrantesClub(request):
 
 
 def cargaInicial (request):
-    """
-    
-    template_name = "configuracion/migrations/personas.csv"
-    model = Personas()
-    Personas.objects.all().delete()
-    with open (template_name) as f:
-        j = 1
-        reader = csv.reader(f )
-        for row in reader:
-            model.id= j
-            print("fecha_nac:"+str(row[0]))
-            model.dni=row[0]
-            model.apellido=row[1]
-            model.nombre =row[2]
-            print("fecha_nac:"+str(len(row[3])))
-            if row[3] != "":
-              model.fecha_nacimiento=datetime.strptime(row[3], '%d/%m/%Y').date()
-            model.telefono=row[4]
-            model.direccion=row[5]
-            model.save(force_insert=True)
-            j= j+1
-
-    template_name = "configuracion/migrations/jugadores.csv"
-    model = Jugadores()
-    Jugadores.objects.all().delete()
-    with open (template_name) as f:
-        j = 1
-        reader = csv.reader(f )
-        for row in reader:
-            model.id= j
-            print(row[1], Categorias.objects.get(id=row[1]))
-            model.persona=Personas.objects.get(id=row[0])
-            model.categoria=Categorias.objects.get(id=row[1])
-            model.save(force_insert=True)
-            j= j+1
-    
-    template_name = "configuracion/migrations/socios.csv"
-    model = Socios()
-    Socios.objects.all().delete()
-    with open (template_name) as f:
-        j = 1
-        reader = csv.reader(f )
-        cargarPersona(row)
-"""
     return render (request, "cargaInicial.html")
-
-
-    
-
 
 
 

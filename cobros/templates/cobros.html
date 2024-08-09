@@ -1,4 +1,3 @@
-
 {% extends "./base_nav.html"%}
 {% block title %} Gestion de Cobros {% endblock %}
 {% load static %}
@@ -9,28 +8,19 @@
     <script type="text/javascript" src="{% static 'js/cobros.js' %}"></script>
 
  {% endblock %}
-
- {% block body %} 
-<div class="row">
-    <div class="col-md-4 offset-md-4">
-        <div class="card">
-            <div class="card-body">
-                    <br>
-                    <label>Ingrese Apellido de Socio:</label>
-                    <input id="search_input" type="text" name="q">
-                    {% csrf_token %}
-                    <br>
-            </div>
-
-        </div>
-    </div>
-</div>
-<table id="resultados" class="table">
-    <tbody id="listSocios">
-    </tbody>
-</table>
-<script type="text/javascript">
-     $(document).ready(__init);
-</script>
-
-{% endblock %}  
+ {% block subMenu %}
+ <nav class="barraMenu">
+     <div class="menuPrincipal collapse navbar-collapse" id="navbarNav">
+             <li class="liMenuPrincipal">
+                 <a class="linkMenu" href="/cobros/pagarCuota">Pagar Cuota</a>
+             </li>
+             <li class="liMenuPrincipal">
+                 <a class="linkMenu" href="/cobros/listarSociosDeuda">Listar Deudores</a>
+             </li>
+ 
+         </ul>
+     </div>
+ </nav>
+ 
+ {% endblock %}
+ 
