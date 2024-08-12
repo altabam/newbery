@@ -1,5 +1,6 @@
 from django.db import models
-from configuracion.models import Socios
+from configuracion.models import Socios, Disciplinas
+
 
 # Create your models here.
 class Pagos(models.Model):
@@ -26,4 +27,11 @@ class DetallePagos(models.Model):
     anio =  models.CharField(max_length=4)
     mes = models.CharField(max_length=3, choices=MES, blank=True)
     pago = models.ForeignKey(Pagos, on_delete=models.CASCADE)
+
+
+class SituacionInicial(models.Model):
+    anio =  models.IntegerField()
+    mes = models.IntegerField( )
+    disciplina = models.ForeignKey(Disciplinas, on_delete=models.CASCADE)
+
  

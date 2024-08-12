@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Pagos, DetallePagos
+from .models import Pagos, DetallePagos, SituacionInicial
 
 
 
@@ -9,3 +9,9 @@ class CobrosCreationForm(forms.Form):
 
     def retornarDato():
         return cantCuotas()
+
+
+class SituacionInicialForm(forms.ModelForm):
+    class Meta:
+        model = SituacionInicial
+        fields = '__all__'

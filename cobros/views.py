@@ -1,9 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from datetime import datetime, timedelta, date
 
 from configuracion.models import Socios, BecasJugador, Jugadores,Cuotas
-from .models import DetallePagos , Pagos
-from .forms import CobrosCreationForm
+from .models import DetallePagos , Pagos, SituacionInicial
+from .forms import CobrosCreationForm, SituacionInicialForm
 
 # Create your views here.
 
@@ -14,6 +14,8 @@ def render_cobros(request):
     
     return render(request, "cobros.html", )
 
+def pagarCuota(request):
+    return render(request, "pagarCuota.html")
 
 def verPagoSocio(request,id):
     meses =[  "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL","AGO","SEP", "OCT", "NOV","DIC", ]
@@ -25,7 +27,7 @@ def verPagoSocio(request,id):
     anios = [anio_anterior, anio_actual]
     socio = Socios.objects.get(id=id)
     socios = Socios.objects.filter(numero = socio.numero)
-    montoDisciplina = Cuotas.objects.get(cant_int=1)
+    montoDisciplina = Cuotas.objects.get(cant_int=1, fecha_hasta = None)
     print(socios)
     cantIntegrantes=0
     montoBeca =0
@@ -40,7 +42,7 @@ def verPagoSocio(request,id):
                 becados.append(integrante)
                 montoBeca = montoBeca+ float(montoDisciplina.valor)*float( integrante.beca.porcentaje)
     print("cantidad de integrantes:"+ str(cantIntegrantes))
-    montoCuota =  float(Cuotas.objects.get(cant_int = cantIntegrantes).valor) - float(montoBeca)
+    montoCuota =  float(Cuotas.objects.get(cant_int = cantIntegrantes, fecha_hasta = None).valor) - float(montoBeca)
     print (montoCuota)
     montoDebe = 0
     mes =1
@@ -129,5 +131,114 @@ def  grabarDetallePago(pago, cantCuotas):
         model.pago = pago
         model.mes = cuota
         model.save(force_insert=True)
+
+
+def agregarSitInicial(request):
+    if request.method == 'POST':
+        form= SituacionInicialForm(request.POST)
+        if form.is_valid():
+           form.save()
+           return redirect('/cobros/listarSitInicial')
+    else:
+        form =SituacionInicialForm()
+
+    contexto ={ 
+            "accion":"Agregar", 
+            "form": form,
+         } 
+    return render(request, "editarSituacionInicial.html", contexto )    
+
+def editarSitInicial(request,id):
+    sitInicial = SituacionInicial.objects.get(id = id)
+    if request.method == 'POST':
+        form= SituacionInicialForm(request.POST, instance=sitInicial)
+        if form.is_valid():
+            form.save()
+            return redirect('/cobros/listarSitInicial')
+    else:
+            form = SituacionInicialForm( instance=sitInicial)
+    
+    contexto ={ 
+            "accion":"Modificar", 
+            "form": form,
+            "datos": sitInicial,
+         } 
+    return render(request, "editarSituacionInicial.html",contexto)
+
+def listarSitInicial(request):
+    listadoSitInicial = SituacionInicial.objects.all()
+    contexto = { "listadoSitInicial": listadoSitInicial }
+    return render(request, "situacioninicial.html",  contexto)
+
+def borrarSitInicial(request, id):
+    SituacionInicial.objects.filter(id=id).delete()
+    listadoSitInicial = SituacionInicial.objects.all()
+    contexto = { "listadoSitInicial": listadoSitInicial }
+    return render(request, "situacioninicial.html",  contexto)
+
+def listarSociosDeuda(request):
+    socios = Socios.objects.filter(responsable='S')
+    listadoDeudores=[]
+    montoTotalDeuda =0
+    for socio in socios :
+         
+        cuotasImpagas =  calcularCuotasImpagas(socio)
+        if cuotasImpagas > 0:
+            montos = calcularMontoPago(socio.numero)
+            deuda = montos['montoPagar'] * cuotasImpagas
+            listadoDeudores.append({
+                "numero":socio.numero,
+                "dni":socio.persona.dni, 
+                "nombre":socio.persona.nombre+" "+ socio.persona.apellido, 
+                "montoDeuda": deuda,
+                "montoCuota": montos['montoCuota'],
+                "montoBeca" : montos['montoBeca'],
+                "montoPagar": montos['montoPagar'],
+                "cuotasImpagas" : cuotasImpagas
+            })
+            montoTotalDeuda += deuda
+
+    
+    contexto = { "listadoDeudores": listadoDeudores,
+                 "montoTotalDeuda": montoTotalDeuda}
+    return render(request, "listadoDeudores.html",  contexto)
+
+def calcularMontoPago(nroSocio):
+    integrantes = Socios.objects.filter(numero = nroSocio)
+    cantIntegrantes = 1
+    montoCuota  = Cuotas.objects.get(cant_int=1, fecha_hasta=None).valor
+    montoBeca =0
+    for integrante in integrantes:
+         if Jugadores.objects.filter(persona = integrante.persona).exists():
+            disciplinasParticipa = Jugadores.objects.filter(persona = integrante.persona)
+            for jugador in disciplinasParticipa:
+                if (jugador.fecha_hasta is None):
+                    if (jugador.categoria.paga_disciplina):
+                        cantIntegrantes=cantIntegrantes+1
+                        if BecasJugador.objects.filter(jugador = jugador).exists():
+                            integrante = BecasJugador.objects.get(jugador  = jugador)
+                            montoBeca = montoBeca+ float(montoCuota)*float( integrante.beca.porcentaje)
+    montoCuota =  float(Cuotas.objects.get(cant_int = cantIntegrantes, fecha_hasta=None).valor) 
+    montoPagar = montoCuota - float(montoBeca)
+    montos ={"montoBeca": montoBeca, "montoCuota": montoCuota,"montoPagar": montoPagar}
+    return montos
+
+def calcularCuotasImpagas(socio):
+    meses =[  "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL","AGO","SEP", "OCT", "NOV","DIC", ]
+    anio_actual = date.today().year
+    mes_actual = int(date.today().month)
+    anio_anterior =  str(int(anio_actual)-1)
+    anios = [anio_anterior, anio_actual]
+    cantCuotasImpagas = 0
+    pagoSocio = Pagos.objects.filter(socio= socio)
+    for i in anios:
+        mes = 1
+        for j in meses:
+            if not (i == anio_actual and mes > mes_actual):
+                detallePago = DetallePagos.objects.filter(anio=i, mes=mes, pago__in = pagoSocio)
+                if (not detallePago):
+                    cantCuotasImpagas +=1
+            mes= mes +1
+    return cantCuotasImpagas
 
 
