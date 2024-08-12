@@ -15,6 +15,9 @@ class DisciplinasForm(forms.ModelForm):
     class Meta:
         model =Disciplinas
         fields= '__all__'
+        widgets = {
+            'nombre': forms.TextInput(attrs={'placeholder': 'Ingrese el nombre de la nueva disciplina'}),
+               }
         
 class CategoriasForm(forms.ModelForm):
     class Meta:

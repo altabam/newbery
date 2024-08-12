@@ -65,6 +65,7 @@ urlpatterns = [
     path('listarIntegrantesSinSocio/<int:id>',listarIntegrantesSinSocio, name='listarIntegrantesSinSocio'),
     path('listarBecados',listarBecados, name='listarBecados'),
     
+    
     path('agregarJugadorCategorias/obtenerCategorias/', obtenerCategorias, name='obtenerCategorias'),
     path('editarJugadorCategorias/obtenerCategorias/', obtenerCategorias, name='obtenerCategorias'),
     path('obtener_personas/', obtener_personas, name='obtener_personas'),

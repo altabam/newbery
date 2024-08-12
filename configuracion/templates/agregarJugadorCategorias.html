@@ -52,7 +52,9 @@
         <form class="formulario" method="POST">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit">Guardar</button>
+            <div class="divBoton">
+                <button class="boton" type="submit">Guardar</button>
+            </div>
         </form>
     </div>
     

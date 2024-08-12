@@ -1,14 +1,23 @@
 <!DOCTYPE html>
-<html>
+{% load static %}
+<html lang="es">
 <head>
     <title>Nueva Disciplina</title>
+    <link rel="stylesheet" href="{% static 'css/configuracion.css' %}">
 </head>
+<body class="bodyForm">
+    <div class="divForm">
+        <h1 class="titulo" >Agregar Nueva Disciplina</h1>
+        <form class="formulario" method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+           <div class="divBoton">
+            <button class="boton" type="submit">Enviar {{accion}}</button>
+           </div>
+            
+        </form>
+    </div>  
+</body>
 
-<div class="card-body">
-    <form  method="POST">{% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-success btn-block text-white ">enviar {{accion}}</button>
-    </form>
-</div>
 
 </html>

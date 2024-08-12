@@ -1,21 +1,54 @@
-
+.botonVolver{
+  background-color: yellow;
+  color: #000000; 
+  border: none;
+  padding: 0%;
+  height: 100%;
+  width: 20%;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  display: block;
+  justify-items: center;
+  align-content: center;
+  text-align: center !important;
+  text-decoration: none;
+}
+.botonVolver:hover {
+  background-color: #ffdb4d; /* Amarillo más claro */
+}
+.botonVolver img{
+  width: 20px; 
+  height: 20px;
+  padding: 0;
+}
 /* estilos para formularios  */
 .bodyForm {
-  background-color: #E4E4E4;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 10px;
-  min-height: 100vh;
+  background-color: #f5f5f5; /* Gris claro */
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
 }
 
 .divForm{
-  background-color: #F5F5F5;
-  width: 500px;
-  height: 600px;
-  padding: 50px;
-
+  background-color: #ffffff; /* Blanco */
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   
+}
+.divBoton{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 80%;
+  padding:0%;
+  margin: 0%;
 }
 .formulario{
   background-color: transparent;
@@ -28,14 +61,48 @@
 }
 
 .formulario > p{
-  background-color:#d7e02d;
-  border-radius: 35px;
-  border: 2px solid #cbcbcb;
+  width: auto;
+  border-radius: 25px;
+  border: 2px solid #f7f7f7;
+  background-color: #f7f7f7;
+  align-content: center;
+  justify-content: center;
+  margin: 0;
+  margin-bottom: 20px;
+  padding: 0%;
+  position: relative;
+}
+.formulario > p >  input{
+  width: 80%;
+  background-color: transparent;
+  border: none;  /* Elimina todos los bordes */
+  border-bottom: 2px solid black;  /* Agrega un borde inferior */
+  outline: none;
+}
+.boton{
+  background-color: #ffcc00; /* Amarillo */
+  color: #ffffff; /* Blanco */
+  border: none;
+  padding: 0%;
+  height: 70%;
+  width: 90%;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  display: block;
+  justify-items: center;
+  align-content: center;
+  text-align: center !important;
+}
+.boton:hover {
+  background-color: #ffdb4d; /* Amarillo más claro */
 }
 .filtro{
   text-align: left;
   display: flex;
 }
+
 
 .icono{
     width: 32px;
