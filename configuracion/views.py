@@ -22,7 +22,7 @@ def listadoDisciplinas(request):
     return render(request, "disciplinas.html",  contexto)
 
 def listadoCategorias(request):
-    listadoCategoria = Categorias.objects.filter(activo=True)
+    listadoCategoria = Categorias.objects.all()#filter(activo=True)
     contexto =   { "listadoCategorias": listadoCategoria }
     return render(request, "categorias.html",  contexto)
 
@@ -390,22 +390,34 @@ def agregarCategorias(request):
 
 def editarCategorias(request,id):
     categoria = Categorias.objects.get(id=id)
+    jugadores_activos = Jugadores.objects.filter(categoria=categoria, activo=True).exists()
+
     if request.method == 'POST':
-        form= CategoriasForm(request.POST, instance=categoria)
+        form = CategoriasForm(request.POST, instance=categoria)
         if form.is_valid():
-            form.save()
+            print ("hola1 ")
+            if not jugadores_activos:  # Solo guardamos si no hay jugadores activos
+                form.save()
             return redirect('/configuracion/listadoCategorias')
     else:
-            form = CategoriasForm( instance=categoria)
-    contexto ={ 
-            "accion":"Modificar", 
-            "form": form,
-            "datos": categoria,
-         } 
-    return render(request, "editarCategoria.html",contexto)
+        form = CategoriasForm(instance=categoria)
+        if jugadores_activos:  # Removemos el campo si hay jugadores activos
+            form.fields.pop('activo')
+    contexto = {
+        "accion": "Modificar",
+        "form": form,
+        "datos": categoria,
+    }
+    return render(request, "editarCategoria.html", contexto)
 
 def borrarLogCategorias(request,id):
     categoria = get_object_or_404(Categorias, id=id)
+    jugadores_activos= Jugadores.objects.filter(categoria=categoria, activo=True).exists()
+    if jugadores_activos:
+        return render(request, 'mensaje.html', {
+            'mensaje': 'No se puede borrar esta categoria porque tiene jugadores activos.',
+            'url_redireccion': '/configuracion/listadoCategorias',
+        })
     if request.method == 'POST':
         categoria.activo= False
         categoria.save()

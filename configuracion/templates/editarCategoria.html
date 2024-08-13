@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>edicion Disciplina</title>
+    <title>edicion Categoria</title>
 </head>
 
 <div class="card-body">
-    <form  method="POST">{% csrf_token %}
+    <form  method="POST" >
+        {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="btn btn-success btn-block text-white "> {{accion}}</button>
     </form>

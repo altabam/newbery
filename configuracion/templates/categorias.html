@@ -38,10 +38,17 @@
                             <a class="boton-editar"><img  src="{% static 'img/no.png' %}"></a>
                         {% endif %}
                     </td>
+                     <td class="td-nombre">
+                        {% if listadoCategoria.activo %}
+                            <a class="boton-editar"><img  src="{% static 'img/check.png' %}"></a>
+                        {% else %}
+                            <a class="boton-editar"><img  src="{% static 'img/no.png' %}"></a>
+                        {% endif %}
+                    </td> 
                     <td class="td-opciones">
                         <div class="td-opciones container">
                             <a class="boton-editar" href="{% url 'configuracion:editarCategorias' listadoCategoria.id %}"> 
-                                <img  src="{% static 'img/editar.png?v=2.' %}" alt="Editar" title="Editar" class="icono"></a>
+                                <img  src="{% static 'img/editar-logo.png?v=2.' %}" alt="Editar" title="Editar" class="icono"></a>
                              <!-- <a class="boton-eliminar" href="{% url 'configuracion:borrarCategorias' listadoCategoria.id %}">
                                 <img  src="{% static 'img/eliminar.png?v=2.' %}" alt="Eliminar" title="Eliminar" class="icono">
                             </a>  -->
