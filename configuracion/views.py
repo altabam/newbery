@@ -74,7 +74,7 @@ def listadoBecas(request):
     return render(request, "becas.html",  contexto)
 
 def listadoSocios(request):
-    listadoSocio = obtenerSocios()
+    listadoSocio = obtenerSocios().filter(responsable= "S")
     contexto ={ "listadoSocios": listadoSocio, }
     
     return render(request, "socios.html",  contexto)
