@@ -1,49 +1,51 @@
 {% extends "base_nav.html"%}
 {% load static %}
 {% block styleOtros %}  
-     <link rel='stylesheet' href="{% static 'css/configuracion.css' %}" type="text/css">
+    <link rel='stylesheet' href="{% static 'css/configuracion.css' %}" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/agruparSocios.js' %}"></script>
   {% endblock %}
 
 {% block body %}
-<h1> Gestion de Socios</h1>
-<table>
-    <thead>
-        <tr>   
-            <th colspan="8" > 
-                <div class="agregar">
-                    <a href="{% url 'configuracion:agruparSocios' %}">
-                        <img src="{% static 'img/agrupar.png' %}" alt="agrupar" title="agrupar"  class="icono">
-                    </a>
+<h1 class="titulo"> Gestion de Socios</h1>
+{{datos}}
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <div class="buscadorContenedor">
+            <img class="icono" src="{% static 'img/buscar.png' %}" alt="buscar">
+            <div class="card">
+                <div class="card-body">
+                        <input class="buscar" id="search_input" type="text" name="q" placeholder="Ingresa el apellido del socio">
+                        {% csrf_token %}
+                        <script>
+                            window.onload = function() {
+                                document.getElementById('search_input').focus();
+                            };
+                        </script>
                 </div>
-             </th>
-             
-        </tr>
+            </div>
+        </div>
+        
+        <p id="resultado_busqueda"></p>
+    </div>
+</div>
+<table id="resultados" class="table">
+    <thead>
         <tr>
-                <th >id</th>
-                <th>Socio</th>
+                <th>#</th>
+                <th>Numero</th>
                 <th>Dni</th>
-                <th>Apellido y Nombre</th>
-                <th>Responsable</th>
+                <th>Apellido</th>
+                <th>Nombre</th>
                 <th colspan="3">Opciones</th>
         </tr>
     </thead>
-    <tbody>
-
-    {% if listadoSocios %}
-    {% for listadoSocio in listadoSocios %}
-            <tr>
-                <td>{{listadoSocio.id}}</td>
-                <td class="tdNumero">{{listadoSocio.numero}}</td>
-                <td class="tdNumero">{{listadoSocio.persona.dni}}</td>
-                <td class="tdTexto">{{listadoSocio.persona.apellido}} {{listadoSocio.persona.nombre}}</td>
-                <td class="tdNumero">{{listadoSocio.responsable}} </td>
-                <td class="tdNumero" colspan="3"> </td>
-                
-            </tr>
-    {% endfor %}
-    {% endif %}
+    <tbody id="listSocios">
     </tbody>
-
 </table>
+<script type="text/javascript">
+    $(document).ready(__init);
+</script>
 {% endblock %}
 

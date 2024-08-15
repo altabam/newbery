@@ -74,11 +74,11 @@ function __init()
                         .addClass('tr');
 
         user_tmpl.append('<td>'+item.indice+'</td>');
-        user_tmpl.append('<td>'+item.numero+'</td>');
-        user_tmpl.append('<td>'+item.dni+'</td>');
-        user_tmpl.append('<td>'+item.apellido+'</td>');
-        user_tmpl.append('<td>'+item.nombre+'</td>');
-        user_tmpl.append('<td collspan="3">'+'<a href="/configuracion/listarIntegrantesSocios/'+item.id+'">Sumar Integrante</a>' +'</td>');
+        user_tmpl.append('<td class="tdNumero">'+item.numero+'</td>');
+        user_tmpl.append('<td class="tdNumero">'+item.dni+'</td>');
+        user_tmpl.append('<td class="td-nombre">'+item.apellido+'</td>');
+        user_tmpl.append('<td class="td-nombre">'+item.nombre+'</td>');
+        user_tmpl.append('<td class="td-opciones" collspan="3">'+'<div class="divBoton">'+'<a class="boton-agregar" href="/configuracion/listarIntegrantesSocios/'+item.id+'">'+'<img src="/static/img/agregar.png" >' +'</a>'+ '</div>'+'</td>');
 
                         
         return $('#listSocios')
