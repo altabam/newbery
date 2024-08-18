@@ -504,3 +504,4 @@ def borrarJugadorCategorias(request, id):   # Permite borrar Jugadores DEFINITIV
     listadoJugadores = Jugadores.objects.all
     contexto ={'listadoJugadores': listadoJugadores}
     return render(request,'Jugadores.html', contexto)
+

@@ -9,7 +9,7 @@ from configuracion.views import listarMotivoBecas, cargaBecasJugador
 from configuracion.views import listarMotivoCalicadIntegrantes, listarIntegrantesClub
 from configuracion.views import listadoPersonas, borrarPersona, editarPersona,agregarPersona,agregarDisciplinas,editarDisciplinas,borrarLogDisciplinas,borrarDisciplinas, agregarCategorias, editarCategorias,borrarLogCategorias,borrarCategorias, agregarJugadorCategorias, editarJugadorCategorias,borrarJugadorLogCategorias, borrarJugadorCategorias
 from configuracion.views import obtenerCategorias,obtener_personas
-from configuracion.libreria.gest_socios import agruparSocios, buscarSocio, buscarSocioResponsable,listarIntegrantesSocios,agregarIntegranteSocio, listarIntegrantesSinSocio, quitarIntegranteSocio, buscarSocio
+from configuracion.libreria.gest_socios import agruparSocios, buscarSocio, buscarSocioResponsable,listarIntegrantesSocios,agregarIntegranteSocio, listarIntegrantesSinSocio, quitarIntegranteSocio, buscarSocio, listarPersonasNoSocios,agregarNuevoSocio, eliminarSocioResponsable
 from configuracion.libreria.gest_carga_inicial import cargaInicialMotivosBeca, cargaInicialCalidadIntegrante, cargaInicialCuotas
 from configuracion.libreria.cargaMasiva import cargaIntegrantesClub, cargaBecasJugadores
 from configuracion.libreria.gest_becas import listarBecados
@@ -72,6 +72,9 @@ urlpatterns = [
     path('listarJugadoresNoSocios/', listarJugadoresNoSocios, name='listarJugadoresNoSocios'),
 
     path('agregarIntegranteSocio/<int:id>/<int:idpk>',agregarIntegranteSocio, name='agregarIntegranteSocio'),
+    path('agregarNuevoSocio/<int:id>/',agregarNuevoSocio, name='agregarNuevoSocio'),
+    path('eliminarSocioResponsable/<int:id>/',eliminarSocioResponsable, name='eliminarSocioResponsable'),
+    path('listarPersonasNoSocios/',listarPersonasNoSocios, name='listarPersonasNoSocios'),
     path('quitarIntegranteSocio/<int:id>/<int:idpk>',quitarIntegranteSocio, name='quitarIntegranteSocio'),
 
     path('cargaBecasJugador',cargaBecasJugador, name='cargaBecasJugador'),

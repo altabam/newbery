@@ -1,15 +1,16 @@
 import csv
 from django.utils import timezone
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import  HttpResponse,HttpResponseBadRequest
 from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
+from datetime import datetime, timedelta
+
 
 
 
 from configuracion.models import Socios, Personas
-from  .gest_personas import cargarPersona
-
+from .gest_personas import cargarPersona
 
     
 def is_ajax(request):
@@ -72,9 +73,9 @@ def cargarAgrupacionFamiliarSociosCsv(url):
                 print(row)
 
 def agruparSocios(request):
-    
     contexto =  { "datos": "Buscar Socios responsables", }
     return render(request, "agruparSocios.html", contexto ) 
+
 
 def buscarSocioResponsable(request):
     if not (is_ajax(request=request) or request.method != "POST"):
@@ -82,14 +83,12 @@ def buscarSocioResponsable(request):
         print (request.method != "POST")
         return HttpResponseBadRequest()
     valor = request.GET['q']
-    print("valor de q:", valor)
+    #print("valor de q:", valor)
     socios = Socios.objects.filter(persona__apellido__startswith= valor, responsable='S')
     print(socios)
     data = serializers.serialize('json', socios,use_natural_foreign_keys=True)
     print(data)
     return HttpResponse(data, content_type="application/json") 
-
-
 
 def buscarSocio(request):
     if not (is_ajax(request=request) or request.method != "POST"):
@@ -97,7 +96,7 @@ def buscarSocio(request):
         print (request.method != "POST")
         return HttpResponseBadRequest()
     valor = request.GET['q']
-    print("valor de q", valor)
+    #print("valor de q", valor)
     socios = Socios.objects.filter(persona__apellido__startswith= valor)
     data = serializers.serialize('json', socios,use_natural_foreign_keys=True)
     print(data)
@@ -116,16 +115,16 @@ def listarIntegrantesSinSocio(request,id):
     responsable = Socios.objects.get(id=id)
     integrantes = Socios.objects.filter(numero = responsable.numero, responsable="N")
     socios = Socios.objects.all()
-    print([p.persona.id for p in socios])
+    #print([p.persona.id for p in socios])
     personas = Personas.objects.exclude(id__in=([p.persona.id for p in socios]))
-    print(personas)
+    #print(personas)
     contexto =  { "responsable": responsable,
                  "listadoPersonas":personas,
                  "integrantes": integrantes,
     }
     return render(request, "personasNoSocias.html", contexto ) 
 
-
+""" Funcion para agregar integrante a grupo social """
 def agregarIntegranteSocio(request,id,idpk):
     responsable = Socios.objects.get(id=idpk)
     
@@ -139,9 +138,11 @@ def agregarIntegranteSocio(request,id,idpk):
 
     socios = Socios.objects.all()
     personas = Personas.objects.exclude(id__in=([p.persona.id for p in socios]))
-    
+    url= '/configuracion/agregarIntegranteSocio/{{listadoPersona.id}}/{{responsable.id}}'
     contexto =  { "responsable": responsable,
                  "listadoPersonas":personas,
+                 "titulo":'Agregar Integrante a cargo de:',
+                 "url_dinamica": url,
     }
     return render(request, "personasNoSocias.html", contexto) 
   
@@ -155,3 +156,45 @@ def quitarIntegranteSocio(request,id,idpk):
                  "listadoIntegrantes":listadoIntegrantes,
     }
     return render(request, "integrantesSocios.html", contexto ) 
+
+def listarPersonasNoSocios(request):
+    socios=Socios.objects.all()
+    # Calcular la fecha límite para ser mayor de 18 años
+    fecha_limite = datetime.now().date() - timedelta(days=18*365)
+    personas = Personas.objects.exclude(
+        id__in=([p.persona.id for p in socios])
+    ).filter(
+        fecha_nacimiento__lte=fecha_limite
+    ).exclude(    # Excluir personas que ya son socios, que son menores de 18 años o que no tienen fecha de nacimiento.
+        fecha_nacimiento__isnull=True
+    ).order_by('apellido')
+    contexto =  { 
+                 "listadoPersonas":personas,
+                 'titulo': 'Agregar Nuevo Socio',
+                 "url_dinamica": ''
+    }
+    return render(request, "personasNoSocias.html", contexto ) 
+
+def agregarNuevoSocio(request, id):
+    persona = Personas.objects.get(id=id)
+
+    #le damos un numero de socio, que será el que le sigue del ultimo existente en la lista de socios.
+    ultimoSocio = Socios.objects.order_by('-numero').first()
+    nuevoNumero = (ultimoSocio.numero +1) if ultimoSocio else 1
+
+    #crear nuevo socio
+    nuevoSocio= Socios(
+        numero=nuevoNumero,
+        persona= persona,
+        responsable= "S",
+        fecha_alta = timezone.now()
+    )
+    nuevoSocio.save()
+    return redirect('/configuracion/listadoSocios')
+
+def eliminarSocioResponsable(request, id):
+    socio= Socios.objects.filter(id=id).delete()
+    listadoSocios = Socios.objects.all()
+
+    contexto = {'listadoSocios':listadoSocios}
+    return render(request, 'socios.html', contexto)

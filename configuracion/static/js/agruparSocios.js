@@ -78,7 +78,7 @@ function __init()
         user_tmpl.append('<td class="tdNumero">'+item.dni+'</td>');
         user_tmpl.append('<td class="td-nombre">'+item.apellido+'</td>');
         user_tmpl.append('<td class="td-nombre">'+item.nombre+'</td>');
-        user_tmpl.append('<td class="td-opciones" collspan="3">'+'<div class="divBoton">'+'<a class="boton-eliminar" href="/configuracion/listarIntegrantesSocios/'+item.id+'">'+'<img src="/static/img/agregar.png" alt="Agregar Integrante" title="Agregar Integrante" >' +'</a>'+ '</div>'+'</td>');
+        user_tmpl.append('<td class="td-opciones" collspan="3">'+'<div class="divBoton">'+'<a class="boton-editar" href="/configuracion/listarIntegrantesSocios/'+item.id+'">'+'<img src="/static/img/agregar-miembro.png" alt="Agregar Integrante" title="Agregar Integrante" >' +'</a>'+ '<a class="boton-eliminar" href="/configuracion/eliminarSocioResponsable/'+item.id+'">'+'<img src="/static/img/eliminar1.png" alt="Agregar Integrante" title="Eliminar" >' +'</a>'+'</div>'+'</td>');
 
                         
         return $('#listSocios')

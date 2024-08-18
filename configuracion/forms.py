@@ -1,5 +1,5 @@
 from django import forms
-from .models import Personas, Disciplinas, Categorias, Jugadores
+from .models import Personas, Disciplinas, Categorias, Jugadores, Socios
 
 class PersonaForm(forms.ModelForm):
     class Meta:
@@ -64,3 +64,9 @@ class borrarJugadorForm(forms.ModelForm):
          }
         input_formats= {'fecha_hasta':["%Y-%m-%d"],
          }
+        
+class SociosForm(forms.ModelForm):
+    class Meta:
+        model= Socios
+        fields= '__all__'
+        
