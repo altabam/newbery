@@ -9,8 +9,8 @@
  
      {% endblock %}
 {% block body %}
-<!-- <p> <a href="{% url 'configuracion:agruparSocios' %}">Agrupar Socios</a></p> -->
 <h1 class="titulo"> {{titulo}}</h1>
+<a title="Volver" class="botonVolver" href="{%url 'configuracion:listadoSocios' %}"><img src="{%static 'img/volver-flecha.png'%}" alt=""> Volver</a>
 <h2 class="subTitulo">Socio Nro: {{responsable.numero}} - Persona: {{responsable.persona.id}} -- {{responsable.persona.apellido}}, {{responsable.persona.nombre}}</h2>
 {% if integrantes %}
 {% for integrante in integrantes %}

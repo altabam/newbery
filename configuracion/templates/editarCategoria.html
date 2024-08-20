@@ -1,15 +1,24 @@
 <!DOCTYPE html>
-<html>
+{% load static %}
+<html lang="es">
 <head>
-    <title>edicion Categoria</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar categorias</title>
+    <link rel="stylesheet" href="{% static 'css/configuracion.css' %}">
 </head>
-
-<div class="card-body">
-    <form  method="POST" >
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-success btn-block text-white "> {{accion}}</button>
-    </form>
-</div>
+<body class="bodyForm">
+    <div class="divForm">
+        <a title="Volver" class="botonVolver" href="{%url 'configuracion:listadoCategorias' %}"><img src="{%static 'img/volver-flecha.png'%}" alt=""> Volver</a>
+        <h1 class="titulo">Editar Categorias</h1>
+        <form class="formulario" method="POST" >
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="divBoton">
+                <button type="submit" class="boton"> {{accion}}</button>
+            </div>
+        </form>
+    </div>
+</body>
 
 </html>

@@ -192,7 +192,7 @@ def agregarNuevoSocio(request, id):
     nuevoSocio.save()
     return redirect('/configuracion/listadoSocios')
 
-def eliminarSocioResponsable(request, id):
+def eliminarSocioResponsable(request, id): #Eliminar socios de forma DEFINITIVA base de datos.
     socio= Socios.objects.filter(id=id).delete()
     listadoSocios = Socios.objects.all()
 

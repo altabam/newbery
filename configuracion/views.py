@@ -481,6 +481,7 @@ def editarJugadorCategorias(request,id):
         "accion":"Modificar", 
         "form": form,
         "datos": jugador,
+        "titulo": 'Editar Jugador',
     }
     return render(request, "agregarJugadorCategorias.html",contexto)
 

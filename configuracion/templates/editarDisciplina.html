@@ -1,14 +1,23 @@
 <!DOCTYPE html>
+{% load static %}
 <html>
 <head>
     <title>edicion Disciplina</title>
+    <link rel="stylesheet" href="{% static 'css/configuracion.css' %}">
 </head>
+<body class="bodyForm">
+    <div class="divForm">
+        <a title="Volver" class="botonVolver" href="{%url 'configuracion:listadoDisciplinas' %}"><img src="{%static 'img/volver-flecha.png'%}" alt="volver" class="icono"> Volver</a>
+        <h1 class="titulo" >Editar Disciplina</h1>
+        <form class="formulario" method="POST">{% csrf_token %}
+            {{ form.as_p }}
+            <div class="divBoton">
+                <button type="submit" class="boton"> {{accion}}</button>
+            </div>
+            
+        </form>
+    </div>  
+</body>
 
-<div class="card-body">
-    <form  method="POST">{% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-success btn-block text-white "> {{accion}}</button>
-    </form>
-</div>
 
 </html>

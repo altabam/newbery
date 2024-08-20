@@ -1,16 +1,24 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ titulo }}</title>
+    <link rel="stylesheet" href="{% static 'css/configuracion.css' %}">
 </head>
-<body>
-    <h1>{{ titulo }}</h1>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">{{ boton_texto }}</button>
-    </form>
+<body class="bodyForm">
+    <div class="divForm">
+        <a title="Volver" class="botonVolver" href="{%url 'configuracion:listadoCategorias' %}"><img src="{%static 'img/volver-flecha.png'%}" alt=""> Volver</a>
+        <h1 class="titulo">{{ titulo }}</h1>
+        <form class="formulario" method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="divBoton">
+                <button class="boton" type="submit">{{ boton_texto }}</button>
+            </div>
+        </form>
+    </div>
+    
 </body>
 </html>
