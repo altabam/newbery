@@ -149,7 +149,7 @@ body {
   align-self: center;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
-.formulario > p{
+.formulario > label{
   width: auto;
   border-radius: 25px;
   border: 2px solid #f7f7f7;
@@ -161,10 +161,30 @@ body {
   padding: 0%;
   position: relative;
 }
-.formulario > p >  input{
+.formulario >  input{
   width: 80%;
   background-color: transparent;
   border: none;  /* Elimina todos los bordes */
   border-bottom: 2px solid black;  /* Agrega un borde inferior */
   outline: none;
+  display: block;
+  align-self:center;
+  justify-self: center;
+  text-align: center;
+}
+.boton{
+  background-color: #ffcc00; /* Amarillo */
+  color: #ffffff; /* Blanco */
+  border: none;
+  padding: 0%;
+  height: 70%;
+  width: 90%;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  display: block;
+  justify-items: center;
+  align-content: center;
+  text-align: center !important;
 }
