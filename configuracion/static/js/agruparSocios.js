@@ -28,6 +28,7 @@ function __init() {
 
             // Agregue esto para: Asegurar que el contenedor de resultados esté vacío antes de agregar nuevos resultados
             $("#listSocios").empty();
+            $(".results").append("<tbody id='listSocios'></tbody>");
 
             $.ajax({
                 dataType: 'json',
@@ -61,7 +62,7 @@ function __init() {
         response: function(event, ui) {
             if (ui.content.length === 0) {
                 $('.results .error').html('No se encontraron resultados').show();
-                $('#resultados').empty();
+                $('.results').empty();
             } else {
                 $('.results .error').empty().hide();
             }

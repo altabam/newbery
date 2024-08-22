@@ -103,3 +103,68 @@ body {
 .subMenu{
   background-color: #444444;
 }
+/* estilos para titulos */
+.titulo {
+  text-align: center;
+  background-color: yellow;
+  /*padding-top: 20px;*/
+  padding: 40px;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 70%, 50% 100%, 0% 70%);
+}
+/* estilos para formularios  */
+.bodyForm {
+    background-image: url("/static/images/fondo.jpg");
+    background-size: cover; /* Ajusta la imagen para cubrir el área del elemento */
+    background-position: center; /* Gris claro */
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.divForm{
+  background-color: #ffffff; /* Blanco */
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  
+}
+.divBoton{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 80%;
+  padding:0%;
+  margin: 0%;
+}
+.formulario{
+  background-color: transparent;
+  text-align: center;
+  width: 500px;
+  height:400px;
+  display: grid;
+  align-self: center;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+.formulario > p{
+  width: auto;
+  border-radius: 25px;
+  border: 2px solid #f7f7f7;
+  background-color: #f7f7f7;
+  align-content: center;
+  justify-content: center;
+  margin: 0;
+  margin-bottom: 20px;
+  padding: 0%;
+  position: relative;
+}
+.formulario > p >  input{
+  width: 80%;
+  background-color: transparent;
+  border: none;  /* Elimina todos los bordes */
+  border-bottom: 2px solid black;  /* Agrega un borde inferior */
+  outline: none;
+}
