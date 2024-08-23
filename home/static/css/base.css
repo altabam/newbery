@@ -113,7 +113,7 @@ body {
 }
 /* estilos para formularios  */
 .bodyForm {
-    background-image: url("/static/images/fondo.jpg");
+    background-image: url("/static/images/fondo.jpeg");
     background-size: cover; /* Ajusta la imagen para cubrir el área del elemento */
     background-position: center; /* Gris claro */
     font-family: 'Arial', sans-serif;
@@ -163,6 +163,7 @@ body {
 }
 .formulario >  input{
   width: 80%;
+  height: 50%;
   background-color: transparent;
   border: none;  /* Elimina todos los bordes */
   border-bottom: 2px solid black;  /* Agrega un borde inferior */
@@ -171,6 +172,7 @@ body {
   align-self:center;
   justify-self: center;
   text-align: center;
+  font-size: 100%;
 }
 .boton{
   background-color: #ffcc00; /* Amarillo */

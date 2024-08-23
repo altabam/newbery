@@ -83,8 +83,8 @@ def buscarSocioResponsable(request):
         print (request.method != "POST")
         return HttpResponseBadRequest()
     valor = request.GET['q']
-    #print("valor de q:", valor)
-    socios = Socios.objects.filter(persona__apellido__startswith= valor, responsable='S')
+    #print("valor de q:", valor)                  otra forma de buscar seria cambiar "istartswith" por "icontains"
+    socios = Socios.objects.filter(persona__apellido__istartswith= valor, responsable='S')
     print(socios)
     data = serializers.serialize('json', socios,use_natural_foreign_keys=True)
     print(data)

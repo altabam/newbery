@@ -1,6 +1,6 @@
 
 function __init() {
-    $('#search_input')
+    $('#search_input')/* inicializamos el buscador */
         .val('')
         .focus()
         .keyup(function() {
@@ -10,17 +10,16 @@ function __init() {
         });
 
     var cache = {};
-    $('#search_input').autocomplete({
+    $('#search_input').autocomplete({ /* configuracion de autocompletado incluso sin tener min */
         minLength: 0,
         select: function(event, ui) {
-            
             return false;  // Previene que se seleccione automáticamente
         },
-        open: function() {/* cambie el results de aca por #resultados */
+        open: function() {
             $('#resultados').html($(this).autocomplete("widget").html());
             $(this).autocomplete("widget").hide();
         },
-        source: function(request, response) {
+        source: function(request, response) {/* Busca el termino de busqueda en cache */
             if (cache[request.term]) {
                 response(cache[request.term]);
                 return;
@@ -30,11 +29,11 @@ function __init() {
             $("#listSocios").empty();
             $(".results").append("<tbody id='listSocios'></tbody>");
 
-            $.ajax({
+            $.ajax({ /* Si no está en cache, hace una peticion con ajax */
                 dataType: 'json',
                 method: 'GET',
                 url: '/configuracion/buscarSocioResponsable/',
-                data: {
+                data: {  /* le envia el termino de busqueda con un codigo por seguridad */
                     q: encodeURIComponent(request.term),
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
