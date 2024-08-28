@@ -45,6 +45,27 @@
         </tr>
     </thead>
     <tbody id="listSocios">
+    {% if listadoSocios %}
+        {% for listadoSocio in listadoSocios %}
+        <tr>
+            <td>{{counter}}</td>
+            <td class="tdNumero">{{listadoSocio.numero}} </td>
+            <td class="tdNumero">{{listadoSocio.persona.dni}}</td>
+            <td class="td-nombre">{{listadoSocio.persona.apellido}}</td>
+            <td class="td-nombre">{{listadoSocio.persona.nombre}}</td>
+            <td class="td-opciones" colspan="3">
+                <div class="divBoton">
+                    <a class="boton-editar" href="/configuracion/listarIntegrantesSocios/{{listadoSocio.id}}">
+                        <img src="/static/img/agregar-miembro.png" alt="Agregar Integrante" title="Agregar Integrante">
+                    </a>
+                    <a class="boton-eliminar" href="/configuracion/eliminarSocioResponsable/{{listadoSocio.id}}">
+                        <img src="/static/img/eliminar1.png" alt="Eliminar" title="Eliminar">
+                    </a>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    {% endif %}
     </tbody>
 </table>
 <script type="text/javascript">

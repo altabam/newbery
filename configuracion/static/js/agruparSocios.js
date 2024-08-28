@@ -5,7 +5,7 @@ function __init() {
         .focus()
         .keyup(function() {
             if (!$.trim($(this).val())) {
-                $('.results .error').empty().hide();
+                $('#listSocios .error').empty().hide();
             }
         });
 
@@ -16,18 +16,20 @@ function __init() {
             return false;  // Previene que se seleccione automáticamente
         },
         open: function() {
-            $('#resultados').html($(this).autocomplete("widget").html());
+            $('#listSocios').html($(this).autocomplete("widget").html());
             $(this).autocomplete("widget").hide();
         },
         source: function(request, response) {/* Busca el termino de busqueda en cache */
             if (cache[request.term]) {
+                console.log("request.term"+cache[request.term]);
                 response(cache[request.term]);
                 return;
             }
 
             // Agregue esto para: Asegurar que el contenedor de resultados esté vacío antes de agregar nuevos resultados
-            $("#listSocios").empty();
-            $(".results").append("<tbody id='listSocios'></tbody>");
+           // $("#listSocios").empty();
+            //$("#resultados").append("<tbody id='listSocios'></tbody>");
+            
 
             $.ajax({ /* Si no está en cache, hace una peticion con ajax */
                 dataType: 'json',
@@ -59,11 +61,16 @@ function __init() {
             });
         },
         response: function(event, ui) {
-            if (ui.content.length === 0) {
-                $('.results .error').html('No se encontraron resultados').show();
-                $('.results').empty();
+//            console.log("ui.content");
+  //          console.log(ui.content);
+    //        console.log(ui.content.length);
+            if (!ui.content.length) {
+              //  $('.resultados .error').html('No se encontraron resultados').show();
+      //          console.log("ui.contente remove");
+                $('#listSocios').empty();
             } else {
-                $('.results .error').empty().hide();
+//                $('.resultados .error').empty().hide();
+       //         console.log("pasa por ui.content mayos que vacio")
             }
         }
     }).autocomplete('instance')._renderItem = function(table, item) {
