@@ -111,18 +111,6 @@ def listarIntegrantesSocios(request, id):
     }
     return render(request, "integrantesSocios.html", contexto ) 
 
-def listarIntegrantesSinSocio(request,id):
-    responsable = Socios.objects.get(id=id)
-    integrantes = Socios.objects.filter(numero = responsable.numero, responsable="N")
-    socios = Socios.objects.all()
-    #print([p.persona.id for p in socios])
-    personas = Personas.objects.exclude(id__in=([p.persona.id for p in socios]))
-    #print(personas)
-    contexto =  { "responsable": responsable,
-                 "listadoPersonas":personas,
-                 "integrantes": integrantes,
-    }
-    return render(request, "personasNoSocias.html", contexto ) 
 
 """ Funcion para agregar integrante a grupo social """
 def agregarIntegranteSocio(request,id,idpk):
@@ -138,15 +126,12 @@ def agregarIntegranteSocio(request,id,idpk):
 
     socios = Socios.objects.all()
     personas = Personas.objects.exclude(id__in=([p.persona.id for p in socios]))
-    url= '/configuracion/agregarIntegranteSocio/{{listadoPersona.id}}/{{responsable.id}}'
     contexto =  { "responsable": responsable,
                  "listadoPersonas":personas,
                  "titulo":'Agregar Integrante a cargo de:',
-                 "url_dinamica": url,
     }
     return render(request, "personasNoSocias.html", contexto) 
   
-
 def quitarIntegranteSocio(request,id,idpk):
     socio = Socios.objects.get(pk =idpk)
     Socios.objects.get(pk=id).delete()
@@ -157,8 +142,25 @@ def quitarIntegranteSocio(request,id,idpk):
     }
     return render(request, "integrantesSocios.html", contexto ) 
 
+def listarIntegrantesSinSocio(request,id):
+    responsable = Socios.objects.get(id=id)
+    integrantes = Socios.objects.filter(numero = responsable.numero, responsable="N")
+    socios = Socios.objects.all()
+    persona_buscar=request.GET.get('apellido', '')
+    personas = Personas.objects.exclude(id__in=([p.persona.id for p in socios]))
+
+    if persona_buscar:
+        personas=personas.filter(apellido__icontains=persona_buscar)
+    contexto =  { "responsable": responsable,
+                 "listadoSocios":personas,
+                 "integrantes": integrantes,
+                 'persona_buscar':persona_buscar,
+    }
+    return render(request, "personasNoSocias.html", contexto ) 
+
 def listarPersonasNoSocios(request):
     socios=Socios.objects.all()
+    persona_buscar=request.GET.get('apellido', '')
     # Calcular la fecha límite para ser mayor de 18 años
     fecha_limite = datetime.now().date() - timedelta(days=18*365)
     personas = Personas.objects.exclude(
@@ -168,10 +170,13 @@ def listarPersonasNoSocios(request):
     ).exclude(    # Excluir personas que ya son socios, que son menores de 18 años o que no tienen fecha de nacimiento.
         fecha_nacimiento__isnull=True
     ).order_by('apellido')
+    if persona_buscar:
+        personas=personas.filter(apellido__icontains=persona_buscar)
     contexto =  { 
                  "listadoPersonas":personas,
                  'titulo': 'Agregar Nuevo Socio',
-                 "url_dinamica": ''
+                 "url_dinamica": '',
+                 'persona_buscar':persona_buscar,
     }
     return render(request, "personasNoSocias.html", contexto ) 
 

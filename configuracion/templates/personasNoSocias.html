@@ -6,8 +6,17 @@
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
      <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
      <script type="text/javascript" src="{% static 'js/agruparSocios.js' %}"></script>
- 
-     {% endblock %}
+     <script>
+        // Función para enviar el formulario automáticamente al cambiar el campo de búsqueda
+        function buscarPorApellido() {
+            let timer;
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+                document.getElementById('busquedaForm').submit();
+            }, 900);
+        }
+    </script>
+{% endblock %}
 {% block body %}
 <h1 class="titulo"> {{titulo}}</h1>
 <a title="Volver" class="botonVolver" href="{%url 'configuracion:listadoSocios' %}"><img src="{%static 'img/volver-flecha.png'%}" alt=""> Volver</a>
@@ -22,7 +31,18 @@
 <table id="resultados" class="table">
     <thead>
         <tr >
-            <th colspan =8>Personas no figuran como Socias</th>
+            <th colspan =8>Personas que no figuran como Socias</th>
+        </tr>
+        <tr>
+            <th colspan="10">
+                <div class="buscadorContenedor">
+                    <img class="icono" src="{% static 'img/buscar.png' %}" alt="buscar">
+                    <form id="busquedaForm" action='' method="GET">
+                            <input class="buscar" name="apellido" value="{{ persona_buscar }}" oninput="buscarPorApellido()" type="text" placeholder="Ingrese el apellido">
+                           <!--  <button class="boton-agregar" >B</button> -->
+                    </form>
+                </div>
+            </th>
         </tr>
         <tr>
             <th>#</th>
@@ -34,18 +54,40 @@
     </thead>
     <tbody >
         {% if listadoPersonas %}
-        {% for listadoPersona in listadoPersonas %}
+            {% for listadoPersona in listadoPersonas %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td class="tdNumero">{{listadoPersona.id}}</td>
+                    <td class="tdNumero">{{listadoPersona.dni}}</td>
+                    <td class="tdTexto">{{listadoPersona.apellido}} {{listadoPersona.nombre}}</td>
+                    <td collspan="3">
+                        <a href="{%url 'configuracion:agregarNuevoSocio' listadoPersona.id %}"><button>agregar socio</button></a>
+                    </td>
+                </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2">No se encontraron resultados.</td>
+            </tr>
+            {% endfor %}
+        {% else %}
+            {% if listadoSocios %}
+                {%for listadoSocio in listadoSocios%}
                     <tr>
                         <td>{{forloop.counter}}</td>
-                        <td class="tdNumero">{{listadoPersona.id}}</td>
-                        <td class="tdNumero">{{listadoPersona.dni}}</td>
-                        <td class="tdTexto">{{listadoPersona.apellido}} {{listadoPersona.nombre}}</td>
+                        <td class="tdNumero">{{listadoSocio.id}}</td>
+                        <td class="tdNumero">{{listadoSocio.dni}}</td>
+                        <td class="tdTexto">{{listadoSocio.apellido}} {{listadoSocio.nombre}}</td>
                         <td collspan="3">
-                            <a href="{%url 'configuracion:agregarNuevoSocio' listadoPersona.id %}">Agregar Integrante</a>
+                            <a href="{%url 'configuracion:agregarIntegranteSocio' listadoSocio.id responsable.id %}"><button>agregar socio</button></a>
                         </td>
                     </tr>
-        {% endfor %}
-    {% endif %}
+                {% empty %}
+                    <tr>
+                        <td colspan="2">No se encontraron resultados.</td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        {% endif %}
     </tbody>
 </table>
 {% endblock %}  

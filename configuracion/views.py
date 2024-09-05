@@ -22,7 +22,7 @@ def listadoDisciplinas(request):
     return render(request, "disciplinas.html",  contexto)
 
 def listadoCategorias(request):
-    listadoCategoria = Categorias.objects.all()#filter(activo=True)
+    listadoCategoria = Categorias.objects.filter(activo=True)
     contexto =   { "listadoCategorias": listadoCategoria }
     return render(request, "categorias.html",  contexto)
 
@@ -395,14 +395,20 @@ def editarCategorias(request,id):
     if request.method == 'POST':
         form = CategoriasForm(request.POST, instance=categoria)
         if form.is_valid():
-            print ("hola1 ")
+            print ("entro en post")
             if not jugadores_activos:  # Solo guardamos si no hay jugadores activos
                 form.save()
+            else:
+                # Si hay jugadores activos, guardamos solo los otros campos, pero no 'activo'
+                categoria.nombre = form.cleaned_data['nombre']  # ejemplo: cambiar el nombre
+                categoria.save(update_fields=['nombre'])  # Guarda solo el campo que se desea cambiar
             return redirect('/configuracion/listadoCategorias')
     else:
         form = CategoriasForm(instance=categoria)
         if jugadores_activos:  # Removemos el campo si hay jugadores activos
-            form.fields.pop('activo')
+                form.fields.pop('activo')
+                print ("entro en el if bueno bueno")
+                
     contexto = {
         "accion": "Modificar",
         "form": form,
