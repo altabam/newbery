@@ -16,7 +16,7 @@ function __init()
             return false;
         },
         open: function() {
-            $('.resultados .listSocios').html($(this).autocomplete("widget").html());
+            $('#listSocios').html($(this).autocomplete("widget").html());
             $(this).autocomplete("widget").hide();
         },
         source: function( request, response ) {
@@ -26,8 +26,8 @@ function __init()
                 return;
         }
         $("#listSocios").remove();
-            $("#resultados").append("<tbody id=listSocios> </tbody>");
-            console.log("pasa por remove listSocios")
+        $("#resultados").append("<tbody id='listSocios'> </tbody>");
+        console.log("pasa por remove listSocios")
 
             $.ajax({
                 dataType : 'json',
@@ -61,12 +61,10 @@ function __init()
         },
         response: function(event, ui) {
 
-            if (ui.content.length === 0) {
-                $('.results .error').html('No se encontraron resultados').show();
-                $('.results .listSocios').empty();
+            if (!ui.content.length ) {
+                //$('#listSocios .error').html('No se encontraron resultados').show();
+                $('#listSocios').empty();
             }
-            else
-                $('.results .error').empty().hide();
         }
     }).autocomplete('instance')._renderItem = function(table, item) {
         console.log("item:"+item.apellido)
@@ -80,8 +78,7 @@ function __init()
         user_tmpl.append('<td collspan="3">'+'<a href="/cobros/verPagoSocio/'+item.id+'">Seleccionar</a>' +'</td>');
 
                         
-        return $('#listSocios')
-            .append(user_tmpl)
+        return  table.append(user_tmpl);
             
     };
 
