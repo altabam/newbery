@@ -111,6 +111,32 @@ body {
   padding: 40px;
   clip-path: polygon(0% 0%, 100% 0%, 100% 70%, 50% 100%, 0% 70%);
 }
+.container {
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  position: relative;
+ }
+.imagen {
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    height: 100%;
+    width: 100%;
+}
+img {
+    max-width: 100%;
+    max-height: 100%;
+    height: auto;
+}
+
+
+
+
 /* estilos para formularios  */
 .bodyForm {
     background-image: url("/static/images/fondo.jpeg");

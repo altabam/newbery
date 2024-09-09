@@ -4,7 +4,7 @@
      <link rel='stylesheet' href="{% static 'css/configuracion.css' %}" type="text/css">
 {% endblock %}
 {% block body %}
-<h1> Gestion de Personas del Club</h1>
+<h1 class="titulo"> Gestion de Personas del Club</h1>
 
 <table>
     <thead>
@@ -12,7 +12,7 @@
             <th colspan="9" > 
                 <div class="agregar">
                     <a href="{% url 'configuracion:agregarPersona' %}">
-                        <img src="{% static 'img/agregar.jpg' %}" alt="agregar" title="agregar"  class="icono">
+                        <img src="{% static 'img/agregar.png' %}" alt="agregar" title="agregar"  class="icono">
                     </a>
                 </div>
              </th>
@@ -38,16 +38,18 @@
         <td>{{forloop.counter}}</td>
         <td class="tdNumero">{{listadoPersona.id}}</td>
         <td class="tdNumero">{{listadoPersona.dni}}</td>
-        <td class="tdTexto">{{listadoPersona.nombre}}</td>
-        <td class="tdTexto">{{listadoPersona.apellido}}</td>
-        <td class="tdTexto">{{listadoPersona.fecha_nacimiento}}</td>
+        <td class="td-nombre">{{listadoPersona.nombre}}</td>
+        <td class="td-nombre">{{listadoPersona.apellido}}</td>
+        <td class="td-nombre">{{listadoPersona.fecha_nacimiento}}</td>
         <td class="tdNumero">{{listadoPersona.telefono}}</td>
-        <td class="tdTexto">{{listadoPersona.direccion}}</td>
-        <td colspan="3">
-            <a href="{% url 'configuracion:editarPersona' listadoPersona.id %}" ><img
-                src="{% static 'img/editar-logo.png' %}" alt="Editar" title="Editar" class="icono"></a>
-            <a href="{% url 'configuracion:borrarPersona' listadoPersona.id %}" ><img
-                 src="{% static 'img/eliminar.png' %}" alt="Eliminar" title="Eliminar" class="icono"></a>
+        <td class="td-nombre">{{listadoPersona.direccion}}</td>
+        <td class="td-opciones" colspan="3">
+            <div class="td-opciones container">
+                <a class="boton-editar" href="{% url 'configuracion:editarPersona' listadoPersona.id %}" ><img
+                    src="{% static 'img/editar-logo.png' %}" alt="Editar" title="Editar" class="icono"></a>
+                <a class="boton-eliminar" href="{% url 'configuracion:borrarPersona' listadoPersona.id %}" ><img
+                     src="{% static 'img/eliminar1.png' %}" alt="Eliminar" title="Eliminar" class="icono"></a>
+            </div>
         </td>   
     </tr>
                 
