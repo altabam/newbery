@@ -111,15 +111,15 @@ body {
   padding: 40px;
   clip-path: polygon(0% 0%, 100% 0%, 100% 70%, 50% 100%, 0% 70%);
 }
-.container {
+.contenedor {
   font-family: 'Arial', sans-serif;
-  display: flex;
+ /*  display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: center; */
   height: 100%;
   width: 100%;
   margin: 0;
-  position: relative;
+  /* position: relative; */
  }
 .imagen {
     display: flex;

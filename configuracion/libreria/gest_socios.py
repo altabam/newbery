@@ -100,7 +100,7 @@ def buscarSocio(request):
     socios = Socios.objects.filter(persona__apellido__startswith= valor)
     data = serializers.serialize('json', socios,use_natural_foreign_keys=True)
     print(data)
-    return HttpResponse(data, content_type="application/json") 
+    return HttpResponse(data, content_type="application/json")  
 
 def listarIntegrantesSocios(request, id):
     socio = Socios.objects.get(pk =id)

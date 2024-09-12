@@ -16,7 +16,7 @@
   text-decoration: none;
 }
 .botonVolver:hover {
-  background-color: #ffdb4d; /* Amarillo más claro */
+  background-color: #ffdb4d; 
 }
 .botonVolver img{
   width: 20px; 
@@ -25,7 +25,7 @@
 }
 /* estilos para formularios  */
 .bodyForm {
-  background-color: #f5f5f5; /* Gris claro */
+  background-color: #f5f5f5; 
     font-family: 'Arial', sans-serif;
     display: flex;
     justify-content: center;
@@ -35,7 +35,7 @@
 }
 
 .divForm{
-  background-color: #ffffff; /* Blanco */
+  background-color: #ffffff; 
   padding: 40px;
   border-radius: 10px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
@@ -75,13 +75,14 @@
 .formulario > p >  input{
   width: 80%;
   background-color: transparent;
-  border: none;  /* Elimina todos los bordes */
-  border-bottom: 2px solid black;  /* Agrega un borde inferior */
+  border: none;  
+  border-bottom: 2px solid black;  
   outline: none;
+  font-size: large;
 }
 .boton{
-  background-color: #ffcc00; /* Amarillo */
-  color: #ffffff; /* Blanco */
+  background-color: #ffcc00;
+  color: #ffffff; 
   border: none;
   padding: 0%;
   height: 70%;
@@ -96,7 +97,7 @@
   text-align: center !important;
 }
 .boton:hover {
-  background-color: #ffdb4d; /* Amarillo más claro */
+  background-color: #ffdb4d; 
 }
 .filtro{
   text-align: left;
@@ -178,7 +179,8 @@ table {
   text-align:  right !important;
 }
 .td-opciones.container{
-  display: flex;
+  display:flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
 
@@ -253,7 +255,7 @@ table {
   }
 
   .boton-agregar{
-    text-align: left;
+    text-align: right;
     float: right;
     width: 40px; 
     height: auto;

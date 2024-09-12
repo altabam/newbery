@@ -9,10 +9,11 @@ from configuracion.views import listarMotivoBecas, cargaBecasJugador
 from configuracion.views import listarMotivoCalicadIntegrantes, listarIntegrantesClub
 from configuracion.views import listadoPersonas, borrarPersona, editarPersona,agregarPersona,agregarDisciplinas,editarDisciplinas,borrarLogDisciplinas,borrarDisciplinas, agregarCategorias, editarCategorias,borrarLogCategorias,borrarCategorias, agregarJugadorCategorias, editarJugadorCategorias,borrarJugadorLogCategorias, borrarJugadorCategorias
 from configuracion.views import obtenerCategorias,obtener_personas
-from configuracion.libreria.gest_socios import agruparSocios, buscarSocio, buscarSocioResponsable,listarIntegrantesSocios,agregarIntegranteSocio, listarIntegrantesSinSocio, quitarIntegranteSocio, buscarSocio, listarPersonasNoSocios,agregarNuevoSocio, eliminarSocioResponsable
+from configuracion.libreria.gest_socios import agruparSocios, buscarSocio, buscarSocioResponsable,listarIntegrantesSocios,agregarIntegranteSocio, listarIntegrantesSinSocio, quitarIntegranteSocio, listarPersonasNoSocios,agregarNuevoSocio, eliminarSocioResponsable
 from configuracion.libreria.gest_carga_inicial import cargaInicialMotivosBeca, cargaInicialCalidadIntegrante, cargaInicialCuotas
 from configuracion.libreria.cargaMasiva import cargaIntegrantesClub, cargaBecasJugadores
 from configuracion.libreria.gest_becas import listarBecados
+from configuracion.libreria.gest_personas import buscarPersona
 from configuracion.libreria.reportes import reportes, reporteJugadoresPorDisciplina, reporteJugadoresPorCategoria
 app_name = 'configuracion'
 urlpatterns = [
@@ -65,7 +66,6 @@ urlpatterns = [
     path('listarIntegrantesSinSocio/<int:id>',listarIntegrantesSinSocio, name='listarIntegrantesSinSocio'),
     path('listarBecados',listarBecados, name='listarBecados'),
     
-    
     path('agregarJugadorCategorias/obtenerCategorias/', obtenerCategorias, name='obtenerCategorias'),
     path('editarJugadorCategorias/obtenerCategorias/', obtenerCategorias, name='obtenerCategorias'),
     path('obtener_personas/', obtener_personas, name='obtener_personas'),
@@ -79,6 +79,7 @@ urlpatterns = [
 
     path('cargaBecasJugador',cargaBecasJugador, name='cargaBecasJugador'),
     
+    re_path(r'^buscarPersona/$', buscarPersona, name='buscarPersona'),
     re_path(r'^buscarSocio/$', buscarSocio, name='busquedaSocio'), 
     re_path(r'^buscarSocioResponsable/',buscarSocioResponsable, name='buscarSocioResponsable'),
 

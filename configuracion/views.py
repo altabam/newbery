@@ -295,6 +295,7 @@ def editarPersona(request,id):
             "accion":"Modificar", 
             "form": form,
             "datos": persona,
+            "titulo": 'Editar Persona',
          } 
     return render(request, "editarPersona.html",contexto)
 
@@ -311,6 +312,7 @@ def agregarPersona(request):
     contexto ={ 
             "accion":"Agregar", 
             "form": form,
+            "titulo":'Agregar Persona',
          } 
     return render(request, "editarPersona.html", contexto )    
 

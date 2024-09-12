@@ -1,11 +1,10 @@
-
 function __init() {
     $('#search_input')/* inicializamos el buscador */
         .val('')
         .focus()
         .keyup(function() {
             if (!$.trim($(this).val())) {
-                $('#listSocios .error').empty().hide();
+                $('#listPersonas .error').empty().hide();
             }
         });
 
@@ -16,7 +15,7 @@ function __init() {
             return false;  // Previene que se seleccione automáticamente
         },
         open: function() {
-            $('#listSocios').html($(this).autocomplete("widget").html());
+            $('#listPersonas').html($(this).autocomplete("widget").html());
             $(this).autocomplete("widget").hide();
         },
         source: function(request, response) {/* Busca el termino de busqueda en cache */
@@ -25,51 +24,44 @@ function __init() {
                 response(cache[request.term]);
                 return;
             }
-            
-           // $("#listSocios").empty();
-            //$("#resultados").append("<tbody id='listSocios'></tbody>");
-            
 
             $.ajax({ /* Si no está en cache, hace una peticion con ajax */
                 dataType: 'json',
                 method: 'GET',
-                url: '/configuracion/buscarSocioResponsable/',
+                url: '/configuracion/buscarPersona/',
                 data: {  /* le envia el termino de busqueda con un codigo por seguridad */
                     q: encodeURIComponent(request.term),
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
                 success: function(data) {
-                    var socios = [];
+                    console.log(data);
+                    var personas = [];
                     console.log(data);
                     for (var x in data) {
                         console.log(data[x].fields.numero);
-                        socios.push({
+                        personas.push({
                             indice: x,
                             id: data[x].pk,
-                            numero: data[x].fields.numero,
-                            nombre: data[x].fields.persona[0],
-                            apellido: data[x].fields.persona[1],
-                            dni: data[x].fields.persona[2],
+                            dni: data[x].fields.dni,
+                           /*  numero: data[x].fields.numero, */
+                            nombre: data[x].fields.nombre,
+                            apellido: data[x].fields.apellido,
+                            fecha_nacimiento: data[x].fields.fecha_nacimiento,
+                            telefono: data[x].fields.telefono,
+                            direccion: data[x].fields.direccion,
                         });
                     }
                     
                    
-                    cache[request.term] = socios;
-                    response(socios);
+                    cache[request.term] = personas;
+                    response(personas);
                 }
             });
         },
         response: function(event, ui) {
-//            console.log("ui.content");
-  //          console.log(ui.content);
-    //        console.log(ui.content.length);
             if (!ui.content.length) {
-              //  $('.resultados .error').html('No se encontraron resultados').show();
-      //          console.log("ui.contente remove");
-                $('#listSocios').empty();
+                $('#listPersonas').empty();
             } else {
-//                $('.resultados .error').empty().hide();
-       //         console.log("pasa por ui.content mayos que vacio")
             }
         }
     }).autocomplete('instance')._renderItem = function(table, item) {
@@ -78,16 +70,19 @@ function __init() {
                         .addClass('tr');
 
         user_tmpl.append('<td>' + item.indice + '</td>');
-        user_tmpl.append('<td class="tdNumero">' + item.numero + '</td>');
+        user_tmpl.append('<td class="tdNumero">' + item.id + '</td>');
         user_tmpl.append('<td class="tdNumero">' + item.dni + '</td>');
-        user_tmpl.append('<td class="td-nombre">' + item.apellido + '</td>');
         user_tmpl.append('<td class="td-nombre">' + item.nombre + '</td>');
+        user_tmpl.append('<td class="td-nombre">' + item.apellido + '</td>');
+        user_tmpl.append('<td class="td-numero">' + item.fecha_nacimiento + '</td>');
+        user_tmpl.append('<td class="td-numero">' + item.telefono + '</td>');
+        user_tmpl.append('<td class="td-nombre">' + item.direccion + '</td>');
         user_tmpl.append('<td class="td-opciones" colspan="3">' +
                          '<div class="divBoton">' +
-                         '<a class="boton-editar" href="/configuracion/listarIntegrantesSocios/' + item.id + '">' +
+                         '<a class="boton-editar" href="' + item.id + '">' +
                          '<img src="/static/img/agregar-miembro.png" alt="Agregar Integrante" title="Agregar Integrante">' +
                          '</a>' +
-                         '<a class="boton-eliminar" href="/configuracion/eliminarSocioResponsable/' + item.id + '">' +
+                         '<a class="boton-eliminar" href="' + item.id + '">' +
                          '<img src="/static/img/eliminar1.png" alt="Eliminar" title="Eliminar">' +
                          '</a>' +
                          '</div>' +
