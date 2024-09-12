@@ -85,7 +85,6 @@ def buscarSocioResponsable(request):
     valor = request.GET['q']
     #print("valor de q:", valor)                  otra forma de buscar seria cambiar "istartswith" por "icontains"
     socios = Socios.objects.filter(persona__apellido__istartswith= valor, responsable='S')
-    print(socios)
     data = serializers.serialize('json', socios,use_natural_foreign_keys=True)
     print(data)
     return HttpResponse(data, content_type="application/json") 
@@ -97,7 +96,7 @@ def buscarSocio(request):
         return HttpResponseBadRequest()
     valor = request.GET['q']
     #print("valor de q", valor)
-    socios = Socios.objects.filter(persona__apellido__startswith= valor)
+    socios = Socios.objects.filter(persona__apellido__istartswith= valor)
     data = serializers.serialize('json', socios,use_natural_foreign_keys=True)
     print(data)
     return HttpResponse(data, content_type="application/json")  

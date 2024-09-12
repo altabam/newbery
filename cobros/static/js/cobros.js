@@ -72,10 +72,11 @@ function __init()
                         .addClass('tr');
 
         user_tmpl.append('<td>'+item.indice+'</td>');
-        user_tmpl.append('<td>'+item.numero+'</td>');
-        user_tmpl.append('<td>'+item.apellido+'</td>');
-        user_tmpl.append('<td>'+item.nombre+'</td>');
-        user_tmpl.append('<td collspan="3">'+'<a href="/cobros/verPagoSocio/'+item.id+'">Seleccionar</a>' +'</td>');
+        user_tmpl.append('<td class="tdNumero">'+item.numero+'</td>');
+        user_tmpl.append('<td class="tdNumero">'+item.dni+'</td>');
+        user_tmpl.append('<td class="td-nombre">'+item.apellido+'</td>');
+        user_tmpl.append('<td class="td-nombre">'+item.nombre+'</td>');
+        user_tmpl.append('<td class="td-opciones" collspan="3">'+'<div class="divBoton">' +'<a href="/cobros/verPagoSocio/'+item.id+'">Seleccionar</a>' +'</div>' +'</td>');
 
                         
         return  table.append(user_tmpl);

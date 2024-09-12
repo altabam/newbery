@@ -15,7 +15,9 @@ def render_cobros(request):
     return render(request, "cobros.html", )
 
 def pagarCuota(request):
-    return render(request, "pagarCuota.html")
+    socios=Socios.objects.all()
+    contexto =  { "listadoSocios": socios}
+    return render(request, "pagarCuota.html", contexto)
 
 def verPagoSocio(request,id):
     meses =[  "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL","AGO","SEP", "OCT", "NOV","DIC", ]
