@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.db.models import Count, Subquery
 from django.core.exceptions import ObjectDoesNotExist   
 from .models import Personas, Disciplinas, Categorias, Jugadores, Becas, Socios, Cuotas, BecasJugador, BecasMotivos, CalidadIntegrante, IntegrantesClub
-from .forms import PersonaForm, DisciplinasForm, CategoriasForm, JugadoresCategoriasForm,borrarJugadorForm
+from .forms import PersonaForm, DisciplinasForm, CategoriasForm, JugadoresCategoriasForm,BecasForm
 from .libreria.cargaMasiva import * 
 from .libreria.gest_socios import *
 from .libreria.gest_personas import *
@@ -514,3 +514,23 @@ def borrarJugadorCategorias(request, id):   # Permite borrar Jugadores DEFINITIV
     contexto ={'listadoJugadores': listadoJugadores}
     return render(request,'Jugadores.html', contexto)
 
+#vistas de acciones sobre becas
+def editarBeca(request, id):
+    beca = get_object_or_404(Becas, id=id)
+    if request.method == 'POST':
+        form= BecasForm(request.POST, instance=beca)
+        if form.is_valid():
+            form.save()
+            return redirect ('/configuracion/listadoBecas')
+    else:
+        form= BecasForm(instance=beca)
+    contexto ={
+        "accion": "Modificar",
+        "form": form,
+        "datos":beca,
+        "titulo": 'Editar Becas',
+    }
+    return render(request, "agregarJugadorCategorias.html",contexto)
+
+def borrarBeca(request, id): #dar de baja una beca
+    beca= get_object_or_404(Becas,id=id)

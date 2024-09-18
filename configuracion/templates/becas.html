@@ -1,6 +1,10 @@
 {% extends "base_nav.html"%}
+{% load static %}
+{% block styleOtros %}
+<link rel="stylesheet" href="{% static 'css/configuracion.css' %}">
+{% endblock %}
 {% block body %}
-<h1> Gestion de Disciplinas</h1>
+<h1 class="titulo"> Gestion de Becas</h1>
 <table>
     
     <thead>
@@ -17,9 +21,18 @@
 {% for listadoBeca in listadoBecas %}
                 <tr>
                     <td>{{listadoBeca.id}}</td>
-                    <td>{{listadoBeca.nombre}}</td>
-                    <td>{{listadoBeca.porcentaje}}</td>
-                
+                    <td class="td-nombre">{{listadoBeca.nombre}}</td>
+                    <td class="tdNumero">{{listadoBeca.porcentaje}}</td>
+                    <td class="td-opciones">
+                        <div class="td-opciones container"></div>
+                            <a class="boton-editar" href="{% url 'configuracion:editarBeca' listadoBeca.id %}"> 
+                                <img  src="{% static 'img/editar-logo.png?v=2.' %}" alt="Editar" title="Editar" class="icono"></a>
+                            
+                            <!-- <a class="boton-eliminar" href="{% url 'configuracion:borrarBeca' listadoBeca.id %}">
+                                <img  src="{% static 'img/eliminar1.png?v=2.' %}" alt="Eliminar" title="Eliminar" class="icono">
+                            </a> --> 
+                        </div>
+                    </td>
                 </tr>
 {% endfor %}
 {% endif %}

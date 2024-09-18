@@ -105,6 +105,9 @@ class Jugadores(models.Model):
 class Becas(models.Model):
     nombre = models.CharField(max_length=100)
     porcentaje = models.FloatField()
+    fecha_desde = models.DateField(null=True)
+    fecha_hasta = models.DateField(null=True)
+    activo = models.BooleanField(default=True)  # Campo para la eliminación lógica
 
 class Cuotas(models.Model):
     concepto = models.CharField(max_length=100)

@@ -7,7 +7,7 @@ from configuracion.views import cargarCategorias, cargaInicialDisciplinas, carga
 from configuracion.views import cargarAgrupacionFamiliarSocios, borrarSocio
 from configuracion.views import listarMotivoBecas, cargaBecasJugador
 from configuracion.views import listarMotivoCalicadIntegrantes, listarIntegrantesClub
-from configuracion.views import listadoPersonas, borrarPersona, editarPersona,agregarPersona,agregarDisciplinas,editarDisciplinas,borrarLogDisciplinas,borrarDisciplinas, agregarCategorias, editarCategorias,borrarLogCategorias,borrarCategorias, agregarJugadorCategorias, editarJugadorCategorias,borrarJugadorLogCategorias, borrarJugadorCategorias
+from configuracion.views import listadoPersonas, borrarPersona, editarPersona,agregarPersona,agregarDisciplinas,editarDisciplinas,borrarLogDisciplinas,borrarDisciplinas, agregarCategorias, editarCategorias,borrarLogCategorias,borrarCategorias, agregarJugadorCategorias, editarJugadorCategorias,borrarJugadorLogCategorias, borrarJugadorCategorias, editarBeca
 from configuracion.views import obtenerCategorias,obtener_personas
 from configuracion.libreria.gest_socios import agruparSocios, buscarSocio, buscarSocioResponsable,listarIntegrantesSocios,agregarIntegranteSocio, listarIntegrantesSinSocio, quitarIntegranteSocio, listarPersonasNoSocios,agregarNuevoSocio, eliminarSocioResponsable
 from configuracion.libreria.gest_carga_inicial import cargaInicialMotivosBeca, cargaInicialCalidadIntegrante, cargaInicialCuotas
@@ -51,6 +51,7 @@ urlpatterns = [
     path("editarDisciplinas/<int:id>",editarDisciplinas, name="editarDisciplinas"),
     path("editarCategorias/<int:id>",editarCategorias, name="editarCategorias"),
     path("editarJugadorCategorias/<int:id>",editarJugadorCategorias, name="editarJugadorCategorias"),
+    path("editarBeca/<int:id>",editarBeca, name="editarBeca"),
     path("borrarPersona/<int:id>",borrarPersona, name="borrarPersona"),
     path("borrarLogDisciplinas/<int:id>",borrarLogDisciplinas, name="borrarLogDisciplinas"),
     path("borrarDisciplinas/<int:id>",borrarDisciplinas, name="borrarDisciplinas"),

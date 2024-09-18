@@ -1,5 +1,5 @@
 from django import forms
-from .models import Personas, Disciplinas, Categorias, Jugadores, Socios
+from .models import Personas, Disciplinas, Categorias, Jugadores, Socios,Becas
 
 class PersonaForm(forms.ModelForm):
     class Meta:
@@ -70,3 +70,7 @@ class SociosForm(forms.ModelForm):
         model= Socios
         fields= '__all__'
         
+class BecasForm(forms.ModelForm):
+    class Meta:
+        Model= Becas
+        fields= '__all__'
