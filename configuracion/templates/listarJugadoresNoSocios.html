@@ -1,6 +1,10 @@
 {% extends "base_nav.html"%}
+{% load static %}
+{% block styleOtros %}
+<link rel="stylesheet" href="{% static 'css/configuracion.css' %}">
+{% endblock %}
 {% block body %}
-<h1> Listado de Jugadores que no tienen nro. de Socio </h1>
+<h1 class="titulo"> Listado de Jugadores que no tienen nro. de Socio </h1>
 <table>
     <thead>
         <tr>
@@ -18,11 +22,12 @@
     {{listarJugadoresNoSocios.Jugadores.persona.nombre}}
         {% for listarJugadoresNoSocio in listarJugadoresNoSocios %}
         <tr>
-            <td class="tdTexto">{{listarJugadoresNoSocio.persona.id}}</td>
-            <td class="tdTexto">{{listarJugadoresNoSocio.persona.dni}}</td>
-            <td class="tdTexto">{{listarJugadoresNoSocio.persona.nombre}} {{listarJugadoresNoSocio.persona.apellido}}</td>
-            <td class="tdTexto">{{listarJugadoresNoSocio.categoria.disciplina}}</td>
-            <td class="tdTexto">{{listarJugadoresNoSocio.categoria}}</td>
+            <td class="tdNumero">{{forloop.counter}}</td>
+            <td class="tdNumero">{{listarJugadoresNoSocio.persona.id}}</td>
+            <td class="tdNumero">{{listarJugadoresNoSocio.persona.dni}}</td>
+            <td class="td-nombre">{{listarJugadoresNoSocio.persona.nombre}} {{listarJugadoresNoSocio.persona.apellido}}</td>
+            <td class="td-nombre">{{listarJugadoresNoSocio.categoria.disciplina}}</td>
+            <td class="td-nombre">{{listarJugadoresNoSocio.categoria}}</td>
                 
         </tr>
         {% endfor %}

@@ -1,6 +1,10 @@
 {% extends "base_nav.html"%}
+{% load static %}
+{% block styleOtros %}
+<link rel="stylesheet" href="{% static 'css/configuracion.css' %}">
+{% endblock %}
 {% block body %}
-<h1> Gestion de Cuotas</h1>
+<h1 class="titulo"> Gestion de Cuotas</h1>
 <table>
     
     <thead>
