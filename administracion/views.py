@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.db import connection
- from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 
 # Create your views here.
