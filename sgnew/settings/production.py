@@ -19,7 +19,6 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 
-America/Argentina/Buenos_Aires
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
