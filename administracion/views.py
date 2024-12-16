@@ -10,7 +10,7 @@ def actualizarSecuenciaIdPersonas(request):
     return render(request,'configuracion/cargaMasiva.html', contexto)   
 
 
-def envioMail(request):
+def envioEmail(request):
   # Renderizar la plantilla
   mensaje = '<h1>Hola Marcelo</h1> <p>Gracias por registrarte en nuestro sitio.</p>'
   # Enviar el correo
