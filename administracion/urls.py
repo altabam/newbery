@@ -8,4 +8,5 @@ urlpatterns = [
     path("realizarBackup/<slug:slug>",realizarBackup, name="realizarBackup"),
     path("gestionarBackup",gestionarBackup, name="gestionarBackup"),
     path("actualizarSecuenciaIdPersonas",actualizarSecuenciaIdPersonas, name="actualizarSecuenciaIdPersonas"),
+    path("envioEmail", name="envioEmail"),
 ]
