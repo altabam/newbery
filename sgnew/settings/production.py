@@ -21,10 +21,10 @@ CSRF_TRUSTED_ORIGINS = [
 
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'  # Por ejemplo, 'smtp.gmail.com' para Gmail
-EMAIL_PORT = 587  # Usualmente 587 para TLS
-EMAIL_USE_TLS = True  # Habilitar TLS
-EMAIL_HOST_USER = 'altabam@gmail.com'  # Tu dirección de correo
-EMAIL_HOST_PASSWORD = 'zzffschgczeylqlq'  
-DEFAULT_FROM_EMAIL = 'altabam@gmail.com'
+EMAIL_BACKEND = os.getenv("EMAIL_BACKEND")
+EMAIL_BACKEND = os.getenv("EMAIL_BACKEND")
+EMAIL_PORT = default=os.getenv("EMAIL_PORT")
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS") 
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD") 
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")

@@ -2,6 +2,7 @@ from django import forms
 from .models import Personas, Disciplinas, Categorias, Jugadores, Socios
 
 class PersonaForm(forms.ModelForm):
+    email = forms.CharField(max_length=254)
     class Meta:
         model = Personas
         fields = '__all__'
@@ -10,7 +11,7 @@ class PersonaForm(forms.ModelForm):
          }
         input_formats= {'fecha_nacimiento':["%Y-%m-%d"],
          }
-
+    
 class DisciplinasForm(forms.ModelForm):
     class Meta:
         model =Disciplinas

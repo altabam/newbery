@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.templatetags.static import static
 import csv
+from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.db.models import Count, Subquery
 from django.core.exceptions import ObjectDoesNotExist   
@@ -304,7 +305,11 @@ def agregarPersona(request):
         form= PersonaForm(request.POST)
         if form.is_valid():
            form.id = id =Personas.objects.order_by('id').last().id+1
+           user = User.objects.create_user(request.POST.get('dni'), request.POST.get('email'), request.POST.get('dni'))
+           user.first_name = request.POST.get('nombre')
+           user.last_name = request.POST.get('apellido')
            form.save()
+           user.save()
            return redirect('/configuracion/listadoPersonas')
     else:
         form =PersonaForm()

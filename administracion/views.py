@@ -9,9 +9,8 @@ def actualizarSecuenciaIdPersonas(request):
       cursor.execute("SELECT setval(pg_get_serial_sequence('""configuracion_personas""','id'), coalesce(max('id'), 1), max('id') IS NOT null) FROM 'configuracion_personas';")
     return render(request,'configuracion/cargaMasiva.html', contexto)   
 
-
-def envioEmail(request):
-  # Renderizar la plantilla
+def enviarEmail(request):
+ # Renderizar la plantilla
   mensaje = '<h1>Hola Marcelo</h1> <p>Gracias por registrarte en nuestro sitio.</p>'
   # Enviar el correo
   email = EmailMessage(
@@ -22,4 +21,8 @@ def envioEmail(request):
   )
   email.content_subtype = 'html'  # Define el tipo como HTML
   email.send()
-  return render(request)   
+
+def envioEmail(request):
+  contexto = {}
+  return render(request, 'envioEmail.html', contexto)   
+
