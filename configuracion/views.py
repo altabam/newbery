@@ -305,11 +305,7 @@ def agregarPersona(request):
         form= PersonaForm(request.POST)
         if form.is_valid():
            form.id = id =Personas.objects.order_by('id').last().id+1
-           user = User.objects.create_user(request.POST.get('dni'), request.POST.get('email'), request.POST.get('dni'))
-           user.first_name = request.POST.get('nombre')
-           user.last_name = request.POST.get('apellido')
            form.save()
-           user.save()
            return redirect('/configuracion/listadoPersonas')
     else:
         form =PersonaForm()

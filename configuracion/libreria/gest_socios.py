@@ -50,7 +50,12 @@ def cargarSocio(reader):
     socio.numero =len(Socios.objects.all())
     socio.persona = persona
     socio.responsable = 'S'
+    user = User.objects.create_user(persona.dni, persona.email, persona.dni)
+    user.first_name = persona.nombre
+    user.last_name = persona.apellido
+    user.save()
     socio.save(force_insert=True)
+
 
 def cargarAgrupacionFamiliarSociosCsv(url):
     template_name = url
