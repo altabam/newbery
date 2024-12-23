@@ -1,6 +1,23 @@
-
-  <form action="" method="post">
-  {% csrf_token %}
-     <p>{{ form.email }} hola</p>
-    <input type="submit" class="btn btn-default btn-lg" value="Restablecer contraseña">
-  </form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' href="{% static 'css/base.css' %}" type="text/css">
+    <title>Document</title>
+</head>
+<body class="bodyForm">
+    <div class="divForm">
+        <h2 class="titulo">Ingresar mail para restaurar contraseña</h2>
+        <form class="formulario" action="{% url 'administracion:enviarEmail' %}" method="post">
+            {% csrf_token%}
+            <input type="email" id="email" name="email">
+            <div class="divBoton">
+                <input class="boton" type="submit" value="Enviar"></input>
+            </div>
+            <h3>{{mensajeEnvio}}</h3>
+        </form>
+    </div>
+</body>
+</html>

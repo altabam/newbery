@@ -1,7 +1,7 @@
 from django.urls import path,re_path
 
 from administracion.libreria.gest_backup import realizarBackup, gestionarBackup
-from administracion.views import actualizarSecuenciaIdPersonas, envioEmail
+from administracion.views import actualizarSecuenciaIdPersonas, envioEmail, enviarEmail
 
 app_name = 'administracion'
 urlpatterns = [
@@ -9,4 +9,5 @@ urlpatterns = [
     path("gestionarBackup",gestionarBackup, name="gestionarBackup"),
     path("actualizarSecuenciaIdPersonas",actualizarSecuenciaIdPersonas, name="actualizarSecuenciaIdPersonas"),
     path("envioEmail",envioEmail, name="envioEmail"),
+    path("enviarEmail",enviarEmail, name="enviarEmail"),
 ]
