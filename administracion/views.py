@@ -28,7 +28,7 @@ def enviarEmail(request):
   if(existeEmail(request.POST.get('email'))):
     
     # Renderizar la plantilla
-    url_app = "https://"+ os.environ.get('URL_APP', 'valor_por_defecto')+"/administracion/mailValidador"
+    url_app = "https://"+ os.getenv('URL_APP')+"/administracion/mailValidador"
     print(url_app)
     mensaje = '<h1>Hola Marcelo</h1> <p>Gracias por registrarte en nuestro sitio.</p> '
     # Enviar el correo
