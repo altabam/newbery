@@ -1,1 +1,1 @@
-web: gunicorn sgnew.wsgi --log-file
+web: python manage.py collectstatic && gunicorn sgnew.wsgi
