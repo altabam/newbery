@@ -19,7 +19,8 @@ def cargaInicialCuotas(request):
             else:
                 print(row)
     mensaje ="carga con exito"
-    contexto ={  "mensaje":mensaje } 
+    contexto ={  "mensaje":mensaje,                  "menu": ObtenerMenu(request.user), 
+    } 
     return render (request, "cargaInicial.html",contexto)
 
 def cargaInicialMotivosBeca(request):
@@ -38,7 +39,8 @@ def cargaInicialMotivosBeca(request):
             else:
                 print(row)
     mensaje ="carga con exito"
-    contexto ={  "mensaje":mensaje } 
+    contexto ={  "mensaje":mensaje,                  "menu": ObtenerMenu(request.user), 
+    } 
     return render (request, "cargaInicial.html",contexto)
 
 
@@ -59,5 +61,6 @@ def cargaInicialCalidadIntegrante(request):
             else:
                 print(row)
     mensaje ="carga con exito"
-    contexto ={  "mensaje":mensaje } 
+    contexto ={  "mensaje":mensaje ,                  "menu": ObtenerMenu(request.user), 
+    } 
     return render (request, "cargaInicial.html",contexto)

@@ -4,6 +4,7 @@ from datetime import datetime, timedelta, date
 from configuracion.models import Socios, BecasJugador, Jugadores,Cuotas
 from .models import DetallePagos , Pagos, SituacionInicial
 from .forms import CobrosCreationForm, SituacionInicialForm
+from home.views import ObtenerMenu
 
 # Create your views here.
 
@@ -99,6 +100,8 @@ def verPagoSocio(request,id):
                  "listabecados" : becados,
                  "listadoCobros" : listadoCobros,
                  "form": form,
+                 "menu": ObtenerMenu(request.user), 
+
     }
     return render(request, "verPagoSocio.html", contexto )
 
@@ -145,6 +148,8 @@ def agregarSitInicial(request):
     contexto ={ 
             "accion":"Agregar", 
             "form": form,
+            "menu": ObtenerMenu(request.user), 
+
          } 
     return render(request, "editarSituacionInicial.html", contexto )    
 
@@ -162,18 +167,22 @@ def editarSitInicial(request,id):
             "accion":"Modificar", 
             "form": form,
             "datos": sitInicial,
+            "menu": ObtenerMenu(request.user), 
+
          } 
     return render(request, "editarSituacionInicial.html",contexto)
 
 def listarSitInicial(request):
     listadoSitInicial = SituacionInicial.objects.all()
-    contexto = { "listadoSitInicial": listadoSitInicial }
+    contexto = { "listadoSitInicial": listadoSitInicial,                  "menu": ObtenerMenu(request.user), 
+    }
     return render(request, "situacioninicial.html",  contexto)
 
 def borrarSitInicial(request, id):
     SituacionInicial.objects.filter(id=id).delete()
     listadoSitInicial = SituacionInicial.objects.all()
-    contexto = { "listadoSitInicial": listadoSitInicial }
+    contexto = { "listadoSitInicial": listadoSitInicial,                   "menu": ObtenerMenu(request.user), 
+    }
     return render(request, "situacioninicial.html",  contexto)
 
 def listarSociosDeuda(request):
@@ -200,7 +209,9 @@ def listarSociosDeuda(request):
 
     
     contexto = { "listadoDeudores": listadoDeudores,
-                 "montoTotalDeuda": montoTotalDeuda}
+                 "montoTotalDeuda": montoTotalDeuda,
+                                   "menu": ObtenerMenu(request.user), 
+    }
     return render(request, "listadoDeudores.html",  contexto)
 
 def calcularMontoPago(nroSocio):

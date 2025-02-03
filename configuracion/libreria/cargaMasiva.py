@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 import csv
 from configuracion.models import IntegrantesClub, Personas, BecasJugador, Jugadores, CalidadIntegrante, BecasMotivos, Becas
-
+from home.views import ObtenerMenu
 from .gest_socios import cargarSociosCsv
 
 def cargaMasivaSocios(request):
@@ -37,7 +37,8 @@ def cargaIntegrantesClub(request):
                 print("Persona:", row[0], "no existe" )
                 
     mensaje ="carga con exito"
-    contexto ={  "mensaje":mensaje } 
+    contexto ={  "mensaje":mensaje,                   "menu": ObtenerMenu(request.user), 
+    } 
     return render (request, "cargaInicial.html",contexto)
 
 
@@ -71,7 +72,8 @@ def cargaBecasJugadores(request):
             else:
                 print("Jugador:", row[0], "no existe" )
                 mensaje ="Jugador:"+ row[0]+ " no existe" 
-    contexto ={  "mensaje":mensaje } 
+    contexto ={  "mensaje":mensaje,                  "menu": ObtenerMenu(request.user), 
+    } 
     return render (request, "cargaInicial.html",contexto)
 
 

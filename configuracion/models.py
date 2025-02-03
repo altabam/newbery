@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
 # Create your models here.
@@ -127,10 +128,32 @@ class CalidadIntegrante(models.Model):
 
 
 class IntegrantesClub(models.Model):
-    persona = models.ForeignKey(Personas, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     calidad = models.ForeignKey(CalidadIntegrante, on_delete=models.CASCADE)
     fecha_desde =models.DateField(null=True)
-    fecha_hasta = models.DateField(null=True)
+    fecha_hasta = models.DateField(null=True,blank=True)
+
+
+
+class ProfesoresDeportivos(models.Model):
+    profesor = models.ForeignKey(IntegrantesClub, on_delete=models.CASCADE)
+    categoria = models.ForeignKey(Categorias, on_delete=models.CASCADE)
+    fecha_desde =models.DateField(null=True)
+    fecha_hasta = models.DateField(null=True,blank=True)
+
+class EventoDeportivo(models.Model):
+    evento =  models.CharField(max_length=250)
+
+class Asistencia(models.Model):
+    ASISTE = (
+        ("S", "SI"),
+        ("N", "NO"),
+    )
+    jugador = models.ForeignKey(Jugadores, on_delete=models.CASCADE)
+    evento = models.ForeignKey(EventoDeportivo, on_delete= models.CASCADE)
+    fecha = models.DateField(null=True,blank=True)
+    asiste = models.CharField(max_length=1, choices=ASISTE, blank=True, default='N')
+
 
 class BecasJugador(models.Model):
     MES = (
@@ -156,3 +179,4 @@ class BecasJugador(models.Model):
     solicita = models.ForeignKey(IntegrantesClub, on_delete=models.CASCADE)
 
     
+     

@@ -3,9 +3,13 @@ from django.http import  HttpResponse,HttpResponseBadRequest
 from django.core import serializers
 from django.db.models import Count
 from configuracion.models import Jugadores, Categorias, Disciplinas
+from home.views import ObtenerMenu
 
 def reportes(request):
-    return render(request, "reportes.html" )
+   contexto =  {   "menu": ObtenerMenu(request.user), 
+
+   }    
+   return render(request, "reportes.html",contexto )
 
 def reporteJugadoresPorCategoria(request):
      jugxcat = Jugadores.objects.values('categoria').annotate(dcount=Count('categoria')).order_by('categoria__disciplina')
@@ -21,6 +25,8 @@ def reporteJugadoresPorCategoria(request):
      print(reporteJugPorCat)
 
      contexto =  { "cat" : reporteJugPorCat,
+                                    "menu": ObtenerMenu(request.user), 
+
     
      }
     
@@ -40,6 +46,7 @@ def reporteJugadoresPorDisciplina(request):
      print(reporteJugPorDis)
 
      contexto =  { "dis" : reporteJugPorDis,
+                  "menu": ObtenerMenu(request.user), 
     
      }
      print (contexto)

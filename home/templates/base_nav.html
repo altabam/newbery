@@ -7,27 +7,13 @@
     <nav class="barraMenu">
         <div class="menuPrincipal collapse navbar-collapse" id="navbarNav">
             <ul class="ulMenuPrincipal">
-                <li class="liMenuPrincipal">
-                    <a class="linkMenu active" aria-current="page" href="/configuracion/reportes">Reportes</a>
-                </li>
-                <li class="liMenuPrincipal">
-                    <a class="linkMenu" href="/tablasParametricas">Configuracion</a>
-                </li>
-                <li class="liMenuPrincipal">
-                    <a class="linkMenu" href="/listados">Listados</a>
-                </li>
-                <li class="liMenuPrincipal">
-                    <a class="linkMenu" href="/cobros">cobros</a>
-                </li>
-                <li class="liMenuPrincipal">
-                    <a class="linkMenu" href="/configuracion/cargaInicial">Carga Inicial</a>
-                </li>
-                <li class="liMenuPrincipal">
-                    <a class="linkMenu" href="/configuracion/cargaMasiva">Carga Masiva</a>
-                </li>
-                <li class="liMenuPrincipal">
-                    <a class="linkMenu" href="/administracion/gestionarBackup">Administracion</a>
-                </li>
+                {% if menu %}
+                    {% for me in menu %}
+                    <li class="liMenuPrincipal">
+                       <a class="linkMenu" aria-current="page" href="{{me.menu.url}}">{{me.menu.nombre}}</a>
+                    </li>
+                    {% endfor %}
+                {% endif %}
 
             </ul>
         </div>

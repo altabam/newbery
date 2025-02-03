@@ -11,20 +11,29 @@ from .libreria.cargaMasiva import *
 from .libreria.gest_socios import *
 from .libreria.gest_personas import *
 from .libreria.gest_carga_inicial import *
+from home.views import ObtenerMenu
 # Create your views here.
+
 def listadoPersonas(request):
     listadoPersona = Personas.objects.all().order_by('apellido','nombre')
-    contexto = { "listadoPersonas": listadoPersona }
+    contexto = { "listadoPersonas": listadoPersona,
+                 "menu": ObtenerMenu(request.user), 
+               }
     return render(request, "personas.html",  contexto)
 
 def listadoDisciplinas(request):
     listadoDisciplina = Disciplinas.objects.all()
-    contexto =  { "listadoDisciplinas": listadoDisciplina }
+    contexto =  { "listadoDisciplinas": listadoDisciplina,
+                  "menu": ObtenerMenu(request.user), 
+
+                 }
     return render(request, "disciplinas.html",  contexto)
 
 def listadoCategorias(request):
     listadoCategoria = Categorias.objects.filter(activo=True)
-    contexto =   { "listadoCategorias": listadoCategoria }
+    contexto =   { "listadoCategorias": listadoCategoria,
+                   "menu": ObtenerMenu(request.user), 
+                 }
     return render(request, "categorias.html",  contexto)
 
 def listarJugadoresNoSocios(request):
@@ -35,12 +44,17 @@ def listarJugadoresNoSocios(request):
         id.append(socio.get('persona_id'))
     print(id)
     listarJugadoresNoSocios =Jugadores.objects.exclude(persona_id__in = id)
-    contexto =   { "listarJugadoresNoSocios": listarJugadoresNoSocios }
+    contexto =   { "listarJugadoresNoSocios": listarJugadoresNoSocios, 
+                   "menu": ObtenerMenu(request.user), 
+                }
     return render(request, "listarJugadoresNoSocios.html",  contexto)
 
 def listadoJugadores(request):
 
     # Obtener todas las disciplinas y categorias disponibles
+    print(request.user)
+
+    intClub = IntegrantesClub.objects.filter(user = request.user)
     disciplinas = Disciplinas.objects.all()
     categorias = Categorias.objects.filter(activo= True)
 
@@ -58,7 +72,9 @@ def listadoJugadores(request):
     contexto ={ 
         "listadoJugadores": listadoJugador,
         'disciplinas': disciplinas,
-        'categorias':categorias }
+        'categorias':categorias,
+        "menu": ObtenerMenu(request.user), 
+    }
     result = (Jugadores.objects
         .values('categoria')
         .annotate(dcount=Count('categoria'))
@@ -70,36 +86,48 @@ def listadoJugadores(request):
 
 def listadoBecas(request):
     listadoBeca = Becas.objects.all()
-    contexto ={ "listadoBecas": listadoBeca, }
+    contexto ={ "listadoBecas": listadoBeca, 
+                "menu": ObtenerMenu(request.user), 
+    }
     
     return render(request, "becas.html",  contexto)
 
 def listadoSocios(request):
     listadoSocio = obtenerSocios().filter(responsable= "S")
-    contexto ={ "listadoSocios": listadoSocio, }
+    contexto ={ "listadoSocios": listadoSocio,
+                "menu": ObtenerMenu(request.user), 
+              }
     
     return render(request, "socios.html",  contexto)
 
 
 def listarCuotas(request):
     listadoCuotas = Cuotas.objects.all().order_by("fecha_hasta","cant_int")
-    contexto ={ "listadoCuotas": listadoCuotas, }
+    contexto ={ "listadoCuotas": listadoCuotas,                   
+                "menu": ObtenerMenu(request.user), 
+    }
     return render(request, "cuotas.html",  contexto)
 
 def listarMotivoBecas(request):
     listadoMotivosBecas = BecasMotivos.objects.all()
-    contexto ={ "listadoMotivosBecas": listadoMotivosBecas, }
+    contexto ={ "listadoMotivosBecas": listadoMotivosBecas, 
+                "menu": ObtenerMenu(request.user), 
+    }
     return render(request, "motivosBecas.html",  contexto)
 
 def listarMotivoCalicadIntegrantes(request):
     listadoCalidadIntegrantes = CalidadIntegrante.objects.all()
-    contexto ={ "listadoCalidadIntegrantes": listadoCalidadIntegrantes, }
+    contexto ={ "listadoCalidadIntegrantes": listadoCalidadIntegrantes,                   
+                "menu": ObtenerMenu(request.user), 
+    }
     return render(request, "calidadIntegrantes.html",  contexto)
 
 def listarIntegrantesClub(request):
     listadoIntegranteClub = IntegrantesClub.objects.all()
     print(listadoIntegranteClub)
-    contexto ={ "listadoIntegranteClub": listadoIntegranteClub, }
+    contexto ={ "listadoIntegranteClub": listadoIntegranteClub,
+                "menu": ObtenerMenu(request.user), 
+    }
     return render(request, "integrantesClub.html",  contexto)
 
 
@@ -115,7 +143,8 @@ def borrarTodosSocios(request):
 
 def gestionarJugadoresCategoria(request):
     listadoCategorias = Categorias.objects.all();
-    contexto ={ "listadoCategorias": listadoCategorias,  } 
+    contexto ={ "listadoCategorias": listadoCategorias,                    "menu": ObtenerMenu(request.user), 
+    } 
     return render (request, "gestionarJugadoresCategoria.html",contexto)
 
     
@@ -123,7 +152,9 @@ def borrarJugadoresCategoria(request, id):
     listadoCategorias = Categorias.objects.all();
     jugadores = Jugadores.objects.filter(categoria = id)
     jugadores.delete()
-    contexto ={ "listadoCategorias": listadoCategorias,  } 
+    contexto ={ "listadoCategorias": listadoCategorias,  
+                "menu": ObtenerMenu(request.user), 
+    } 
     return render (request, "gestionarJugadoresCategoria.html",contexto)
 
 def cargarJugadoresCategoria(request,id):
@@ -149,7 +180,8 @@ def cargarJugadoresCategoria(request,id):
 
            # model.save(force_insert=True)
     listadoCategorias = Categorias.objects.all();
-    contexto ={ "listadoCategorias": listadoCategorias, "mensaje":mensaje } 
+    contexto ={ "listadoCategorias": listadoCategorias, "mensaje":mensaje,                  "menu": ObtenerMenu(request.user), 
+    } 
     return render (request, "gestionarJugadoresCategoria.html",contexto)
 
 def cargarJugador(persona,categoria):
@@ -213,7 +245,8 @@ def cargaBecasJugador(request):
                 print("Agrupacion Familiar, persona existe")
                 print(row)
     mensaje ="carga con exito"
-    contexto ={  "mensaje":mensaje } 
+    contexto ={  "mensaje":mensaje,                   "menu": ObtenerMenu(request.user), 
+    } 
     return render (request, "cargaMasiva.html",contexto)  
 
 
@@ -221,7 +254,8 @@ def cargaBecasJugador(request):
 def cargarCategorias(request):
     cargarCategoriasArchivo()
     mensaje ="carga con exito"
-    contexto ={  "mensaje":mensaje } 
+    contexto ={  "mensaje":mensaje,                   "menu": ObtenerMenu(request.user), 
+    } 
     return render (request, "cargaMasiva.html",contexto)
 
 
@@ -239,7 +273,8 @@ def cargaInicialDisciplinas(request):
            else:
                 print(row)
     mensaje ="carga con exito"
-    contexto ={  "mensaje":mensaje } 
+    contexto ={  "mensaje":mensaje ,                  "menu": ObtenerMenu(request.user), 
+    } 
     return render (request, "cargaInicial.html",contexto)
 
 def cargaInicialBecas(request):
@@ -257,20 +292,23 @@ def cargaInicialBecas(request):
             else:
                 print(row)
     mensaje ="carga con exito"
-    contexto ={  "mensaje":mensaje } 
+    contexto ={  "mensaje":mensaje,                   "menu": ObtenerMenu(request.user), 
+    } 
     return render (request, "cargaInicial.html",contexto)
 
 
 def cargaInicialCategorias(request):
     cargarCategoriasArchivo()
     mensaje ="carga con exito"
-    contexto ={  "mensaje":mensaje } 
+    contexto ={  "mensaje":mensaje,                   "menu": ObtenerMenu(request.user), 
+    } 
     return render (request, "cargaInicial.html",contexto)
 
 def cargarAgrupacionFamiliarSocios(request):
     cargarAgrupacionFamiliarSociosCsv("configuracion/migrations/agrupFamiliarSocios.csv")
     mensaje ="carga con exito"
-    contexto ={  "mensaje":mensaje } 
+    contexto ={  "mensaje":mensaje,                   "menu": ObtenerMenu(request.user), 
+    } 
     return render (request, "cargaMasiva.html",contexto)
 
 def borrarSocio(request,id):
@@ -279,7 +317,8 @@ def borrarSocio(request,id):
 def borrarPersona(request, id):
     Personas.objects.filter(id=id).delete()
     listadoPersonas = Personas.objects.all().order_by('apellido','nombre')
-    contexto = { "listadoPersonas": listadoPersonas }
+    contexto = { "listadoPersonas": listadoPersonas,                   "menu": ObtenerMenu(request.user), 
+    }
     return render(request, "personas.html",  contexto)
 
 def editarPersona(request,id):
@@ -297,6 +336,8 @@ def editarPersona(request,id):
             "form": form,
             "datos": persona,
             "titulo": 'Editar Persona',
+            "menu": ObtenerMenu(request.user), 
+
          } 
     return render(request, "editarPersona.html",contexto)
 
@@ -314,6 +355,7 @@ def agregarPersona(request):
             "accion":"Agregar", 
             "form": form,
             "titulo":'Agregar Persona',
+            "menu": ObtenerMenu(request.user), 
          } 
     return render(request, "editarPersona.html", contexto )    
 
@@ -327,7 +369,7 @@ def agregarDisciplinas(request):
     else:
         form =DisciplinasForm()
     
-    return render(request, 'agregarDisciplinas.html', {'form': form})
+    return render(request, 'agregarDisciplinas.html', {'form': form, "menu": ObtenerMenu(request.user), })
 
 def editarDisciplinas(request,id):
     disciplina = Disciplinas.objects.get(id = id)
@@ -350,6 +392,8 @@ def editarDisciplinas(request,id):
             "accion":"Modificar", 
             "form": form,
             "datos": disciplina,
+            "menu": ObtenerMenu(request.user), 
+
          } 
     return render(request, "editarDisciplina.html",contexto)
 
@@ -367,12 +411,13 @@ def borrarLogDisciplinas(request,id):
         disciplina.save()
         return redirect('/configuracion/listadoDisciplinas')
     cancel_url =  '/configuracion/listadoDisciplinas'
-    return render(request, 'alert.html', {'cancel_url': cancel_url})
+    return render(request, 'alert.html', {'cancel_url': cancel_url,                  "menu": ObtenerMenu(request.user), })
 
 def borrarDisciplinas(request, id):  # Permite borrar Disciplinas DEFINITIVAMENTE de base de datos, NO SE USA
     Disciplinas.objects.filter(id=id).delete()
     listadoDisciplinas = Disciplinas.objects.all()
-    contexto = { "listadoDisciplinas": listadoDisciplinas }
+    contexto = { "listadoDisciplinas": listadoDisciplinas,                  "menu": ObtenerMenu(request.user), 
+    }
     return render(request, "disciplinas.html",  contexto)
 
 #Vistas de acciones sobre Categorias
@@ -388,6 +433,7 @@ def agregarCategorias(request):
         'form': form,
         'titulo': 'Agregar Categoría',
         'boton_texto': 'Agregar Categoría',
+        "menu": ObtenerMenu(request.user), 
     }
     return render(request, 'agregarCategorias.html', contexto)
 
@@ -416,7 +462,8 @@ def editarCategorias(request,id):
         "accion": "Modificar",
         "form": form,
         "datos": categoria,
-    }
+        "menu": ObtenerMenu(request.user), 
+   }
     return render(request, "editarCategoria.html", contexto)
 
 def borrarLogCategorias(request,id):
@@ -432,13 +479,15 @@ def borrarLogCategorias(request,id):
         categoria.save()
         return redirect('/configuracion/listadoCategorias')  
     cancel_url =  '/configuracion/listadoCategorias'
-    return render(request, 'alert.html', {'cancel_url': cancel_url})
+    return render(request, 'alert.html', {'cancel_url': cancel_url,                  "menu": ObtenerMenu(request.user), })
     
 
 def borrarCategorias(request,id):   # Permite borrar categorias DEFINITIVAMENTE de base de datos, NO SE USA
     Categorias.objects.filter(id=id).delete()
     listadoCategorias = Categorias.objects.all()
-    contexto = { "listadoCategorias": listadoCategorias }
+    contexto = { "listadoCategorias": listadoCategorias,
+                 "menu": ObtenerMenu(request.user), 
+    }
     return render(request, "categorias.html",  contexto)
 
 #vistas de acciones sobre jugadores de categorias
@@ -461,6 +510,7 @@ def agregarJugadorCategorias(request):
         'form': form,
         'titulo': 'Agregar Jugador a Categoría',
         'boton_texto': 'Agregar Jugador',
+        "menu": ObtenerMenu(request.user), 
     }
     return render(request, 'agregarJugadorCategorias.html', contexto) 
     
@@ -491,6 +541,7 @@ def editarJugadorCategorias(request,id):
         "form": form,
         "datos": jugador,
         "titulo": 'Editar Jugador',
+        "menu": ObtenerMenu(request.user), 
     }
     return render(request, "agregarJugadorCategorias.html",contexto)
 
@@ -512,6 +563,7 @@ def borrarJugadorLogCategorias(request, id):
 def borrarJugadorCategorias(request, id):   # Permite borrar Jugadores DEFINITIVAMENTE de base de datos, NO SE USA 
     Jugadores.objects.filter(id=id).delete()
     listadoJugadores = Jugadores.objects.all
-    contexto ={'listadoJugadores': listadoJugadores}
+    contexto ={'listadoJugadores': listadoJugadores,                  "menu": ObtenerMenu(request.user), 
+    }
     return render(request,'Jugadores.html', contexto)
 

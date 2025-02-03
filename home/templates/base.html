@@ -41,18 +41,17 @@
     </header>
     <hr>
     {% if user.is_authenticated  %}
-    
-    {% block nav %}
-    {% endblock %}
-    {% block subMenu %}
-    {% endblock %}
+      {% block nav %}
+      {% endblock %}
+      {% block subMenu %}
+      {% endblock %}
+    {% endif %}
     <section class="contenedor">
         {% block body %}
         {% endblock %}
 
     </section>
 
-    {% endif %}
 
     <footer>
         <section>

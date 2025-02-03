@@ -6,6 +6,7 @@ from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
 from datetime import datetime, timedelta
 
+from home.views import ObtenerMenu
 
 
 
@@ -78,7 +79,8 @@ def cargarAgrupacionFamiliarSociosCsv(url):
                 print(row)
 
 def agruparSocios(request):
-    contexto =  { "datos": "Buscar Socios responsables", }
+    contexto =  { "datos": "Buscar Socios responsables",                   "menu": ObtenerMenu(request.user), 
+    }
     return render(request, "agruparSocios.html", contexto ) 
 
 
@@ -113,6 +115,8 @@ def listarIntegrantesSocios(request, id):
     listadoIntegrantes = Socios.objects.filter(numero = socio.numero, responsable="N") 
     contexto =  { "responsable": socio,
                  "listadoIntegrantes":listadoIntegrantes,
+                 "menu": ObtenerMenu(request.user), 
+
     }
     return render(request, "integrantesSocios.html", contexto ) 
 
@@ -134,6 +138,8 @@ def agregarIntegranteSocio(request,id,idpk):
     contexto =  { "responsable": responsable,
                  "listadoPersonas":personas,
                  "titulo":'Agregar Integrante a cargo de:',
+                 "menu": ObtenerMenu(request.user), 
+
     }
     return render(request, "personasNoSocias.html", contexto) 
   
@@ -144,6 +150,7 @@ def quitarIntegranteSocio(request,id,idpk):
     listadoIntegrantes = Socios.objects.filter(numero = socio.numero, responsable="N") 
     contexto =  { "responsable": socio,
                  "listadoIntegrantes":listadoIntegrantes,
+                 "menu": ObtenerMenu(request.user), 
     }
     return render(request, "integrantesSocios.html", contexto ) 
 
@@ -160,6 +167,7 @@ def listarIntegrantesSinSocio(request,id):
                  "listadoSocios":personas,
                  "integrantes": integrantes,
                  'persona_buscar':persona_buscar,
+                  "menu": ObtenerMenu(request.user), 
     }
     return render(request, "personasNoSocias.html", contexto ) 
 
@@ -182,6 +190,7 @@ def listarPersonasNoSocios(request):
                  'titulo': 'Agregar Nuevo Socio',
                  "url_dinamica": '',
                  'persona_buscar':persona_buscar,
+                  "menu": ObtenerMenu(request.user), 
     }
     return render(request, "personasNoSocias.html", contexto ) 
 
@@ -206,5 +215,6 @@ def eliminarSocioResponsable(request, id): #Eliminar socios de forma DEFINITIVA 
     socio= Socios.objects.filter(id=id).delete()
     listadoSocios = Socios.objects.all()
 
-    contexto = {'listadoSocios':listadoSocios}
+    contexto = {'listadoSocios':listadoSocios,                  "menu": ObtenerMenu(request.user), 
+    }
     return render(request, 'socios.html', contexto)
