@@ -85,13 +85,11 @@ urlpatterns = [
     re_path(r'^buscarSocioResponsable/',buscarSocioResponsable, name='buscarSocioResponsable'),
 
 
+    path('secuencia/<slug:slug>/<int:id>',generarSecuencia, name='generarSecuencia'),
 
     path('reporteJugadoresPorDisciplina',reporteJugadoresPorDisciplina, name='reporteJugadoresPorDisciplina'),
     path('reporteJugadoresPorCategoria',reporteJugadoresPorCategoria, name='reporteJugadoresPorCategoria'),
     path('reportes',reportes, name='reportes'),
-    
-
-    path('secuencia/<slug:slug>/<int:id>',generarSecuencia, name='generarSecuencia'),
 
 
         
