@@ -15,6 +15,7 @@ from configuracion.libreria.cargaMasiva import cargaIntegrantesClub, cargaBecasJ
 from configuracion.libreria.gest_becas import listarBecados
 from configuracion.libreria.gest_personas import buscarPersona
 from configuracion.libreria.reportes import reportes, reporteJugadoresPorDisciplina, reporteJugadoresPorCategoria
+from configuracion.views import generarSecuencia
 app_name = 'configuracion'
 urlpatterns = [
     path("listadoPersonas",listadoPersonas, name="listadoPersonas"),
@@ -89,7 +90,9 @@ urlpatterns = [
     path('reporteJugadoresPorCategoria',reporteJugadoresPorCategoria, name='reporteJugadoresPorCategoria'),
     path('reportes',reportes, name='reportes'),
     
-  
+
+    path('secuencia/<slug:slug>/<int:idpk>',generarSecuencia, name='generarSecuencia'),
+
 
         
 ]
