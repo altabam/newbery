@@ -91,7 +91,7 @@ urlpatterns = [
     path('reportes',reportes, name='reportes'),
     
 
-    path('secuencia/<slug:slug>/<int:idpk>',generarSecuencia, name='generarSecuencia'),
+    path('secuencia/<slug:slug>/<int:id>',generarSecuencia, name='generarSecuencia'),
 
 
         
