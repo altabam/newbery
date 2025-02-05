@@ -12,6 +12,9 @@ from .libreria.gest_socios import *
 from .libreria.gest_personas import *
 from .libreria.gest_carga_inicial import *
 from home.views import ObtenerMenu
+
+from django.db import connection
+
 # Create your views here.
 
 def listadoPersonas(request):
@@ -567,3 +570,9 @@ def borrarJugadorCategorias(request, id):   # Permite borrar Jugadores DEFINITIV
     }
     return render(request,'Jugadores.html', contexto)
 
+
+def generarSecuencia(request, slug,id):
+    with connection.cursor() as cursor:
+        cursor.execute("ALTER SEQUENCE %s RESTART WITH %s", [slug][id])
+
+    return render(request)
