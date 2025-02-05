@@ -26,3 +26,11 @@ python manage.py sqlsequencereset myapp| psql
 datos
 
 ALTER SEQUENCE configuracion_personas_id_seq RESTART WITH 1
+
+
+
+csilvani    vani.333    ent 
+pbarrera    rera.333    pf 
+resteban    eban.333    ent
+yaguero     uero.333    ac
+saguero     gioAgu.123  cor
