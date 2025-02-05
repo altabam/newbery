@@ -572,7 +572,8 @@ def borrarJugadorCategorias(request, id):   # Permite borrar Jugadores DEFINITIV
 
 
 def generarSecuencia(request, slug,id):
+    print(slug, id)
     with connection.cursor() as cursor:
-        cursor.execute("ALTER SEQUENCE %s RESTART WITH %s", [slug][id])
+      cursor.execute("ALTER SEQUENCE %s RESTART WITH %s", (slug, id))
 
     return render(request)
