@@ -15,6 +15,7 @@ from configuracion.libreria.cargaMasiva import cargaIntegrantesClub, cargaBecasJ
 from configuracion.libreria.gest_becas import listarBecados
 from configuracion.libreria.gest_personas import buscarPersona
 from configuracion.libreria.reportes import reportes, reporteJugadoresPorDisciplina, reporteJugadoresPorCategoria
+from configuracion.libreria.gest_integrante_club import agregarIntegranteClub, gestionarIntegranteClub, borrarIntegranteClub, editarIntegranteClub
 from configuracion.views import generarSecuencia
 app_name = 'configuracion'
 urlpatterns = [
@@ -89,8 +90,12 @@ urlpatterns = [
 
     path('reporteJugadoresPorDisciplina',reporteJugadoresPorDisciplina, name='reporteJugadoresPorDisciplina'),
     path('reporteJugadoresPorCategoria',reporteJugadoresPorCategoria, name='reporteJugadoresPorCategoria'),
-    path('reportes',reportes, name='reportes'),
 
+    path('agregarIntegranteClub/', agregarIntegranteClub, name='agregarIntegranteClub'),
+    path("borrarIntegranteClub/<int:id>",borrarIntegranteClub, name="borrarIntegranteClub"),
+    path("editarIntegranteClub/<int:id>",editarIntegranteClub, name="editarIntegranteClub"),
+
+    path('reportes',reportes, name='reportes'),
 
         
 ]

@@ -25,12 +25,29 @@ python manage.py sqlsequencereset myapp| psql
 //generar login
 datos
 
-ALTER SEQUENCE configuracion_personas_id_seq RESTART WITH 1
+ALTER SEQUENCE configuracion_jugadores_id_seq RESTART WITH 1
 
+saguero     gioAgu.123  cor
 
 
 csilvani    vani.333    ent 
 pbarrera    rera.333    pf 
 resteban    eban.333    ent
-yaguero     uero.333    ac
-saguero     gioAgu.123  cor
+eaguero     uero.333    ac
+fbertolini  lini.333    pf
+snunez      unez.333    ent
+sdominguez  guez.333    ac
+faguero     uero.444    ent
+talaniz     aniz.333    ac
+ggonzalez   alez.333    pf
+nbenegas    egas.333    ent
+aponce      once.333    pf
+anunez      unez.444    ent
+jbarzola    zola.333    ac
+ddiaz       diaz.333    ent
+jescuedero  dero.333    ac
+wschamber   mber.333    ent
+aandurrel   rrel.333    ac
+ggarcia     rcia.333    pf
+mrodriguez  guez.333    ent
+nmoran      oran.333    ac

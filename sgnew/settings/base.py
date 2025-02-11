@@ -53,6 +53,8 @@ LOCAL_APPS = [
     "cobros",
     "configuracion",
     "administracion",
+    "gestJugadores",
+    
 ]
 
 LOGIN_REDIRECT_URL= "/"

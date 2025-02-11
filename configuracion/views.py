@@ -11,6 +11,7 @@ from .libreria.cargaMasiva import *
 from .libreria.gest_socios import *
 from .libreria.gest_personas import *
 from .libreria.gest_carga_inicial import *
+from .libreria.gest_integrante_club import *
 from home.views import ObtenerMenu
 
 from django.db import connection
@@ -146,7 +147,8 @@ def borrarTodosSocios(request):
 
 def gestionarJugadoresCategoria(request):
     listadoCategorias = Categorias.objects.all();
-    contexto ={ "listadoCategorias": listadoCategorias,                    "menu": ObtenerMenu(request.user), 
+    contexto ={ "listadoCategorias": listadoCategorias,
+                "menu": ObtenerMenu(request.user), 
     } 
     return render (request, "gestionarJugadoresCategoria.html",contexto)
 
