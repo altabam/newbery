@@ -21,7 +21,7 @@ def listados(request):
 def ObtenerMenu(user):
     print(user)
     group =Group.objects.filter(user=user)
-    menuUsuario = MenuGroup.objects.filter(groups__in = group)
+    menuUsuario = MenuGroup.objects.filter(groups__in = group, menu__nivel=1)
     #menu = Menu.objects.filter(id__in = menuUsuario.menu_id)
     print(menuUsuario )
     #permisos = MenuGroup.objects.filter(groups= user.groups)

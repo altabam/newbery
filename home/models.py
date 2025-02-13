@@ -7,6 +7,7 @@ from django.contrib.auth.models import Group
 class Menu(models.Model):
     url = models.CharField(max_length=250, blank=False,unique=True)
     nombre = models.CharField(max_length=250,unique=True)
+    nivel = models.SmallIntegerField()
 
     # no es el mejor modo de retornar la URL pero es facil de entender :D
     def get_absolute_url(self):
