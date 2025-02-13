@@ -11,7 +11,11 @@ from .libreria.cargaMasiva import *
 from .libreria.gest_socios import *
 from .libreria.gest_personas import *
 from .libreria.gest_carga_inicial import *
+from .libreria.gest_integrante_club import *
 from home.views import ObtenerMenu
+
+from django.db import connection
+
 # Create your views here.
 
 def listadoPersonas(request):
@@ -143,7 +147,8 @@ def borrarTodosSocios(request):
 
 def gestionarJugadoresCategoria(request):
     listadoCategorias = Categorias.objects.all();
-    contexto ={ "listadoCategorias": listadoCategorias,                    "menu": ObtenerMenu(request.user), 
+    contexto ={ "listadoCategorias": listadoCategorias,
+                "menu": ObtenerMenu(request.user), 
     } 
     return render (request, "gestionarJugadoresCategoria.html",contexto)
 
@@ -567,3 +572,10 @@ def borrarJugadorCategorias(request, id):   # Permite borrar Jugadores DEFINITIV
     }
     return render(request,'Jugadores.html', contexto)
 
+
+def generarSecuencia(request, slug,id):
+    print(slug, id)
+    with connection.cursor() as cursor:
+      cursor.execute("ALTER SEQUENCE "+slug+" RESTART WITH "+str(id))
+
+    return render(request)

@@ -6,15 +6,23 @@
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
      <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
      <script type="text/javascript" src="{% static 'js/agruparSocios.js' %}"></script>
+
  
      {% endblock %}
 {% block body %}
+<div >
+    <header>
+        <h1 class="titulo"> Gestion de Integrantes</h1>
+    </header>
+</div>
+<a class="boton-agregar" href="{% url 'configuracion:agregarIntegranteClub' %}" >
+    <img src="{% static 'img/agregar.png' %}" alt="Agregar" title="Agregar">
+</a>
 
 <div class="row">
 <table id="resultados" class="table">
     <thead>
         <tr>
-            <th>Id</th>
             <th>Numero </th>
             <th>DNI</th>
             <th>Apellido y Nombre</th>
@@ -29,7 +37,6 @@
         {% for listadoIntegrante in listadoIntegranteClub %}
                     <tr>
                         <td>{{forloop.counter}}</td>
-                        <td class="tdNumero">{{listadoIntegrante.id}}</td>
                         <td class="tdNumero">{{listadoIntegrante.user.dni}}</td>
                         <td class="tdTexto">{{listadoIntegrante.user.last_name}} {{listadoIntegrante.user.first_name}}</td>
                         <td class="tdNumero">{{listadoIntegrante.calidad}} </td>
@@ -37,7 +44,16 @@
                         <td class="tdNumero">{{listadoIntegrante.fecha_hasta}} </td>
                         <td collspan="3">
                         </td>
-
+                        <td class="td-opciones">
+                            <div class="td-opciones container">
+                                <a class="boton-editar" href="{% url 'configuracion:editarIntegranteClub' listadoIntegrante.id %}"> 
+                                    <img  src="{% static 'img/editar-logo.png?v=2.' %}" alt="Editar" title="Editar" class="icono"></a>
+                                <a class="boton-eliminar" href="{% url 'configuracion:borrarIntegranteClub' listadoIntegrante.id %}">
+                                    <img  src="{% static 'img/eliminar1.png?v=2.' %}" alt="Eliminar" title="Eliminar" class="icono">
+                                </a>
+                            </div>
+                        </td>
+    
                     
                     </tr>
         {% endfor %}

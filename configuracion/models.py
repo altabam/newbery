@@ -134,6 +134,13 @@ class IntegrantesClub(models.Model):
     fecha_hasta = models.DateField(null=True,blank=True)
 
 
+class IntegrantesClubCategorias(models.Model):
+    integrante = models.ForeignKey(IntegrantesClub, on_delete=models.CASCADE)
+    categorias = models.ForeignKey(Categorias, on_delete=models.CASCADE)
+    fecha_desde =models.DateField(null=True)
+    fecha_hasta = models.DateField(null=True,blank=True)
+
+
 
 class ProfesoresDeportivos(models.Model):
     profesor = models.ForeignKey(IntegrantesClub, on_delete=models.CASCADE)
@@ -143,16 +150,9 @@ class ProfesoresDeportivos(models.Model):
 
 class EventoDeportivo(models.Model):
     evento =  models.CharField(max_length=250)
+    def __str__(self):
+        return f"{self.evento}"
 
-class Asistencia(models.Model):
-    ASISTE = (
-        ("S", "SI"),
-        ("N", "NO"),
-    )
-    jugador = models.ForeignKey(Jugadores, on_delete=models.CASCADE)
-    evento = models.ForeignKey(EventoDeportivo, on_delete= models.CASCADE)
-    fecha = models.DateField(null=True,blank=True)
-    asiste = models.CharField(max_length=1, choices=ASISTE, blank=True, default='N')
 
 
 class BecasJugador(models.Model):

@@ -1,5 +1,7 @@
 from django import forms
-from .models import Personas, Disciplinas, Categorias, Jugadores, Socios
+from django.contrib.auth.models import User
+
+from .models import Personas, Disciplinas, Categorias, Jugadores, Socios,IntegrantesClub,CalidadIntegrante
 
 class PersonaForm(forms.ModelForm):
     email = forms.CharField(max_length=254)
@@ -71,3 +73,14 @@ class SociosForm(forms.ModelForm):
         model= Socios
         fields= '__all__'
         
+
+class IntegranteClubForm(forms.ModelForm):
+    user = forms.ModelChoiceField(queryset=User.objects.filter(is_active=True), required=True)
+    calidad = forms.ModelChoiceField(queryset=CalidadIntegrante.objects.all(), required=True)
+    class Meta:
+        model= IntegrantesClub
+        fields= ['user', 'calidad', 'fecha_desde', 'fecha_hasta']
+        widgets= {'fecha_desde':forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"}),'fecha_hasta':forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"})
+         }
+        input_formats= {'fecha_desde':["%Y-%m-%d"],'fecha_hasta':["%Y-%m-%d"]
+         }
