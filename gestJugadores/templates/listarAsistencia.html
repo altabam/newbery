@@ -1,23 +1,23 @@
-<!DOCTYPE html>
+{% extends "base_nav.html"%}
 {% load static %}
-<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ titulo }}</title>
     <link rel="stylesheet" href="{% static 'css/configuracion.css' %}">
 </head>
-<body class="bodyForm">
+
+{% block body %}
     {% csrf_token %}
     <div class="divForm">
-        <a title="Volver" class="botonVolver" href="{%url 'configuracion:listadoCategorias' %}"><img src="{%static 'img/volver-flecha.png'%}" alt=""> Volver</a>
         <h1 class="titulo">{{ titulo }}</h1>
 
         <div class="filtro">
             <!-- definimos un formulario para filtrar por disciplina -->
             {% csrf_token %}
             Filtrar por:
-            <form method="get" action="{% url 'gestJugadores:filtrarJugadoresCategoria' %}">
+            <form method="get" action="{% url 'gestJugadores:filtrarAsistenciaJugadoresCategoria' %}">
+                <label for="categoria"> Categoria: </label>
                 <select name="categoria" onchange="this.form.submit()">
                     <option value="">Seleccione una categoria</option>
                     {% for cat in categorias %}
@@ -26,7 +26,18 @@
                     </option>
                     {% endfor %}
                 </select>
-                <button type="submit">Filtrar</button>
+                <label for="fechaEntrenamiento"> Fecha de entrenamiento: </label>
+                <input type="date" id="fechaEntrenamiento" name="fechaEntrenamiento" value="" min="2024-01-01" max="2030-12-31" />
+                <label for="eventoDeportivo"> Evento: </label>
+                <select name="eventoDeportivo" >
+                    <option value="">Seleccione un Evento</option>
+                    {% for eveDep in eventosDeportivos %}
+                    <option value="{{ eveDep.id }}" {% if request.GET.eventoDeportivo == eveDep.id|stringformat:"s" %}selected{% endif %}>
+                        {{ eveDep.evento }}
+                    </option>
+                    {% endfor %}
+                </select>
+                    <button type="submit">Filtrar</button>
             </form>
         </div>
         <br>
@@ -34,17 +45,6 @@
         <br>
         <form method="POST" action="{% url 'gestJugadores:cargarAsistenciaJugadoresCategoria' %}">
             {% csrf_token %}
-            <label for="fechaEntrenamiento"> Fecha de entrenamiento: </label>
-            <input type="date" id="fechaEntrenamiento" name="fechaEntrenamiento" value="" min="2024-01-01" max="2030-12-31" required/><br><br>
-            <label for="eventoDeportivo"> Evento: </label>
-            <select name="eventoDeportivo" required>
-                <option value="">Seleccione un evento</option>
-                {% for eveDep in eventosDeportivos %}
-                <option value="{{ eveDep.id }}" {% if request.GET.eventoDeportivo == eveDep.id|stringformat:"s" %}selected{% endif %}>
-                    {{ eveDep.evento }}
-                </option>
-                {% endfor %}
-            </select><br><br>
 
             {% for listJugador in listadoJugadores %}
                 <input type="checkbox" id="{{listJugador.id}}" name="jugadores" value="{{listJugador.id}}" checked =True>
@@ -59,6 +59,5 @@
       
     </div>
     
-</body>
-</html>
+    {% endblock %}
 

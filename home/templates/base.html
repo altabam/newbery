@@ -27,8 +27,8 @@
     
         </div>
         {% if user.is_authenticated  %}
-
         <div class="itemCabecera">
+            <p><i>{{user.first_name}}{{user.last_name}}</i> - <b>{{user.username}}</b></p> 
                 <a class="contacto-mail" href="{% url 'logout' %}">Logout</a>
         </div>
         {% else %}

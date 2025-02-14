@@ -3,7 +3,6 @@ from django.utils import timezone
 from django.shortcuts import render, redirect
 from django.http import  HttpResponse,HttpResponseBadRequest
 from django.core import serializers
-from django.core.serializers.json import DjangoJSONEncoder
 from datetime import datetime, timedelta
 
 from home.views import ObtenerMenu
@@ -99,14 +98,14 @@ def buscarSocioResponsable(request):
 
 def buscarSocio(request):
     if not (is_ajax(request=request) or request.method != "POST"):
-        print (is_ajax(request=request))
-        print (request.method != "POST")
-        return HttpResponseBadRequest()
+    #    print (is_ajax(request=request))
+    #    print (request.method != "POST")
+       return HttpResponseBadRequest()
     valor = request.GET['q']
     #print("valor de q", valor)
     socios = Socios.objects.filter(persona__apellido__startswith= valor)
     data = serializers.serialize('json', socios,use_natural_foreign_keys=True)
-    print(data)
+    #print(data)
     return HttpResponse(data, content_type="application/json")  
 
 def listarIntegrantesSocios(request, id):
