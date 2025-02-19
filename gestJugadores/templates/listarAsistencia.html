@@ -58,6 +58,19 @@
         </form
       
     </div>
+
+    <div>
+        <table border="1">
+                {% for matriz in matrizAsistencia %}
+                <tr>
+                    {% for jug in matriz %}
+                        <td>{{jug}}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+        </table>
+
+    </div>
     
     {% endblock %}
 

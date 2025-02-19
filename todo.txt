@@ -26,7 +26,7 @@ python manage.py sqlsequencereset myapp| psql
 datos
 
 ALTER SEQUENCE configuracion_jugadores_id_seq RESTART WITH 1
-
+aramazzotti arama.123
 saguero     gioAgu.123  cor
 
 
@@ -61,3 +61,4 @@ gioAgu.123
 
 
 Alejandro.123
+adm12345

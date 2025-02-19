@@ -28,19 +28,40 @@ def listarAsistencia(request):
 def filtrarAsistenciaJugadoresCategoria(request):
     intClub = IntegrantesClub.objects.filter(user= request.user)
     intClubCat = IntegrantesClubCategorias.objects.filter(integrante__in= intClub)
+   # print(" Integrante Club:", intClubCat.all().get().categorias)
     eventosDep = EventoDeportivo.objects.all()
-
-    print (request.GET['fechaEntrenamiento'])
+    jugadores = Jugadores.objects.filter(categoria = intClubCat.all().get().categorias)
+    matrizAsistencia= []
+    matrizJugador= []
+    ultDiaMes = calendar.monthrange(date.today().year, date.today().month)[1] +1
+    for dia in range(0, ultDiaMes):
+      matrizJugador.append(dia)
+    matrizAsistencia.append(matrizJugador)
+    matrizJugador=[]
+    for jug in jugadores:
+      matrizJugador.append(jug.persona.apellido+" "+jug.persona.nombre)
+      for dia in range(1, ultDiaMes):
+          #print(dia)
+          asistencia = AsistenciaEventoDeportivo.objects.filter(fecha=date(date.today().year,date.today().month, dia), jugador = jug)
+          if asistencia.exists():
+    #        print( jug, asistencia.get().asiste)
+            matrizJugador.append(asistencia.get().asiste)
+          else: 
+            matrizJugador.append('')
+      matrizAsistencia.append(matrizJugador)
+      matrizJugador=[]
+        
+    #print(matrizAsistencia)  
+    #print (request.GET['fechaEntrenamiento'])
     priDia = date(date.today().year,date.today().month,1)
     ultDia = date(date.today().year,date.today().month,calendar.monthrange(date.today().year, date.today().month)[1])
-    asistencia = AsistenciaEventoDeportivo.objects.filter(fecha__range=[priDia, ultDia])
-    print(asistencia)  
     contexto = { "categorias": intClubCat,
                  "menu": ObtenerMenu(request.user), 
                  "titulo": "Asistencia de Jugadores",
                  "eventosDeportivos": eventosDep,
                  "anio": date.today().year,
                  "mes" : date.today().month,
+                 "matrizAsistencia" :matrizAsistencia,
                }
     return render(request, "listarAsistencia.html",  contexto)
 def cargarAsistencia(request):
