@@ -7,6 +7,7 @@ urlpatterns = [
     path("cargarAsistenciaJugadoresCategoria",cargarAsistenciaJugadoresCategoria, name="cargarAsistenciaJugadoresCategoria"),
     path("listarAsistencia",listarAsistencia, name="listarAsistencia"),
     path("filtrarAsistenciaJugadoresCategoria",filtrarAsistenciaJugadoresCategoria, name="filtrarAsistenciaJugadoresCategoria"),
+    path("filtrarAsistenciaJugadoresCategoria/<int:anio>/<int:mes>/<int:accion>/<int:categoria>/<slug:fechaEntrenamiento>/<int:evento>",filtrarAsistenciaJugadoresCategoria, name="filtrarAsistenciaJugadoresCategoria"),
 
     
     

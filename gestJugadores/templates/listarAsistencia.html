@@ -1,11 +1,10 @@
 {% extends "base_nav.html"%}
 {% load static %}
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>{{ titulo }}</title>
-    <link rel="stylesheet" href="{% static 'css/configuracion.css' %}">
-</head>
+    {% block styleOtros %}  
+    <link rel="stylesheet" href="{% static 'css/configuracionAs.css' %}">
+    {% endblock %}
 
 {% block body %}
     {% csrf_token %}
@@ -16,23 +15,23 @@
             <!-- definimos un formulario para filtrar por disciplina -->
             {% csrf_token %}
             Filtrar por:
-            <form method="get" action="{% url 'gestJugadores:filtrarAsistenciaJugadoresCategoria' %}">
+            <form method="get" action="{% url 'gestJugadores:filtrarAsistenciaJugadoresCategoria' anio  mes 0 categoriaSele fechaEntrenamientoSele eventoDeportivoSele  %}">
                 <label for="categoria"> Categoria: </label>
                 <select name="categoria" onchange="this.form.submit()">
                     <option value="">Seleccione una categoria</option>
                     {% for cat in categorias %}
-                    <option value="{{ cat.categorias.id }}" {% if request.GET.categoria == cat.categorias.id|stringformat:"s" %}selected{% endif %}>
+                    <option value="{{ cat.categorias.id }}" {% if categoriaSele == cat.categorias.id|stringformat:"s" %}selected{% endif %}{% if categoria == cat.categorias.id|stringformat:"s" %}selected{% endif %}>
                         {{ cat.categorias.nombre }}
                     </option>
                     {% endfor %}
                 </select>
                 <label for="fechaEntrenamiento"> Fecha de entrenamiento: </label>
-                <input type="date" id="fechaEntrenamiento" name="fechaEntrenamiento" value="" min="2024-01-01" max="2030-12-31" />
+                <input type="date" id="fechaEntrenamiento" name="fechaEntrenamiento" value="{{fechaEntrenamientoSele}}" min="2024-01-01" max="2030-12-31" />
                 <label for="eventoDeportivo"> Evento: </label>
                 <select name="eventoDeportivo" >
                     <option value="">Seleccione un Evento</option>
                     {% for eveDep in eventosDeportivos %}
-                    <option value="{{ eveDep.id }}" {% if request.GET.eventoDeportivo == eveDep.id|stringformat:"s" %}selected{% endif %}>
+                    <option value="{{ eveDep.id }}" {% if enventoDeportivoSele == eveDep.id|stringformat:"s" %}selected{% endif %}>
                         {{ eveDep.evento }}
                     </option>
                     {% endfor %}
@@ -43,30 +42,44 @@
         <br>
         <hr>
         <br>
-        <form method="POST" action="{% url 'gestJugadores:cargarAsistenciaJugadoresCategoria' %}">
-            {% csrf_token %}
-
-            {% for listJugador in listadoJugadores %}
-                <input type="checkbox" id="{{listJugador.id}}" name="jugadores" value="{{listJugador.id}}" checked =True>
-                <label for="{{listJugador.id}}"> {{listJugador.persona.nombre}} {{listJugador.persona.apellido}}</label><br>
-                
-            {% endfor %}
-            <br>
-            <div class="divBoton">
-                <button class="boton" type="submit">{{ boton_texto }}</button>
-            </div>
-        </form
-      
     </div>
 
     <div>
-        <table border="1">
+        <a  class="boton-derecha" href="{% url 'gestJugadores:filtrarAsistenciaJugadoresCategoria' anio mes 1 categoriaSele fechaEntrenamientoSele eventoDeportivoSele %}">
+            <img src="{% static 'img/derecha.png' %}" alt="mes posterior" title="agregar"  class="icono">
+        </a>
+        <a  class="boton-izquierda" href="{% url 'gestJugadores:filtrarAsistenciaJugadoresCategoria' anio mes 2 categoriaSele fechaEntrenamientoSele eventoDeportivoSele %}">
+            <img src="{% static 'img/izquierda.png' %}" alt="mes anterior" title="agregar"  class="icono">
+        </a>
+        
+        <table >
+                <thead>
+                    <th colspan="{{cantElemFila}}"> MES: {{mes}}    AÑO: {{anio}}   
+                    </th>
+                </thead>
                 {% for matriz in matrizAsistencia %}
-                <tr>
+                {% if forloop.counter == 1 %}
+                    <tr>
                     {% for jug in matriz %}
-                        <td>{{jug}}</td>
-                        {% endfor %}
+                        {% if forloop.counter > 1 %}
+                        <td class="tdNumero"><a href="">{{jug}} </a></td>
+                        {% else %}
+                        <td class="tdTexto">{{jug}}</td>
+                        {% endif %}
+                    {% endfor %}
                     </tr>
+                    {% else %}
+        
+                    <tr>
+                    {% for jug in matriz %}
+                        {% if forloop.counter > 1 %}
+                        <td class="tdNumero">{{jug}}</td>
+                        {% else %}
+                        <td class="tdTexto">{{jug}}</td>
+                        {% endif %}
+                         {% endfor %}
+                    </tr>
+                {% endif %}
                     {% endfor %}
         </table>
 

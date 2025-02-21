@@ -202,45 +202,11 @@ table {
 
   thead th:nth-child(1){
     padding-left: 2%;
-    width: 5%;
-    text-align: center;
-  }
-  tbody td:nth-child(1) {
-    padding-left: 2%;
-    width: 5%;
+    width: 100%;
     text-align: center;
   }
 
-
-  thead th:nth-child(2){
-    width: 5%;
-    text-align: center;
-  }
-  tbody td:nth-child(2) {
-    width: 5%;
-    text-align: right;
-  }
-
-
-  thead th:nth-child(3),tbody td:nth-child(3) {
-    width: 10%;
-    text-align: center;
-  }
-
-  thead th:nth-child(4) {
-    width: 30%;
-    text-align: center;
-  }
-  tbody td:nth-child(4) {
-    width: 30%;
-    text-align: left;
-  }
-  
-  thead th:nth-child(5),tbody td:nth-child(5) {
-    width: 10%;
-    text-align: center;
-  }
-  
+ 
   .titulo {
     text-align: center;
     background-color: yellow;
@@ -263,12 +229,32 @@ table {
     padding: 0;
     margin-right: 30px;
   }
+  .boton-derecha{
+    text-align: right;
+    float: right;
+    width: 40px; 
+    height: auto;
+    padding: 0;
+    margin-right: 30px;
+  }
+  .boton-izquierda{
+    text-align: right;
+    float: left;
+    width: 40px; 
+    height: auto;
+    padding: 0;
+    margin-right: 30px;
+  }
 
   .boton-agregar img {
     width: 100%; 
     height: auto; 
   }
-
+  .boton-izquierda img, .boton-derecha img{
+    width: 100%; 
+    height: auto; 
+  }
+   
 .boton-editar{
   background-color: transparent;
   border: transparent;
