@@ -5,37 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ titulo }}</title>
-    <link rel="stylesheet" href="{% static 'css/configuracion.css' %}">
+    <link rel="stylesheet" href="{% static 'css/configuracionAs.css' %}">
 </head>
 <body class="bodyForm">
     {% csrf_token %}
     <div class="divForm">
-        <a title="Volver" class="botonVolver" href="{%url 'configuracion:listadoCategorias' %}"><img src="{%static 'img/volver-flecha.png'%}" alt=""> Volver</a>
+        <a title="Volver" class="botonVolver" href="{% url 'gestJugadores:filtrarAsistenciaJugadoresCategoria' anio  mes 0 categoriaSele fechaEntrenamientoSele eventoDeportivoSele  %}"><img src="{%static 'img/volver-flecha.png'%}" alt=""> Volver</a>
         <h1 class="titulo">{{ titulo }}</h1>
-
-        <div class="filtro">
-            <!-- definimos un formulario para filtrar por disciplina -->
-            {% csrf_token %}
-            Filtrar por:
-            <form method="get" action="{% url 'gestJugadores:filtrarJugadoresCategoria' %}">
-                <select name="categoria" onchange="this.form.submit()">
-                    <option value="">Seleccione una categoria</option>
-                    {% for cat in categorias %}
-                    <option value="{{ cat.categorias.id }}" {% if request.GET.categoria == cat.categorias.id|stringformat:"s" %}selected{% endif %}>
-                        {{ cat.categorias.nombre }}
-                    </option>
-                    {% endfor %}
-                </select>
-                <button type="submit">Filtrar</button>
-            </form>
-        </div>
+        <h3>Categoria: {{categoria}}</h3>
+        <h3>Fecha Carga: {{fechaCargar}}</h3>
         <br>
         <hr>
         <br>
-        <form method="POST" action="{% url 'gestJugadores:cargarAsistenciaJugadoresCategoria' %}">
+        <form method="POST" action="{% url 'gestJugadores:cargarAsistenciaJugadoresCategoria' categoriaSele fechaCargar%}">
             {% csrf_token %}
-            <label for="fechaEntrenamiento"> Fecha de entrenamiento: </label>
-            <input type="date" id="fechaEntrenamiento" name="fechaEntrenamiento" value="" min="2024-01-01" max="2030-12-31" required/><br><br>
             <label for="eventoDeportivo"> Evento: </label>
             <select name="eventoDeportivo" required>
                 <option value="">Seleccione un evento</option>
@@ -45,12 +28,31 @@
                 </option>
                 {% endfor %}
             </select><br><br>
+            <table>
+                <thead>
+                    <tr>
+                    <th>Asiste</th>
+                        <th>Justifica</th>
+                        <th>Jugador</th>
+                    </tr>
+                </thead>
+                <tbody>
+            {% for jugador in matrizAsistencia %}
+                    <tr>
+                    <td class="tdTexto">
+                        <input type="checkbox" id="{{jugador.2.pk}}" name="asiste" value="{{jugador.2.pk}}" {%if jugador.0 == "Si" %}  checked="True" {%endif%}>
+                    </td>
+                    <td class="tdTexto">
+                        <input type="checkbox" id="{{jugador.2.pk}}" name="jutifica" value="{{jugador.2.pk}}"{%if jugador.1 == "Si" %}  checked="True" {%endif%}>
+                    </td>
+                    <td class="tdTexto">
+                       {{jugador.2.persona.nombre}} {{jugador.2.persona.apellido}}
+                    </td>
 
-            {% for listJugador in listadoJugadores %}
-                <input type="checkbox" id="{{listJugador.id}}" name="jugadores" value="{{listJugador.id}}" checked =True>
-                <label for="{{listJugador.id}}"> {{listJugador.persona.nombre}} {{listJugador.persona.apellido}}</label><br>
-                
+                    </tr>
             {% endfor %}
+                </tbody>
+            </table>
             <br>
             <div class="divBoton">
                 <button class="boton" type="submit">{{ boton_texto }}</button>

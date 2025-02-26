@@ -20,7 +20,7 @@
                 <select name="categoria" onchange="this.form.submit()">
                     <option value="">Seleccione una categoria</option>
                     {% for cat in categorias %}
-                    <option value="{{ cat.categorias.id }}" {% if categoriaSele == cat.categorias.id|stringformat:"s" %}selected{% endif %}{% if categoria == cat.categorias.id|stringformat:"s" %}selected{% endif %}>
+                    <option value="{{ cat.categorias.id }}" {% if categoriaSele|stringformat:"s" == cat.categorias.id|stringformat:"s" %}selected{% endif %}>
                         {{ cat.categorias.nombre }}
                     </option>
                     {% endfor %}
@@ -31,7 +31,7 @@
                 <select name="eventoDeportivo" >
                     <option value="">Seleccione un Evento</option>
                     {% for eveDep in eventosDeportivos %}
-                    <option value="{{ eveDep.id }}" {% if enventoDeportivoSele == eveDep.id|stringformat:"s" %}selected{% endif %}>
+                    <option value="{{ eveDep.id }}" {% if eventoDeportivoSele|stringformat:"s" == eveDep.id|stringformat:"s" %}selected{% endif %}>
                         {{ eveDep.evento }}
                     </option>
                     {% endfor %}
@@ -53,16 +53,16 @@
         </a>
         
         <table >
-                <thead>
-                    <th colspan="{{cantElemFila}}"> MES: {{mes}}    AÑO: {{anio}}   
+            <thead>
+                    <th colspan="{{cantElemFila}}"> MES: {{mes}}    AÑO: {{anio}}   {{diaHoy}}
                     </th>
                 </thead>
                 {% for matriz in matrizAsistencia %}
                 {% if forloop.counter == 1 %}
                     <tr>
                     {% for jug in matriz %}
-                        {% if forloop.counter > 1 %}
-                        <td class="tdNumero"><a href="">{{jug}} </a></td>
+                        {% if forloop.counter > 1 and jug <= diaHoy and mes <= mesHoy and anio <= anioHoy %}
+                         <td class="tdNumero"><a href="{% url 'gestJugadores:cargarAsistencia' anio mes jug categoriaSele fechaEntrenamientoSele eventoDeportivoSele %}">{{jug}} </a></td>
                         {% else %}
                         <td class="tdTexto">{{jug}}</td>
                         {% endif %}
@@ -80,7 +80,7 @@
                          {% endfor %}
                     </tr>
                 {% endif %}
-                    {% endfor %}
+                {% endfor %}
         </table>
 
     </div>

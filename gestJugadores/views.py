@@ -8,7 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from .models import AsistenciaEventoDeportivo
 
 from home.views import ObtenerMenu
-from configuracion.models import IntegrantesClub,IntegrantesClubCategorias, Jugadores,EventoDeportivo
+from configuracion.models import IntegrantesClub,IntegrantesClubCategorias, Jugadores,EventoDeportivo,Categorias
 
 #from .forms import PersonaForm, DisciplinasForm, CategoriasForm, JugadoresCategoriasForm,borrarJugadorForm
 
@@ -39,9 +39,13 @@ def filtrarAsistenciaJugadoresCategoria(request, anio, mes, accion, categoria, f
     intClub = IntegrantesClub.objects.filter(user= request.user)
     intClubCat = IntegrantesClubCategorias.objects.filter(integrante__in= intClub)
    # print(" Integrante Club:", intClubCat.all().get().categorias)
-    print("HOLA")
+   # print("HOLA", categoria, fechaEntrenamiento, evento)
     eventosDep = EventoDeportivo.objects.all()
-    jugadores = Jugadores.objects.filter(categoria = intClubCat.all().get().categorias)
+    if (categoria == 0):
+      jugadores = Jugadores.objects.filter(categoria = intClubCat.all().get().categorias)
+      print (jugadores.last().categoria.id)
+    else:
+      jugadores = Jugadores.objects.filter(categoria = categoria)
     matrizAsistencia= []
     matrizJugador= []
     if (accion==2):
@@ -76,7 +80,6 @@ def filtrarAsistenciaJugadoresCategoria(request, anio, mes, accion, categoria, f
       matrizJugador=[]
         
     cantElemFila= len(matrizAsistencia[0])
-    #print (request.GET['fechaEntrenamiento'])
     if request.GET:
        if request.GET["categoria"]=="":
          categoriaSele =0
@@ -90,15 +93,12 @@ def filtrarAsistenciaJugadoresCategoria(request, anio, mes, accion, categoria, f
          eventoDeportivoSele = 0
        else:
          eventoDeportivoSele = request.GET["eventoDeportivo"]
-       print("datos parametros:",categoriaSele, fechaEntrenamientoSele, eventoDeportivoSele)
     else:
-       categoriaSele = categoria
+       categoriaSele = int(categoria)
        fechaEntrenamientoSele = fechaEntrenamiento
        eventoDeportivoSele = evento
-       
-
-    
-       
+    print("datos parametros:",categoriaSele, fechaEntrenamientoSele, eventoDeportivoSele)
+           
     contexto = { "categorias": intClubCat,
                  "menu": ObtenerMenu(request.user), 
                  "titulo": "Asistencia de Jugadores",
@@ -110,18 +110,65 @@ def filtrarAsistenciaJugadoresCategoria(request, anio, mes, accion, categoria, f
                  "matrizAsistencia" :matrizAsistencia,
                  "categoriaSele": categoriaSele,
                  "fechaEntrenamientoSele":fechaEntrenamientoSele,
-                 "eventoDeportivoSele":eventoDeportivoSele 
+                 "eventoDeportivoSele":eventoDeportivoSele,
+                 "mesHoy": date.today().month,
+                 "diaHoy": date.today().day,
+                 "anioHoy": date.today().year,
                }
     return render(request, "listarAsistencia.html",  contexto)
 
 
-def cargarAsistencia(request):
+def cargarAsistencia(request,anio, mes, dia, categoria, fechaEntrenamiento, evento ):
     intClub = IntegrantesClub.objects.filter(user= request.user)
     intClubCat = IntegrantesClubCategorias.objects.filter(integrante__in= intClub)
+    fechaCargar = str(anio)+"-"+str(mes)+"-"+str(dia)
+    cat = Categorias.objects.get(id = categoria)
+    eventosDep = EventoDeportivo.objects.all()
+    matrizAsistencia= []
+    matrizJugador= []
+
+    if AsistenciaEventoDeportivo.objects.filter(fecha= fechaCargar).exists():
+      jugadores = Jugadores.objects.filter(categoria = categoria)
+      for jug in jugadores:
+        asiste = AsistenciaEventoDeportivo.objects.filter(fecha= fechaCargar, jugador =jug)
+        if asiste.exists():
+            matrizJugador.append(asiste.get().asiste)
+            matrizJugador.append(asiste.get().justifica)
+            matrizJugador.append(asiste.get().jugador)
+        else: 
+            matrizJugador.append('No')
+            matrizJugador.append('No')
+            matrizJugador.append(jug)
+        matrizAsistencia.append(matrizJugador)
+        matrizJugador=[]
+
+      #listadoJugadores = Jugadores.objects.filter(id_in = jug)
+
+    else:
+      jugadores = Jugadores.objects.filter(categoria = categoria)
+      for jug in jugadores:
+        matrizJugador.append('Si')
+        matrizJugador.append('No')
+        matrizJugador.append(jug)
+        matrizAsistencia.append(matrizJugador)
+        matrizJugador=[]
+
+   # print(matrizAsistencia)
     contexto = { "categorias": intClubCat,
                  "menu": ObtenerMenu(request.user), 
                  "titulo": "Cargar Asistencia de Jugadores",
                  "boton_texto": "Cargar Asistencia",
+                 "categoria": cat,
+                 "fechaCargar": fechaCargar,
+                 "eventosDeportivos" : eventosDep,
+                 "matrizAsistencia" : matrizAsistencia,
+                 "anio": anio,
+                 "mes" : mes,
+                 "dia" : dia,
+                 "categoriaSele": categoria,
+                 "fechaEntrenamientoSele":fechaEntrenamiento,
+                 "eventoDeportivoSele":evento, 
+
                }
     return render(request, "cargarAsistencia.html",  contexto)
 
@@ -129,32 +176,49 @@ def cargarAsistencia(request):
 def filtrarJugadoresCategoria(request):
     intClub = IntegrantesClub.objects.filter(user= request.user)
     intClubCat = IntegrantesClubCategorias.objects.filter(integrante__in= intClub)
-    eventosDep = EventoDeportivo.objects.all()
-    categoriaId = request.GET.get('categoria')
-    if categoriaId:
-        listadoJugadores = Jugadores.objects.filter(categoria_id=categoriaId)
-    else:
-        listadoJugadores ={}
-    print(listadoJugadores)
     contexto = { "categorias": intClubCat,
                  "menu": ObtenerMenu(request.user), 
                  "titulo": "Cargar Asistencia de Jugadores",
                  "boton_texto": "Cargar Asistencia",
-                 "listadoJugadores" : listadoJugadores,
-                 "eventosDeportivos" : eventosDep,
                }
     return render(request, "cargarAsistencia.html",  contexto)
 
-def cargarAsistenciaJugadoresCategoria(request):
+def cargarAsistenciaJugadoresCategoria(request,categoria, fechaEntrenamiento):
   print(request.POST)
-  print("paso por cargarAsistencia")
 
-  if not AsistenciaEventoDeportivo.objects.filter(fecha= request.POST['fechaEntrenamiento']).exists():
-    for  jugador in request.POST.getlist('jugadores'):
+  if not AsistenciaEventoDeportivo.objects.filter(fecha= fechaEntrenamiento).exists():
+    for  jugador in request.POST.getlist('asiste'):
       jug = Jugadores.objects.get(id = jugador)
       eve = EventoDeportivo.objects.get(id = request.POST['eventoDeportivo'])
-      AsistenciaEventoDeportivo.objects.create(fecha= request.POST['fechaEntrenamiento'], jugador= jug, evento=eve)
+      AsistenciaEventoDeportivo.objects.create(fecha= fechaEntrenamiento, jugador= jug, evento=eve, asiste='Si')
       print (jug)
-      
-  print("para revisar")
-  return filtrarJugadoresCategoria(request)
+    for  jugador in request.POST.getlist('justifica'):
+      jug = Jugadores.objects.get(id = jugador)
+      eve = EventoDeportivo.objects.get(id = request.POST['eventoDeportivo'])
+      AsistenciaEventoDeportivo.objects.create(fecha= fechaEntrenamiento, jugador= jug, evento=eve,justifica ='Si')
+      print (jug)
+  else:
+      eve = EventoDeportivo.objects.get(id = request.POST['eventoDeportivo'])
+      for  jugador in request.POST.getlist('asiste'):
+        jug = Jugadores.objects.get(id = jugador)
+        if not AsistenciaEventoDeportivo.objects.filter(jugador = jug, fecha = fechaEntrenamiento).exists():
+          AsistenciaEventoDeportivo.objects.create(fecha= fechaEntrenamiento, jugador= jug, evento=eve,asiste ='Si')
+        else:
+          asist = AsistenciaEventoDeportivo.objects.get(jugador= jug, fecha = fechaEntrenamiento)
+          asist.asiste ="Si"
+          asist.justifica="No"
+          asist.evento = eve
+          asist.save()
+
+      for  jugador in request.POST.getlist('justifica'):
+        jug = Jugadores.objects.get(id = jugador)
+        if not AsistenciaEventoDeportivo.objects.filter(jugador = jug, fecha = fechaEntrenamiento).exists():
+          AsistenciaEventoDeportivo.objects.create(fecha= fechaEntrenamiento, jugador= jug, evento=eve,justifica ='Si', asiste="No")
+        else:
+          asist = AsistenciaEventoDeportivo.objects.get(jugador= jug, fecha = fechaEntrenamiento)
+          asist.asiste ="No"
+          asist.justifica="Si"
+          asist.evento = eve
+          asist.save()
+
+  return listarAsistencia(request)
