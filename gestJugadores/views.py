@@ -29,23 +29,47 @@ def listarAsistencia(request):
                  "fechaEntrenamientoSele":"-",
                  "eventoDeportivoSele":0 ,
                }
-    return render(request, "listarAsistencia.html",  contexto)
+    return filtrarAsistenciaJugadoresCategoria(request, date.today().year,date.today().month, 0, 0,"-", 0 )
 
 
 def filtrarAsistenciaJugadoresCategoria(request, anio, mes, accion, categoria, fechaEntrenamiento, evento  ):
     #accion 0-mantener mer  1-incrementar mes   2-decrementar mes
     #anio = date.today().year
     #mes = date.today().month
+    if request.GET:
+       if request.GET["categoria"]=="":
+         categoriaSele =0
+       else:      
+         categoriaSele = request.GET["categoria"]
+       if request.GET["fechaEntrenamiento"]=="":
+         fechaEntrenamientoSele = "a"
+       else:
+          fechaEntrenamientoSele = request.GET["fechaEntrenamiento"]
+       if request.GET["eventoDeportivo"]=="":
+         eventoDeportivoSele = 0
+       else:
+         eventoDeportivoSele = request.GET["eventoDeportivo"]
+    else:
+       categoriaSele = int(categoria)
+       print("categoria:",categoriaSele)
+       fechaEntrenamientoSele = fechaEntrenamiento
+       eventoDeportivoSele = evento
+
+    print("categoria:",categoriaSele)
     intClub = IntegrantesClub.objects.filter(user= request.user)
     intClubCat = IntegrantesClubCategorias.objects.filter(integrante__in= intClub)
    # print(" Integrante Club:", intClubCat.all().get().categorias)
    # print("HOLA", categoria, fechaEntrenamiento, evento)
     eventosDep = EventoDeportivo.objects.all()
-    if (categoria == 0):
-      jugadores = Jugadores.objects.filter(categoria = intClubCat.all().get().categorias)
+    if (categoriaSele == 0):
+      cat = []
+      for icc in intClubCat:
+        cat.append(  icc.categorias)
+      jugadores = Jugadores.objects.filter(categoria__in = cat)
       print (jugadores.last().categoria.id)
     else:
-      jugadores = Jugadores.objects.filter(categoria = categoria)
+      jugadores = Jugadores.objects.filter(categoria = categoriaSele)
+
     matrizAsistencia= []
     matrizJugador= []
     if (accion==2):
@@ -80,25 +104,7 @@ def filtrarAsistenciaJugadoresCategoria(request, anio, mes, accion, categoria, f
       matrizJugador=[]
         
     cantElemFila= len(matrizAsistencia[0])
-    if request.GET:
-       if request.GET["categoria"]=="":
-         categoriaSele =0
-       else:      
-         categoriaSele = request.GET["categoria"]
-       if request.GET["fechaEntrenamiento"]=="":
-         fechaEntrenamientoSele = "a"
-       else:
-          fechaEntrenamientoSele = request.GET["fechaEntrenamiento"]
-       if request.GET["eventoDeportivo"]=="":
-         eventoDeportivoSele = 0
-       else:
-         eventoDeportivoSele = request.GET["eventoDeportivo"]
-    else:
-       categoriaSele = int(categoria)
-       fechaEntrenamientoSele = fechaEntrenamiento
-       eventoDeportivoSele = evento
     print("datos parametros:",categoriaSele, fechaEntrenamientoSele, eventoDeportivoSele)
-           
     contexto = { "categorias": intClubCat,
                  "menu": ObtenerMenu(request.user), 
                  "titulo": "Asistencia de Jugadores",

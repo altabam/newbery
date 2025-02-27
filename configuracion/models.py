@@ -58,7 +58,7 @@ class Categorias (models.Model):
     paga_disciplina = models.BooleanField(default="True")
     activo = models.BooleanField(default=True)  # Campo para la eliminación lógica
     def __str__(self):
-        return f"{self.nombre}"
+        return f"{self.disciplina, self.nombre}"
 
 
 class Jugadores(models.Model):
@@ -142,6 +142,8 @@ class IntegrantesClubCategorias(models.Model):
     categorias = models.ForeignKey(Categorias, on_delete=models.CASCADE)
     fecha_desde =models.DateField(null=True)
     fecha_hasta = models.DateField(null=True,blank=True)
+    def __str__(self):
+        return f"{self.integrante.user.username, self.categorias}"
 
 
 

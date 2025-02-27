@@ -48,27 +48,41 @@
         <a  class="boton-derecha" href="{% url 'gestJugadores:filtrarAsistenciaJugadoresCategoria' anio mes 1 categoriaSele fechaEntrenamientoSele eventoDeportivoSele %}">
             <img src="{% static 'img/derecha.png' %}" alt="mes posterior" title="agregar"  class="icono">
         </a>
+        {% if categoriaSele == 0 %}     <h4>Debe seleccionar una catetoria para cargar asistencia </h4>{% endif %}
+
         <a  class="boton-izquierda" href="{% url 'gestJugadores:filtrarAsistenciaJugadoresCategoria' anio mes 2 categoriaSele fechaEntrenamientoSele eventoDeportivoSele %}">
             <img src="{% static 'img/izquierda.png' %}" alt="mes anterior" title="agregar"  class="icono">
         </a>
         
         <table >
             <thead>
-                    <th colspan="{{cantElemFila}}"> MES: {{mes}}    AÑO: {{anio}}   {{diaHoy}}
+                    <th colspan="{{cantElemFila}}"> MES: {{mes}}    AÑO: {{anio}}  
                     </th>
                 </thead>
                 {% for matriz in matrizAsistencia %}
                 {% if forloop.counter == 1 %}
                     <tr>
                     {% for jug in matriz %}
-                        {% if forloop.counter > 1 and jug <= diaHoy and mes <= mesHoy and anio <= anioHoy %}
-                         <td class="tdNumero"><a href="{% url 'gestJugadores:cargarAsistencia' anio mes jug categoriaSele fechaEntrenamientoSele eventoDeportivoSele %}">{{jug}} </a></td>
+                        {% if forloop.counter > 1  %}
+                          {% if  anio > anioHoy  %}
+                             <td class="tdTexto">{{jug}}</td>
+                           {% elif anio == anioHoy and mes > mesHoy %}
+                             <td class="tdTexto">{{jug}} </td>
+                           {% elif anio == anioHoy and mes == mesHoy and jug > diaHoy  %}
+                             <td class="tdTexto">{{jug}}</td>
+                           {% elif  categoriaSele == 0 %}
+                             <td class="tdTexto">{{jug}}</td>
+                           {% else %}
+                              <td class="tdNumero"><a href="{% url 'gestJugadores:cargarAsistencia' anio mes jug categoriaSele fechaEntrenamientoSele eventoDeportivoSele %}">{{jug}} </a></td>
+                          {% endif %}
+
                         {% else %}
-                        <td class="tdTexto">{{jug}}</td>
+                          <td class="tdTexto"></td>
+
                         {% endif %}
                     {% endfor %}
                     </tr>
-                    {% else %}
+                {% else %}
         
                     <tr>
                     {% for jug in matriz %}
