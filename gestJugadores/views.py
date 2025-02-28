@@ -196,34 +196,34 @@ def cargarAsistenciaJugadoresCategoria(request,categoria, fechaEntrenamiento):
     for  jugador in request.POST.getlist('asiste'):
       jug = Jugadores.objects.get(id = jugador)
       eve = EventoDeportivo.objects.get(id = request.POST['eventoDeportivo'])
-      AsistenciaEventoDeportivo.objects.create(fecha= fechaEntrenamiento, jugador= jug, evento=eve, asiste='Si')
+      AsistenciaEventoDeportivo.objects.create(fecha= fechaEntrenamiento, jugador= jug, evento=eve, asiste='S')
       print (jug)
     for  jugador in request.POST.getlist('justifica'):
       jug = Jugadores.objects.get(id = jugador)
       eve = EventoDeportivo.objects.get(id = request.POST['eventoDeportivo'])
-      AsistenciaEventoDeportivo.objects.create(fecha= fechaEntrenamiento, jugador= jug, evento=eve,justifica ='Si')
+      AsistenciaEventoDeportivo.objects.create(fecha= fechaEntrenamiento, jugador= jug, evento=eve,justifica ='S')
       print (jug)
   else:
       eve = EventoDeportivo.objects.get(id = request.POST['eventoDeportivo'])
       for  jugador in request.POST.getlist('asiste'):
         jug = Jugadores.objects.get(id = jugador)
         if not AsistenciaEventoDeportivo.objects.filter(jugador = jug, fecha = fechaEntrenamiento).exists():
-          AsistenciaEventoDeportivo.objects.create(fecha= fechaEntrenamiento, jugador= jug, evento=eve,asiste ='Si')
+          AsistenciaEventoDeportivo.objects.create(fecha= fechaEntrenamiento, jugador= jug, evento=eve,asiste ='S')
         else:
           asist = AsistenciaEventoDeportivo.objects.get(jugador= jug, fecha = fechaEntrenamiento)
-          asist.asiste ="Si"
-          asist.justifica="No"
+          asist.asiste ="S"
+          asist.justifica="N"
           asist.evento = eve
           asist.save()
 
       for  jugador in request.POST.getlist('justifica'):
         jug = Jugadores.objects.get(id = jugador)
         if not AsistenciaEventoDeportivo.objects.filter(jugador = jug, fecha = fechaEntrenamiento).exists():
-          AsistenciaEventoDeportivo.objects.create(fecha= fechaEntrenamiento, jugador= jug, evento=eve,justifica ='Si', asiste="No")
+          AsistenciaEventoDeportivo.objects.create(fecha= fechaEntrenamiento, jugador= jug, evento=eve,justifica ='S', asiste="N")
         else:
           asist = AsistenciaEventoDeportivo.objects.get(jugador= jug, fecha = fechaEntrenamiento)
-          asist.asiste ="No"
-          asist.justifica="Si"
+          asist.asiste ="N"
+          asist.justifica="S"
           asist.evento = eve
           asist.save()
 
