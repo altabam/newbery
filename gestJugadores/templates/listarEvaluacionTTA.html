@@ -1,0 +1,86 @@
+{% extends "base_nav.html"%}
+{% load static %}
+
+    <title>{{ titulo }}</title>
+    {% block styleOtros %}  
+    <link rel="stylesheet" href="{% static 'css/configuracionAs.css' %}">
+    {% endblock %}
+
+{% block body %}
+    {% csrf_token %}
+    <div class="divForm">
+        <h1 class="titulo">{{ titulo }}</h1>
+
+        <div class="filtro">
+            <!-- definimos un formulario para filtrar por disciplina -->
+            {% csrf_token %}
+            Filtrar por:
+            <form method="get" action="{% url 'gestJugadores:filtrarEvaluacionTTAJugadoresCategoria' anio 0 categoriaSele %}">
+                <label for="categoria"> Categoria: </label>
+                <select name="categoria" onchange="this.form.submit()">
+                    <option value="">Seleccione una categoria</option>
+                    {% for cat in categorias %}
+                    <option value="{{ cat.categorias.id }}" {% if categoriaSele|stringformat:"s" == cat.categorias.id|stringformat:"s" %}selected{% endif %}>
+                        {{ cat.categorias.nombre }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </form>
+        </div>
+        <br>
+        <hr>
+        <br>
+    </div>
+
+    <div>
+        <a  class="boton-derecha" href="{% url 'gestJugadores:filtrarEvaluacionTTAJugadoresCategoria' anio 1 categoriaSele %}">
+            <img src="{% static 'img/derecha.png' %}" alt="año posterior" title="agregar"  class="icono">
+        </a>
+        {% if categoriaSele == 0 %}     <h4>Debe seleccionar una catetoria para cargar Eval. Tecnico Tactico Actitudinal </h4>{% endif %}
+
+        <a  class="boton-izquierda" href="{% url 'gestJugadores:filtrarEvaluacionTTAJugadoresCategoria' anio 2 categoriaSele  %}">
+            <img src="{% static 'img/izquierda.png' %}" alt="año anterior" title="agregar"  class="icono">
+        </a>
+        
+        <table >
+            <thead>
+                    <th colspan="{{cantElemFila}}">   AÑO: {{anio}}  
+                    </th>
+                </thead>
+                {% for matriz in matrizAsistencia %}
+                  {% if forloop.counter == 1 %}
+                    <tr>
+                        <td class="tdTexto"> </td>
+                        {% for jug in matriz %}
+                          {% if  anio > anioHoy  %}
+                             <td class="tdTexto">{{jug}}</td>
+                           {% elif  categoriaSele == 0 or jug.0 == 1 %}
+                             <td class="tdNumero">{{jug.2}}</td>
+                           {% else %}
+                              <td class="tdNumero"><a href="{% url 'gestJugadores:cargarEvaluacionTTAJugadoresCategoria' 0 jug.1 categoriaSele anio %}">{{jug.2}} </a></td>
+                          {% endif %}
+                        {% endfor %}
+
+                    </tr>
+                  {% else %}
+                    <tr>
+                    {% for jug in matriz %}
+                        {% if forloop.counter > 1  %}
+                          {% if jug.0 == 0  %}
+                              <td class="tdNumero"><a href="{% url 'gestJugadores:cargarEvaluacionTTAJugadoresCategoria' jug.1  jug.2 categoriaSele anio %}">{{jug.3}}</a></td>
+                          {% else %}
+                            <td class="tdNumero">{{jug.3}}</td>
+                        {% endif %}
+                        {% else %}
+                          <td class="tdTexto">{{jug}}</td>
+                        {% endif %}
+                    {% endfor %}
+                    </tr>
+                {% endif %}
+                {% endfor %}
+        </table>
+
+    </div>
+    
+    {% endblock %}
+

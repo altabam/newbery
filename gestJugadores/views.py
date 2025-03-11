@@ -5,7 +5,7 @@ from django.db.models import Count, Subquery
 from datetime import date
 import calendar
 from django.core.exceptions import ObjectDoesNotExist   
-from .models import AsistenciaEventoDeportivo
+from .models import AsistenciaEventoDeportivo, CaracteristicaEvaluar, EvalTecnicoTacticaActitudinalJugador, EvalTecnicoTacticaActitudinal,EvalTecnicoTacticaActitudinalCaracteristica
 
 from home.views import ObtenerMenu
 from configuracion.models import IntegrantesClub,IntegrantesClubCategorias, Jugadores,EventoDeportivo,Categorias
@@ -202,7 +202,7 @@ def cargarAsistenciaJugadoresCategoria(request,categoria, fechaEntrenamiento):
       jug = Jugadores.objects.get(id = jugador)
       eve = EventoDeportivo.objects.get(id = request.POST['eventoDeportivo'])
       AsistenciaEventoDeportivo.objects.create(fecha= fechaEntrenamiento, jugador= jug, evento=eve,justifica ='S')
-      print (jug)
+     # print (jug)
   else:
       eve = EventoDeportivo.objects.get(id = request.POST['eventoDeportivo'])
       for  jugador in request.POST.getlist('asiste'):
@@ -228,3 +228,237 @@ def cargarAsistenciaJugadoresCategoria(request,categoria, fechaEntrenamiento):
           asist.save()
 
   return listarAsistencia(request)
+
+
+def listarEvaluacionTTA(request):
+    intClub = IntegrantesClub.objects.filter(user= request.user)
+    intClubCat = IntegrantesClubCategorias.objects.filter(integrante__in= intClub)
+    eventosDep = EventoDeportivo.objects.all()
+
+    contexto = { "categorias": intClubCat,
+                 "menu": ObtenerMenu(request.user), 
+                 "titulo": "Asistencia de Jugadores",
+                 "anio": date.today().year,
+                 "mes" : date.today().month,
+                 "categoriaSele": 0,
+               }
+    return filtrarEvaluacionTTAJugadoresCategoria(request, date.today().year, 0, 0)
+
+
+def filtrarEvaluacionTTAJugadoresCategoria(request, anio, accion, categoria ):
+    #accion 0-mantener mes  1-incrementar mes   2-decrementar mes
+    #anio = date.today().year
+    #mes = date.today().month
+    if request.GET:
+       if request.GET["categoria"]=="":
+         categoriaSele =0
+       else:      
+         categoriaSele = request.GET["categoria"]
+    else:
+       categoriaSele = int(categoria)
+
+    intClub = IntegrantesClub.objects.filter(user= request.user)
+    intClubCat = IntegrantesClubCategorias.objects.filter(integrante__in= intClub)
+    if (categoriaSele == 0):
+      cat = []
+      for icc in intClubCat:
+        cat.append(  icc.categorias)
+      jugadores = Jugadores.objects.filter(categoria__in = cat)
+    else:
+      jugadores = Jugadores.objects.filter(categoria = categoriaSele)
+
+    matrizAsistencia= []
+    matrizJugador= []
+    if (accion==2):
+          anio -=1
+    elif(accion==1):
+          anio +=1
+    caracteristicaEvaluar = EvalTecnicoTacticaActitudinal.objects.filter(anio = anio)
+    for carEvaluar in caracteristicaEvaluar:
+      datosEvaluacion = []
+      if carEvaluar.fechaInicio <= date.today() and carEvaluar.fechaFin >= date.today():
+        datosEvaluacion.append(0)
+        datosEvaluacion.append(carEvaluar.pk)
+        datosEvaluacion.append(carEvaluar.mes)
+      else:
+        print("fechas", carEvaluar.fechaInicio, carEvaluar.fechaFin, date.today())
+        datosEvaluacion.append(1)
+        datosEvaluacion.append(carEvaluar.pk)
+        datosEvaluacion.append(carEvaluar.mes)
+      matrizJugador.append(datosEvaluacion)
+    matrizAsistencia.append(matrizJugador)
+    print(matrizJugador)
+    matrizJugador=[]
+   # print("matriz inicial", matrizJugador, matrizAsistencia)
+    for jug in jugadores:
+      matrizJugador.append(jug.persona.apellido+" "+jug.persona.nombre)
+      for evalJugador in caracteristicaEvaluar:
+          datosEvaluacion= []       
+      #    print(evalJugador.fechaInicio, evalJugador.fechaFin)           
+          if evalJugador.fechaFin >= date.today() and evalJugador.fechaInicio <= date.today():
+              datosEvaluacion.append(0)
+          else: 
+              datosEvaluacion.append(1)
+             # print("fechas", evalJugador.fechaInicio, evalJugador.fechaFin, date.today())
+
+          caracteristica = EvalTecnicoTacticaActitudinalCaracteristica.objects.filter(tipoEvaluacion = evalJugador).last()
+          caracteristicaJugador = EvalTecnicoTacticaActitudinalJugador.objects.filter(caracteristicaEvaluar = caracteristica)
+          if caracteristicaJugador.exists():
+             datosEvaluacion.append(jug.pk)
+             datosEvaluacion.append(evalJugador.pk)
+             datosEvaluacion.append("realizada")
+          else:             
+             datosEvaluacion.append(jug.pk)
+             datosEvaluacion.append(evalJugador.pk)
+             datosEvaluacion.append("Sin realizar")
+          matrizJugador.append(datosEvaluacion)
+      matrizAsistencia.append(matrizJugador)
+      #print(matrizJugador)
+      matrizJugador=[]
+        
+    cantElemFila= len(matrizAsistencia[0])
+    contexto = { "categorias": intClubCat,
+                 "menu": ObtenerMenu(request.user), 
+                 "titulo": "Evaluacion Tec. Tac. Act.",
+                 "anio": anio,
+                 "cantElemFila":cantElemFila,
+                 "matrizAsistencia" :matrizAsistencia,
+                 "categoriaSele": categoriaSele,
+                 "anioHoy": date.today().year,
+               }
+    return render(request, "listarEvaluacionTTA.html",  contexto)
+
+def obtenerHabilidadesEvaluar(jugador, evaluacion):
+   habilidadesEvaluar =[]
+   caracteristicaEval = EvalTecnicoTacticaActitudinalCaracteristica.objects.filter(tipoEvaluacion_id = evaluacion)
+   if EvalTecnicoTacticaActitudinalJugador.objects.filter(caracteristicaEvaluar__in =caracteristicaEval, jugador= jugador ).exists():
+      evalTecnicoTacticaActitudinalJugador = EvalTecnicoTacticaActitudinalJugador.objects.filter(caracteristicaEvaluar__in =caracteristicaEval, jugador= jugador )
+      print("evalTecnicoTacticaActitudinalJugador",evalTecnicoTacticaActitudinalJugador)
+      for ettaj in evalTecnicoTacticaActitudinalJugador:
+        celda = []
+        celda.append(ettaj)
+        celda.append(0)
+        habilidadesEvaluar.append(celda)
+      print("ettaj:", ettaj)
+   else:
+      print("habilidadesEvaluar",habilidadesEvaluar)
+      for ettac in caracteristicaEval:
+        celda = []
+        celda.append(ettac)
+        celda.append('N')
+        habilidadesEvaluar.append(celda)
+        #print("ettac:", ettac)
+   #print("habilidades:",habilidadesEvaluar)
+      
+   return habilidadesEvaluar
+
+def cargarEvaluacionTTAJugadoresCategoria(request, jugador, evaluacion, categoria, anio):
+  print(request.POST)
+ # print("pasa por aqui")
+ # print(jugador, evaluacion)
+  intClub = IntegrantesClub.objects.filter(user= request.user)
+  intClubCat = IntegrantesClubCategorias.objects.filter(integrante__in= intClub)
+  evaluacionSele = EvalTecnicoTacticaActitudinal.objects.get(id = evaluacion)
+  caracteristicaEvalRaiz = CaracteristicaEvaluar.objects.filter(caracteristicaPadre__isnull = True)
+  matrizEvaluacion=[]
+  columna1=[]
+  columna2=[]
+  datoFila1=[]
+  datoFila2=[]
+  datoFila1.append(0)
+  datoFila1.append(1)
+  columna1.append(datoFila1)
+  datoFila2.append(0)
+  datoFila2.append(1)
+  columna2.append(datoFila2)
+  for cabecera in caracteristicaEvalRaiz:
+    contador = 0
+    datoFila1 =[]
+    datoFila1.append(cabecera.caracteristica)
+    cab2Niv = CaracteristicaEvaluar.objects.filter(caracteristicaPadre = cabecera.id)
+    for cab2 in cab2Niv:
+       datoFila2 =[]
+       contador = contador+1
+       datoFila2.append(cab2.caracteristica)
+       datoFila2.append(1)
+       columna2.append(datoFila2)
+    datoFila1.append(contador)
+    columna1.append(datoFila1)
+  matrizEvaluacion.append(columna1)
+  matrizEvaluacion.append(columna2)
+     
+#  matrizEvaluacion.append(columna)
+  
+  print(" matrizEvaluacion)",matrizEvaluacion)
+  #print("eva:", evaluacionSele)
+  if (jugador==0):
+#     print("selecciono 0 y pasa por todos los jugadores")
+     jugadores = Jugadores.objects.filter(categoria = categoria)
+  else:
+#    print ("jugador:", jugador)
+    jugadores = Jugadores.objects.filter(id= jugador)
+#    print ("jugador:", jugadores)
+
+  for jug in jugadores:
+    columna1 =[]
+    columna1.append(jug.pk)
+    columna1.append(jug.persona.apellido+" "+ jug.persona.nombre)
+    habilidadesEvaluar = obtenerHabilidadesEvaluar(jug,evaluacionSele)
+    for habEva in habilidadesEvaluar:
+       columna1.append(habEva[1])
+   # print(columna1)
+    matrizEvaluacion.append(columna1)
+
+    valoresEvaluacionTTA=  (
+        ("A", "Alto 10 a 8"),
+        ("M", "Medio 7 a 5"),
+        ("B", "Bajo 4 a 1"),
+        ("N", "No Evaluado"),
+    )
+  #print(valoresEvaluacionTTA)
+  contexto = { 
+               "menu": ObtenerMenu(request.user), 
+               "titulo": "Cargar Evaluacion",
+               "categoriaSele": categoria,
+               "anioSele": anio,
+               "evaluacionSele":evaluacionSele,
+               "matrizEvaluacion" :matrizEvaluacion,
+               "valoresEvaluacionTTA" : valoresEvaluacionTTA,
+               "boton_texto": "Guardar Evaluacion",
+               "evaluacionSele": evaluacion
+             }
+
+  return render(request,"cargarEvaluacionTTAJugador.html", contexto)
+
+def guardarEvaluacionTTAJugadoresCategoria(request,evaluacion):
+   #print("pasa por guardarEvaluacionTTAJugadoresCategoria")
+   #print(request.POST)
+   intClub = IntegrantesClub.objects.get(user= request.user)
+   intClubCat = IntegrantesClubCategorias.objects.filter(integrante= intClub)
+   print(intClubCat)
+
+   eval = EvalTecnicoTacticaActitudinal.objects.get(id = evaluacion)
+   caracteristicaEvaluar = EvalTecnicoTacticaActitudinalCaracteristica.objects.filter(tipoEvaluacion= eval)
+   #print(caracteristicaEvaluar)
+   valorEvaluacion = request.POST.getlist('evalTTA')
+   print(valorEvaluacion)
+   jugador = Jugadores.objects.filter(id= request.POST['jugador'])
+   indice = 0
+   for jug in jugador:
+     for carEval in caracteristicaEvaluar:
+       if EvalTecnicoTacticaActitudinalJugador.objects.filter(jugador = jug, caracteristicaEvaluar = carEval).exists():
+        print   ("existe : ", valorEvaluacion[indice])
+        evalTTAJugador = EvalTecnicoTacticaActitudinalJugador.objects.get(jugador = jug, caracteristicaEvaluar = carEval)
+        evalTTAJugador.evaluacion = valorEvaluacion[indice]
+        evalTTAJugador.fecha = date.today()
+        evalTTAJugador.evaluador = intClub
+        indice= indice+1   
+       else:
+        print   ("No existe : ", valorEvaluacion[indice])
+        EvalTecnicoTacticaActitudinalJugador.objects.create(jugador=jug, caracteristicaEvaluar = carEval, evaluacion= valorEvaluacion[indice], fecha= date.today(), evaluador=intClub,observaciones='' )
+        indice= indice+1   
+        
+   
+      
+   return listarEvaluacionTTA(request)
+

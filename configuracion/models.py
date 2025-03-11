@@ -153,11 +153,17 @@ class ProfesoresDeportivos(models.Model):
     fecha_desde =models.DateField(null=True)
     fecha_hasta = models.DateField(null=True,blank=True)
 
+class CaracteristicaEvaluar (models.Model):
+    caracteristica =  models.CharField(max_length=250)
+    caracteristicaPadre = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
+    
+    def __str__(self):
+        return f"{self.caracteristica}"
+
 class EventoDeportivo(models.Model):
     evento =  models.CharField(max_length=250)
     def __str__(self):
         return f"{self.evento}"
-
 
 
 class BecasJugador(models.Model):
