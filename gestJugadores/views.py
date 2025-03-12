@@ -281,7 +281,7 @@ def filtrarEvaluacionTTAJugadoresCategoria(request, anio, accion, categoria ):
         datosEvaluacion.append(carEvaluar.pk)
         datosEvaluacion.append(carEvaluar.mes)
       else:
-        print("fechas", carEvaluar.fechaInicio, carEvaluar.fechaFin, date.today())
+       # print("fechas", carEvaluar.fechaInicio, carEvaluar.fechaFin, date.today())
         datosEvaluacion.append(1)
         datosEvaluacion.append(carEvaluar.pk)
         datosEvaluacion.append(carEvaluar.mes)
@@ -302,7 +302,7 @@ def filtrarEvaluacionTTAJugadoresCategoria(request, anio, accion, categoria ):
              # print("fechas", evalJugador.fechaInicio, evalJugador.fechaFin, date.today())
 
           caracteristica = EvalTecnicoTacticaActitudinalCaracteristica.objects.filter(tipoEvaluacion = evalJugador).last()
-          caracteristicaJugador = EvalTecnicoTacticaActitudinalJugador.objects.filter(caracteristicaEvaluar = caracteristica)
+          caracteristicaJugador = EvalTecnicoTacticaActitudinalJugador.objects.filter(caracteristicaEvaluar = caracteristica,jugador = jug)
           if caracteristicaJugador.exists():
              datosEvaluacion.append(jug.pk)
              datosEvaluacion.append(evalJugador.pk)
@@ -337,15 +337,15 @@ def obtenerHabilidadesEvaluar(jugador, evaluacion):
       for ettaj in evalTecnicoTacticaActitudinalJugador:
         celda = []
         celda.append(ettaj)
-        celda.append(0)
+        celda.append(ettaj.evaluacion)
         habilidadesEvaluar.append(celda)
-      print("ettaj:", ettaj)
+        #print("ettaj:", ettaj)
    else:
-      print("habilidadesEvaluar",habilidadesEvaluar)
+      #print("habilidadesEvaluar",habilidadesEvaluar)
       for ettac in caracteristicaEval:
         celda = []
         celda.append(ettac)
-        celda.append('N')
+        celda.append('')
         habilidadesEvaluar.append(celda)
         #print("ettac:", ettac)
    #print("habilidades:",habilidadesEvaluar)
@@ -406,7 +406,7 @@ def cargarEvaluacionTTAJugadoresCategoria(request, jugador, evaluacion, categori
     habilidadesEvaluar = obtenerHabilidadesEvaluar(jug,evaluacionSele)
     for habEva in habilidadesEvaluar:
        columna1.append(habEva[1])
-   # print(columna1)
+    print(columna1)
     matrizEvaluacion.append(columna1)
 
     valoresEvaluacionTTA=  (
@@ -435,30 +435,31 @@ def guardarEvaluacionTTAJugadoresCategoria(request,evaluacion):
    #print(request.POST)
    intClub = IntegrantesClub.objects.get(user= request.user)
    intClubCat = IntegrantesClubCategorias.objects.filter(integrante= intClub)
-   print(intClubCat)
+   #print(intClubCat)
 
    eval = EvalTecnicoTacticaActitudinal.objects.get(id = evaluacion)
    caracteristicaEvaluar = EvalTecnicoTacticaActitudinalCaracteristica.objects.filter(tipoEvaluacion= eval)
    #print(caracteristicaEvaluar)
    valorEvaluacion = request.POST.getlist('evalTTA')
-   print(valorEvaluacion)
+   #print(valorEvaluacion)
    jugador = Jugadores.objects.filter(id= request.POST['jugador'])
    indice = 0
    for jug in jugador:
+     categoria = jug.categoria
      for carEval in caracteristicaEvaluar:
        if EvalTecnicoTacticaActitudinalJugador.objects.filter(jugador = jug, caracteristicaEvaluar = carEval).exists():
-        print   ("existe : ", valorEvaluacion[indice])
+    #    print   ("existe : ", valorEvaluacion[indice])
         evalTTAJugador = EvalTecnicoTacticaActitudinalJugador.objects.get(jugador = jug, caracteristicaEvaluar = carEval)
         evalTTAJugador.evaluacion = valorEvaluacion[indice]
         evalTTAJugador.fecha = date.today()
         evalTTAJugador.evaluador = intClub
         indice= indice+1   
        else:
-        print   ("No existe : ", valorEvaluacion[indice])
+      #  print   ("No existe : ", valorEvaluacion[indice])
         EvalTecnicoTacticaActitudinalJugador.objects.create(jugador=jug, caracteristicaEvaluar = carEval, evaluacion= valorEvaluacion[indice], fecha= date.today(), evaluador=intClub,observaciones='' )
         indice= indice+1   
         
    
       
-   return listarEvaluacionTTA(request)
+   return filtrarEvaluacionTTAJugadoresCategoria(request, eval.anio, 0, categoria.pk  )
 

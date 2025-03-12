@@ -20,7 +20,7 @@
                 <select name="categoria" onchange="this.form.submit()">
                     <option value="">Seleccione una categoria</option>
                     {% for cat in categorias %}
-                    <option value="{{ cat.categorias.id }}" {% if categoriaSele|stringformat:"s" == cat.categorias.id|stringformat:"s" %}selected{% endif %}>
+                      <option value="{{ cat.categorias.id }}" {% if categoriaSele|stringformat:"s" == cat.categorias.id|stringformat:"s" %}selected{% endif %}>
                         {{ cat.categorias.nombre }}
                     </option>
                     {% endfor %}
@@ -54,7 +54,7 @@
                         {% for jug in matriz %}
                           {% if  anio > anioHoy  %}
                              <td class="tdTexto">{{jug}}</td>
-                           {% elif  categoriaSele == 0 or jug.0 == 1 %}
+                           {% elif  categoriaSele == 0 %}
                              <td class="tdNumero">{{jug.2}}</td>
                            {% else %}
                               <td class="tdNumero"><a href="{% url 'gestJugadores:cargarEvaluacionTTAJugadoresCategoria' 0 jug.1 categoriaSele anio %}">{{jug.2}} </a></td>
@@ -66,7 +66,7 @@
                     <tr>
                     {% for jug in matriz %}
                         {% if forloop.counter > 1  %}
-                          {% if jug.0 == 0  %}
+                          {% if jug.0 == 0 and categoriaSele != 0  %}
                               <td class="tdNumero"><a href="{% url 'gestJugadores:cargarEvaluacionTTAJugadoresCategoria' jug.1  jug.2 categoriaSele anio %}">{{jug.3}}</a></td>
                           {% else %}
                             <td class="tdNumero">{{jug.3}}</td>
