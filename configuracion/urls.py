@@ -16,6 +16,7 @@ from configuracion.libreria.gest_becas import listarBecados
 from configuracion.libreria.gest_personas import buscarPersona
 from configuracion.libreria.reportes import reportes, reporteJugadoresPorDisciplina, reporteJugadoresPorCategoria
 from configuracion.libreria.gest_integrante_club import agregarIntegranteClub, gestionarIntegranteClub, borrarIntegranteClub, editarIntegranteClub
+from configuracion.libreria.gest_jugadores import generarPdfJugadores
 from configuracion.views import generarSecuencia
 app_name = 'configuracion'
 urlpatterns = [
@@ -24,6 +25,8 @@ urlpatterns = [
     path("listadoCategorias",listadoCategorias, name="listadoCategorias"),
     path("listadoBecas",listadoBecas, name="listadoBecas"),
     path("listadoJugadores",listadoJugadores, name="listadoJugadores"),
+    path("generarPdfJugadores",generarPdfJugadores.as_view(), name="generarPdfJugadores"),
+    
     path("listadoSocios",listadoSocios, name="listadoSocios"),
     path("listarCuotas",listarCuotas, name="listarCuotas"),
     path("listarIntegrantesClub",listarIntegrantesClub, name="listarIntegrantesClub"),

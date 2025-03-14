@@ -267,7 +267,15 @@ table {
     width: 100%; 
     height: auto; 
   }
-
+  .boton-imprimir{
+    float: right;
+    padding: 0;
+  }
+  .boton-imprimir img{
+    width: 6%;
+    height: auto;
+    padding: 0;
+  }
 .boton-editar{
   background-color: transparent;
   border: transparent;
