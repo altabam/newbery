@@ -76,7 +76,7 @@
                     <td class="td-nombre">{{listadoJugador.persona.apellido}}</td>
                     <td class="td-nombre">{{listadoJugador.persona.nombre}}</td>
                     <td class="tdNumero">{{listadoJugador.persona.dni}}</td>
-                    <td class="td-nombre">{{listadoJugador.persona.fecha_nacimiento}}</td>
+                    <td class="td-nombre">{{listadoJugador.persona.fecha_nacimiento|date:"d-m-Y"}}</td>
                    <!--  <td class="td-nombre">
                         {% if listadoJugador.activo %}
                             <a class="boton-editar"><img  src="{% static 'img/check.png' %}"></a>

@@ -1,6 +1,6 @@
 //administracion
 falta completar el backup
-generar un archivo html, que por js vaya generando los csv y enviando a descarga, 
+generar un archivo html, que por js vaya generandop los csv y enviando a descarga, 
 Falta agregar auditoria a toda la aplicacion
 Falta agregar seguridad a toda la aplicacion
 
@@ -63,4 +63,5 @@ preynoso
 oso.2222
 
 Alejandro.123
+alt123
 adm12345
