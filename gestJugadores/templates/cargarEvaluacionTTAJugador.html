@@ -24,10 +24,10 @@
             {% if forloop.counter < 3 %}
                 {% if forloop.counter == 1 %}
                   <thead>
-                    <th></th>
                 {% endif %}
                 <tr>
-                       {% for celda in matriz %}
+                  <th></th>
+                  {% for celda in matriz %}
                          {% if forloop.counter > 1 %}
                            <th colspan="{{celda.1}}">{{celda.0}}
                            </th>
