@@ -43,8 +43,8 @@
                 <tbody>
                  <tr>
                    {% for celda in matriz %}
-                      {% if forloop.counter > 2  %}
-                      <td>{{forloop.counter}}</td>
+                   <td>{{forloop.counter}}</td>
+                   {% if forloop.counter > 2  %}
                         <td>
                             <select name="evalTTA" required>
                                 <option value="">Seleccione un evento</option>
@@ -60,7 +60,6 @@
                            {% if forloop.counter > 1  %}
                               <td>{{celda}}</td>
                            {% else %}
-                             <td>{{forloop.counter}}</td>
                              <input id="jugador" name="jugador" type="hidden" value="{{celda}}" />
                            {% endif %}
                          {% endif %}
