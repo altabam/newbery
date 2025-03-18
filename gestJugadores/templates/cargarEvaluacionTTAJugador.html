@@ -24,6 +24,7 @@
             {% if forloop.counter < 3 %}
                 {% if forloop.counter == 1 %}
                   <thead>
+                    <th></th>
                 {% endif %}
                 <tr>
                        {% for celda in matriz %}
@@ -43,6 +44,7 @@
                  <tr>
                    {% for celda in matriz %}
                       {% if forloop.counter > 2  %}
+                      <td>{{forloop.counter}}</td>
                         <td>
                             <select name="evalTTA" required>
                                 <option value="">Seleccione un evento</option>
@@ -58,7 +60,8 @@
                            {% if forloop.counter > 1  %}
                               <td>{{celda}}</td>
                            {% else %}
-                              <input id="jugador" name="jugador" type="hidden" value="{{celda}}" />
+                             <td>{{forloop.counter}}</td>
+                             <input id="jugador" name="jugador" type="hidden" value="{{celda}}" />
                            {% endif %}
                          {% endif %}
                    {% endfor %}
