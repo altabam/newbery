@@ -404,8 +404,15 @@ def cargarEvaluacionTTAJugadoresCategoria(request, jugador, evaluacion, categori
     columna1.append(jug.pk)
     columna1.append(jug.persona.apellido+" "+ jug.persona.nombre)
     habilidadesEvaluar = obtenerHabilidadesEvaluar(jug,evaluacionSele)
-    for habEva in habilidadesEvaluar:
-       columna1.append(habEva[1])
+    if habilidadesEvaluar:
+      for habEva in habilidadesEvaluar:
+        columna1.append(habEva[1])
+    else:
+        for cabecera in caracteristicaEvalRaiz:
+         cab2Niv = CaracteristicaEvaluar.objects.filter(caracteristicaPadre = cabecera.id)
+         for cab2 in cab2Niv:
+            columna1.append("")
+      
     #print(columna1)
     matrizEvaluacion.append(columna1)
 
