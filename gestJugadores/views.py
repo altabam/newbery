@@ -406,7 +406,7 @@ def cargarEvaluacionTTAJugadoresCategoria(request, jugador, evaluacion, categori
     habilidadesEvaluar = obtenerHabilidadesEvaluar(jug,evaluacionSele)
     for habEva in habilidadesEvaluar:
        columna1.append(habEva[1])
-    print(columna1)
+    #print(columna1)
     matrizEvaluacion.append(columna1)
 
     valoresEvaluacionTTA=  (
@@ -415,7 +415,7 @@ def cargarEvaluacionTTAJugadoresCategoria(request, jugador, evaluacion, categori
         ("B", "Bajo 4 a 1"),
         ("N", "No Evaluado"),
     )
-  #print(valoresEvaluacionTTA)
+  print("evaluacion:", evaluacionSele.nombre)
   contexto = { 
                "menu": ObtenerMenu(request.user), 
                "titulo": "Cargar Evaluacion",
@@ -425,7 +425,6 @@ def cargarEvaluacionTTAJugadoresCategoria(request, jugador, evaluacion, categori
                "matrizEvaluacion" :matrizEvaluacion,
                "valoresEvaluacionTTA" : valoresEvaluacionTTA,
                "boton_texto": "Guardar Evaluacion",
-               "evaluacionSele": evaluacion
              }
 
   return render(request,"cargarEvaluacionTTAJugador.html", contexto)

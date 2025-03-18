@@ -56,7 +56,7 @@ def listarJugadoresNoSocios(request):
 def listadoJugadores(request):
 
     # Obtener todas las disciplinas y categorias disponibles
-    print(request.user)
+    #print(request.user)
 
     intClub = IntegrantesClub.objects.filter(user = request.user)
     disciplinas = Disciplinas.objects.all()

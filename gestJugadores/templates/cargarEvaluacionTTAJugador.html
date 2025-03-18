@@ -12,18 +12,20 @@
     <div class="divForm">
         <a title="Volver" class="botonVolver" href="{% url 'gestJugadores:filtrarEvaluacionTTAJugadoresCategoria' anioSele  0 categoriaSele %}"><img src="{%static 'img/volver-flecha.png'%}" alt=""> Volver</a>
         <h1 class="titulo">{{ titulo }}</h1>
-        <h3>Evaluacion: {{evaluacionSele.nombre}} --  Inicio: {{evaluacionSele.fechaInicio}}  --   Fin: {{evaluacionSele.fechaFin}}</h3>
+        <h3>Evaluacion: {{evaluacionSele.nombre}} --  Inicio: {{evaluacionSele.fechaInicio|date:"d-m-Y"}}  --   Fin: {{evaluacionSele.fechaFin|date:"d-m-Y"}}</h3>
         <br>
         <hr>
         <br>
-        <form method="POST" action="{% url 'gestJugadores:guardarEvaluacionTTAJugadoresCategoria' evaluacionSele %}">
+        <form method="POST" action="{% url 'gestJugadores:guardarEvaluacionTTAJugadoresCategoria' evaluacionSele.pk %}">
             {% csrf_token %}
 
         <table border="1">
            {% for matriz in matrizEvaluacion %}
-              {% if forloop.counter < 3 %}
+            {% if forloop.counter < 3 %}
+                {% if forloop.counter == 1 %}
                   <thead>
-                     <th>
+                {% endif %}
+                <th>
                        {% for celda in matriz %}
                          {% if forloop.counter > 1 %}
                            <td colspan="{{celda.1}}">{{celda.0}}
@@ -32,33 +34,36 @@
                          {% endif %}
                        {% endfor %}
 
-                     </th>
-                   </thead>
-             {% else %}
-                 <tbody>
-                    <tr>
-                      {% for celda in matriz %}
-                          {% if forloop.counter > 2  %}
-                          <td>
-                               <select name="evalTTA" required>
-                                   <option value="">Seleccione un evento</option>
-                                   {% for valor in valoresEvaluacionTTA %}
-                                      <option value="{{ valor.0 }}" {% if celda == valor.0|stringformat:"s" %}selected{% endif %}>
-                                         {{ valor.1 }}
-                                     </option>
-                                   {% endfor %}
-                              </select> {{celda}}
-                            </td>
+                </th>
+                {% if forloop.counter == 2 %}
+                  </thead>
+                {% endif %}
+            {% else %}
+                <tbody>
+                 <tr>
+                   {% for celda in matriz %}
+                      {% if forloop.counter > 2  %}
+                        <td>
+                            <select name="evalTTA" required>
+                                <option value="">Seleccione un evento</option>
+                                {% for valor in valoresEvaluacionTTA %}
+                                   <option value="{{ valor.0 }}" {% if celda == valor.0|stringformat:"s" %}selected{% endif %}>
+                                      {{ valor.1 }}
+                                   </option>
+                                {% endfor %}
+                            </select> 
+                            
+                        </td>
+                      {% else %}
+                           {% if forloop.counter > 1  %}
+                              <td>{{celda}}</td>
                            {% else %}
-                             {% if forloop.counter > 1  %}
-                                <td>{{celda}}</td>
-                             {% else %}
-                                <input id="jugador" name="jugador" type="hidden" value="{{celda}}" />
-                             {% endif %}
+                              <input id="jugador" name="jugador" type="hidden" value="{{celda}}" />
                            {% endif %}
-                      {% endfor %}
-                    </tr>
-                </tbody>
+                         {% endif %}
+                   {% endfor %}
+                  </tr>
+                  </tbody>
               {% endif %}
             {% endfor %}
         </table>
